@@ -2,7 +2,7 @@ This software is labeled with the GNU General Public License v3.0 (gpl-3.0).
 
 Authorship:
 * Lionel Doppler
-* Rico Hengsr
+* Rico Hengst
 
 
 
