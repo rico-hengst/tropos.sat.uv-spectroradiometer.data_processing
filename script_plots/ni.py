@@ -8,8 +8,12 @@ Created on Tue Oct 29 12:59:26 2019
 import os
 import read_bts2048rh as bts
 import plotme
+import calendar
 
 """Insert de initial and final dates as strings as 20190107(year:2019/month:01/day:07)"""
+
+
+    
   
 def statistic(i8date,f8date):
     methodbts = "global" 
@@ -33,8 +37,9 @@ def statistic(i8date,f8date):
             for im in range(im,14):
                 path1=path+str(im).zfill(2)+"/"
                 if im<=12:   
-                    for ida in range(ida,33):
-                        if ida<=31:
+                    numberOfDays = calendar.monthrange(iy, im)[1]
+                    for ida in range(ida,numberOfDays + 2):
+                        if ida<=numberOfDays:
                             path2 = path1 + str(ida).zfill(2) + "/"
                             path_file=path2+"MP"+str(iy-2000).zfill(2)+str(im).zfill(2)+str(ida).zfill(2)+".OR0"
                             if os.path.isfile(path_file):
@@ -45,7 +50,7 @@ def statistic(i8date,f8date):
                             else:
                                 ida=ida+1
                                 print(path_file+" does not exist")
-                        elif ida==32:   
+                        elif ida==numberOfDays + 1:   
                             ida=1   
                             im=im+1
                             path1 = path + str(im).zfill(2) + "/"
@@ -57,11 +62,11 @@ def statistic(i8date,f8date):
             path = main_path + str(iy) + "/"
             for im in range(im,fm+1):
                 path1 = path + str(im).zfill(2) + "/"
-                if im<fm: 
-                    for ida in range(ida,32):
+                if im<fm:
+                    numberOfDays = calendar.monthrange(iy, im)[1]
+                    for ida in range(ida,numberOfDays + 2):
                         path2=path1+str(ida).zfill(2)+"/"
-                        if ida<=31:
-                            path2 = path1 + str(ida).zfill(2) + "/"
+                        if ida<=numberOfDays:
                             path_file=path2+"MP"+str(iy-2000).zfill(2)+str(im).zfill(2)+str(ida).zfill(2)+".OR0"
                             if os.path.isfile(path_file):
                                 i8date=str(iy)+str(im).zfill(2)+str(ida).zfill(2)
@@ -71,13 +76,11 @@ def statistic(i8date,f8date):
                             else:
                                 ida=ida+1
                                 print(path_file+" does not exist")
-                        else:   
+                        elif ida==numberOfDays + 1:   
                             ida=1   
                             im=im+1
-                            path1 = path + str(im).zfill(2) + "/"
-                    
+                            path1 = path + str(im).zfill(2) + "/"    
                 elif im==fm:
-                    im=fm
                     path1 = path + str(im).zfill(2) + "/"
                     for ida in range(ida,fda+1):
                         path2= path1 + str(ida).zfill(2) + "/"
@@ -91,8 +94,19 @@ def statistic(i8date,f8date):
                             ida=ida+1 
                             print(path_file+" does not exist")
                                                             
-statistic('20190228','20190301')
+statistic('20190227','20190302')
 
-#numberOfDays = calendar.monthrange(year, month)[1]
-#for day in list(range(1, numberOfDays + 1)):
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
