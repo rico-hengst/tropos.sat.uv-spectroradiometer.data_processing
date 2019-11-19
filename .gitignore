@@ -2,4 +2,4 @@
 __pycache__/*
 read_bts2048.py
 *.pyc
-
+images/*
