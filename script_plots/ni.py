@@ -9,8 +9,22 @@ import os
 import read_bts2048rh as bts
 import plotme
 import calendar
+import NetCDF as nc
+import argparse
 
 """Insert de initial and final dates as strings as 20190107(year:2019/month:01/day:07)"""
+
+"""for calling the function from the terminal"""
+parser = argparse.ArgumentParser(description='Process UVradiometer Messurments in Melpitz.') 
+parser.add_argument('-s', type=str, dest='id', # la variable se guarda en args.id como string
+                    help='Insert the initial date as 20190107(y:2019 m:01 d:07)')
+parser.add_argument('-e', type=str, dest='fd',
+                    help='Insert the final date as 20190107(y:2019 m:01 d:07)')
+args = parser.parse_args()
+"""Break in case the dates weren't correct"""
+if len(args.id)!=8 or len(args.fd)!=8:
+    print('Error: Wrong date introduced, please try again')
+    exit()
 
 def statistic(i8date,f8date):
     methodbts = "global" 
@@ -26,7 +40,11 @@ def statistic(i8date,f8date):
     
     """Define the main path where the images should be saved"""
     image_path="/home/bayer/uv/images/"
+    
+    """Define the main path where the netCDF files should be saved"""
+    netCDF_path = "/home/bayer/uv/netCDF/"
 
+    """Start the loop"""
     for ys in range(iy,fy+1):
         for imonth in range(1,13):
             if ys==iy and imonth<im:
@@ -46,11 +64,12 @@ def statistic(i8date,f8date):
                         ida=1
                         ys=ys+1
                     elif imonth==fm and ys==fy and iday>fda:
+                        print('Error: Wrong dates were chosen/ pay attention to the order, please try again.')
                         break
                     elif iday>=ida and iday<=numberOfDays:
                         path_file=main_path+str(ys)+"/"+str(imonth).zfill(2)+"/"+str(iday).zfill(2)+"/"+"MP"+str(ys-2000).zfill(2)+str(imonth).zfill(2)+str(iday).zfill(2)+".OR0"
-                        if os.path.isfile(path_file):
-                            if os.stat(path_file).st_size<1:
+                        if os.path.isfile(path_file):  # see if the .OR0 file exist
+                            if os.stat(path_file).st_size<1:  # controls if the file is not empty
                                 print('file is empty '+path_file)
                                 iday=iday+1
                             else:
@@ -59,94 +78,20 @@ def statistic(i8date,f8date):
                                 d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
                                 #Ploting function
                                 plotme.plotme(d_bts1day,i8date,image_path)
+                                nc_file = netCDF_path + str(i8date[:]) + '.nc'
+                                if os.path.isfile(nc_file):
+                                    continue
+                                else:
+                                    #Save the data processed by the bts function in a netCDF file
+                                    nc.netCDF_file(d_bts1day,i8date,netCDF_path) 
                                 iday=iday+1
                         else:
                             print(path_file+" does not exist")
                             iday=iday+1
     
 #####################################################################################                                                            
-statistic('20190302','20190302')
-
-"""files that show error: 
-20180815
-"""
-
-"""
-    for iy in range(iy,fy+1):
-        if iy!=fy:
-            path = main_path + str(iy) + "/"
-            for im in range(im,14):
-                path1=path+str(im).zfill(2)+"/"
-                if im<=12:   
-                    numberOfDays = calendar.monthrange(iy, im)[1]
-                    for ida in range(ida,numberOfDays + 2):
-                        if ida<=numberOfDays:
-                            path2 = path1 + str(ida).zfill(2) + "/"
-                            path_file=path2+"MP"+str(iy-2000).zfill(2)+str(im).zfill(2)+str(ida).zfill(2)+".OR0"
-                            if os.path.isfile(path_file):
-                                if os.stat(path_file).st_size<1:
-                                    print('file is empty '+path_file)
-                                    ida=ida+1
-                                else:
-                                    i8date=str(iy)+str(im).zfill(2)+str(ida).zfill(2)
-                                    d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
-                                    plotme.plotme(d_bts1day,i8date,image_path)
-                                    ida=ida+1
-                            else:
-                                ida=ida+1
-                                print(path_file+" does not exist")
-                        elif ida==numberOfDays + 1:   
-                            ida=1   
-                            im=im+1
-                            path1 = path + str(im).zfill(2) + "/"
-                elif im==13:
-                    im=1
-                    iy=iy+1 
-                    path = main_path + str(iy) + "/"
-        elif iy==fy:
-            path = main_path + str(iy) + "/"
-            for im in range(im,fm+1):
-                path1 = path + str(im).zfill(2) + "/"
-                if im<fm:
-                    numberOfDays = calendar.monthrange(iy, im)[1]
-                    for ida in range(ida,numberOfDays + 2):
-                        path2=path1+str(ida).zfill(2)+"/"
-                        if ida<=numberOfDays:
-                            path_file=path2+"MP"+str(iy-2000).zfill(2)+str(im).zfill(2)+str(ida).zfill(2)+".OR0"
-                            if os.path.isfile(path_file):
-                                if os.stat(path_file).st_size<1:
-                                    print('file is empty '+path_file)
-                                    ida=ida+1
-                                else:
-                                    i8date=str(iy)+str(im).zfill(2)+str(ida).zfill(2)
-                                    d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
-                                    plotme.plotme(d_bts1day,i8date,image_path)
-                                    ida=ida+1
-                            else:
-                                ida=ida+1
-                                print(path_file+" does not exist")
-                        elif ida==numberOfDays + 1:   
-                            ida=1   
-                            im=im+1
-                            path1 = path + str(im).zfill(2) + "/"    
-                elif im==fm:
-                    path1 = path + str(im).zfill(2) + "/"
-                    for ida in range(ida,fda+1):
-                        path2= path1 + str(ida).zfill(2) + "/"
-                        path_file=path2+"MP"+str(iy-2000).zfill(2)+str(im).zfill(2)+str(ida).zfill(2)+".OR0"
-                        if os.path.isfile(path_file):
-                            if os.stat(path_file).st_size<1:
-                                print('file is empty '+path_file)
-                                ida=ida+1
-                            else:
-                                i8date=str(iy)+str(im).zfill(2)+str(ida).zfill(2)
-                                d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
-                                plotme.plotme(d_bts1day,i8date,image_path)
-                                ida=ida+1
-                        else:
-                            ida=ida+1 
-                            print(path_file+" does not exist")
-"""                            
+statistic(args.id,args.fd)
+                          
                             
                             
                             
