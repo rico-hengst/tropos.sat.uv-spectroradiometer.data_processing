@@ -31,3 +31,17 @@ python ??? -s 20180913 -e 20181231 TODO
 * Rico Hengst
 * Nicolas Bayer
 * Lionel Doppler
+
+## TODO's
+* improve connfiguration in terms of folder structure 
+  * case 1 (default), use branced structure
+    * `├── 2019
+│   ├── 01
+│   │   ├── 01
+│   │   ├── 02
+│   │   ├── 03
+│   │   ├── 04
+│   │   ├── 05
+│   │   ├── 06
+│   │   ├── 07`
+  * case 2, use flat structure (all files in a single directory)
