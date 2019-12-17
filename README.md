@@ -33,6 +33,7 @@ python ??? -s 20180913 -e 20181231 TODO
 * Lionel Doppler
 
 ## TODO's
+* use json file as metadata lookup table to write static netcdf metadata file 
 * improve connfiguration in terms of folder structure (input data)
   * case 1 (default), use branced structure
   * case 2, use flat structure (all files in a single directory)
