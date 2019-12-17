@@ -35,7 +35,8 @@ python ??? -s 20180913 -e 20181231 TODO
 ## TODO's
 * improve connfiguration in terms of folder structure 
   * case 1 (default), use branced structure
-    * `├── 2019
+    * 
+├── 2019
 │   ├── 01
 │   │   ├── 01
 │   │   ├── 02
