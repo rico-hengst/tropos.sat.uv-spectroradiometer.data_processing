@@ -4,6 +4,8 @@
 ## Description
 The repository contains scripts to process the data of array spectroradiometer BTS2048.
 
+The scripts are prepared for batch processing.
+
 The software package 
 * reads OR0-Files from UV observations with the array spectroradiometer and 
 * is able to visualize the data and
