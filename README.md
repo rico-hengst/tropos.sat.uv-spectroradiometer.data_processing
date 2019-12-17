@@ -33,16 +33,9 @@ python ??? -s 20180913 -e 20181231 TODO
 * Lionel Doppler
 
 ## TODO's
-* improve connfiguration in terms of folder structure 
+* improve connfiguration in terms of folder structure (input data)
   * case 1 (default), use branced structure
-    * 
-├── 2019
-│   ├── 01
-│   │   ├── 01
-│   │   ├── 02
-│   │   ├── 03
-│   │   ├── 04
-│   │   ├── 05
-│   │   ├── 06
-│   │   ├── 07`
   * case 2, use flat structure (all files in a single directory)
+* improve connfiguration in terms of file name convention (location abbrev in filename as constant part of filename)
+  * case 1 (default), use 'MP'
+  * case 2, use another name
