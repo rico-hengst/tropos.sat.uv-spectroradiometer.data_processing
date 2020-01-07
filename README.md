@@ -29,7 +29,7 @@ The software requires following Python packages:
 
 ## Usage
 ```
-python ??? -s 20180913 -e 20181231 TODO
+python ni.py -s 20180913 -e 20181231 
 ```
 ## Authors
 * Rico Hengst
