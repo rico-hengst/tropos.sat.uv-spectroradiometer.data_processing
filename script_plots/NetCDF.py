@@ -6,8 +6,6 @@ Created on Thu Nov 21 13:30:44 2019
 @author: bayer
 """
 import netCDF4 as nc4
-from datetime import datetime
-import js
 
 def netCDF_file(d_bts1day,i8date,netCDF_path, cfjson ):
     
@@ -17,34 +15,28 @@ def netCDF_file(d_bts1day,i8date,netCDF_path, cfjson ):
     f = nc4.Dataset(file_out,'w', format='NETCDF4') #'w' stands for write 
     """create dimensions"""    
 #    print(len(cfjson['dimensions']))
-    print(cfjson['dimensions'])
-    print('XXXXXXX')
+#    print(cfjson['dimensions'])
+#    print('XXXXXXX')
     print(cfjson['variables'].items())
-    print(cfjson['dimensions'].values())
+#    print(cfjson['dimensions'].values())
     """Creating the dimensions in the NetCDF file from the JSON file"""
     for x,y in cfjson['dimensions'].items(): 
         if y!=-1:
             f.createDimension(x,y)
-            print(f.dimensions)
         elif y==-1:
-            f.createDimensions(x,None)
-    print(f.dimensions)
-    exit()
+            f.createDimension(x,d_bts1day[x].size)
+#    print(f.dimensions)
 
-#The value at object["variables"]["tmp2m"]["data"][k,j,i] is at time[k], latitude[j] and longitude[i]."""
-#        f = js.create_cf_file(file_out,cfjson['dimensions'][d]:cfjson['dimensions'].values())#atts=cfjson.attributes, 
-#                               dims={'time':d_bts1day["seconds"].size,'longitude':1, 
-#                                     'latitude':1, 'wavelength':d_bts1day["wvl"].size})   
     """Building variables"""
     for x in cfjson['variables']:
-        f.createVariable(x,cfjson['variables']['type'].values())
-        x.data[:]=d_bts1day[x]
-        print(f.variables)
+        x=f.createVariable(x,cfjson['variables']['type'].values(),cfjson['variables']['shape'])
+#        x.data[:]=d_bts1day[x]
+#        print(f.variables)
 #    f.createVariable('time','longitude','latitude','UVA','UVB','uvind','uvint',
 #                          'spectrum','wavelength')    
-    for v in f.variables.keys():
-        if v in cfjson.variables:
-            f[v].setncatts(cfjson.variables[v].attributes)
+#    for v in f.variables.keys():
+#        if v in cfjson.variables:
+#            f[v].setncatts(cfjson.variables[v].attributes)
 #            if v in d_bts1day.variables:
 #                v[:]=d_bts1day[v]
 #            print(f.groups)
