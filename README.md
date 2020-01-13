@@ -22,10 +22,19 @@ The software package includes
 ## Requirements
 
 * <img src="https://www.python.org/static/community_logos/python-logo-generic.svg" alt="Python logo" style="width:130px;"> version??
-  * module 1??
-  * module 2??
+ * argparse
+ * calendar
+ * datetime
+ * matplotlib
+ * NetCDF
+ * numpy
+ * os
+ * pygal
 
 ## Usage
+```
+python ni.py -s 20180913 -e 20181231
+```
 
 ## Authors
 * Rico Hengst
@@ -33,7 +42,7 @@ The software package includes
 * Nicolas Bayer
 
 ## Cooperation
- <img src="doc/TROPOS-Logo_ENG.svg" alt="TROPOS" style="width:100px;">  <img src="doc/Deutscherwetterdienst-logo.svg" alt="DWD" style="width:100px;">
+<img src="doc/TROPOS-Logo_ENG.svg" alt="TROPOS" style="width:100px;">  <img src="doc/Deutscherwetterdienst-logo.svg" alt="DWD" style="width:100px;">
 
 
 ## ToDo
