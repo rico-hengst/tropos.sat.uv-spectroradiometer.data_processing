@@ -109,15 +109,15 @@ def statistic(i8date,f8date):
                                 iday=iday+1
                             else:
                                 i8date=str(ys)+str(imonth).zfill(2)+str(iday).zfill(2)
-                                #Obtanin the directory data from the OR0 files
+                                """Obtanin the directory data from the OR0 files"""
                                 d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
-                                #Ploting function
+                                """Ploting function"""
 #                                plotme.plotme(d_bts1day,i8date,image_path)
                                 nc_file = netCDF_path + str(i8date[:]) + '.nc'
                                 if os.path.isfile(nc_file):
                                     continue
                                 else:
-                                    #Save the data processed by the bts function in a netCDF file
+                                    """Save the data processed by the bts function in a netCDF file"""
                                     nc.netCDF_file(d_bts1day,i8date,netCDF_path,cfjson) 
                                 iday=iday+1
                         else:
