@@ -1,46 +1,49 @@
-# Software for data processing of array spectroradiometer 
+# BTS 2048 data post-processing
+
 [![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-sa/4.0/)
 
+The repository contains post-processing scripts to read and visualize solar radiation data exported by the  "Solarscan Software System" (hereinafter referred as Solarscan).
+
+
 ## Description
-The repository contains scripts to process the data of array spectroradiometer BTS2048.
+### General issue
+The spectroradiometer BTS2048 is currently operated via a Solarscan. Solarscan is responsible for the a continuous scheduling and the measurement and the radiometric calibration of the BTS2048. Solarscan exports it's data in a specific ASCII-Format, see also [Solarscan User Manual](doc/Solarscan_BTS2048.pd).
 
-The software is prepared for batch processing.
+The used file format of the Solarscan export is not well documented. However, the data should be archived in a well documented file format, which will be used of a majority of the Earth science community. The scripts of that repository will take account of this.
 
-The software package 
-* reads OR0-Files from UV observations with the array spectroradiometer and 
-* is able to visualize the data and
-* is able to convert the data to netcdf.
+### Objectives
+The software package is written to post-process observed solar radiation data of the array spectroradiometer BTS2018.
+The software package includes
+* a module to read OR0-Files from UV observations with the array spectroradiometer BTS2048 and
+* a module to visualize the numerical data and
+* a module to store data as netcdf file(s).
+
 
 ## Requirements
-The software is written in [Python](https://www.python.org).
-The software requires Python Version ??? TODO.
 
-The software requires following Python packages:
-* argparse
-* calendar
-* datetime
-* matplotlib
-* NetCDF
-* numpy
-* os
-* pygal
-
-
+* <img src="https://www.python.org/static/community_logos/python-logo-generic.svg" alt="Python logo" style="width:130px;"> version??
+ * argparse
+ * calendar
+ * datetime
+ * matplotlib
+ * NetCDF
+ * numpy
+ * os
+ * pygal
 
 ## Usage
 ```
-python ni.py -s 20180913 -e 20181231 
+python ni.py -s 20180913 -e 20181231
 ```
+
 ## Authors
 * Rico Hengst
-* Nicolas Bayer
 * Lionel Doppler
+* Nicolas Bayer
 
-## TODO's
-* use json file as metadata lookup table to write static netcdf metadata file 
-* improve connfiguration in terms of folder structure (input data)
-  * case 1 (default), use branced structure
-  * case 2, use flat structure (all files in a single directory)
-* improve connfiguration in terms of file name convention (location abbrev in filename as constant part of filename)
-  * case 1 (default), use 'MP'
-  * case 2, use another name
+## Cooperation
+<img src="doc/TROPOS-Logo_ENG.svg" alt="TROPOS" style="width:100px;">  <img src="doc/Deutscherwetterdienst-logo.svg" alt="DWD" style="width:100px;">
+
+
+## ToDo
+* improve script to read, plot auxiliary data
