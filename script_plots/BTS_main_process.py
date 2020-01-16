@@ -56,11 +56,9 @@ def statistic(i8date,f8date):
     
     """Define the JSON path where the json metadata file should be saved"""
     json_file = '/vols/satellite/home/bayer/uv/uv_js_meta.json'
-#    cfjson=js.read_cf_json(json_file)
     cfjson={}
     with open(json_file) as f:
             cfjson= json.load(f)
-        
         
     """Start the loop"""
     for ys in range(iy,fy+1):
@@ -94,13 +92,15 @@ def statistic(i8date,f8date):
                                 """Obtanin the directory data from the OR0 files"""
                                 d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
                                 """Ploting function"""
-#                                BTS2plot.plotme(d_bts1day,i8date,image_path)
+                                BTS2plot.plotme(d_bts1day,i8date,image_path)
+                                """checking if the file does already exist, and delete if so."""
                                 nc_file = netCDF_path + str(i8date[:]) + '.nc'
                                 if os.path.isfile(nc_file):
-                                    continue
+                                    os.remove(nc_file)
+                                    BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
                                 else:
                                     """Save the data processed by the bts function in a netCDF file"""
-                                    BTS2NetCDF.netCDF_file(d_bts1day,i8date,netCDF_path,cfjson) 
+                                    BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
                                 iday=iday+1
                         else:
                             print(path_file+" does not exist")
@@ -108,67 +108,3 @@ def statistic(i8date,f8date):
     
 #####################################################################################                                                            
 statistic(args.id,args.fd)
-#        json.dump(f)
-#        cfjson= json.load(f)
-#        print(cfjson)
-#        print(type(cfjson))
-#        for x in cfjson:
-#            print(x)
-#        print(cfjson['variables'])
-        
-#                for varname in cfjson.variables.key():
-#                    var = cfjson.variables[varname]
-#                    if 'type' in var:
-#                        if 'missing_value' in var.attributes:
-#                            val = var2type(var.attributes['missing_value'],var.type)
-#                            var.attributes['missing_value'] = val
-#                        if 'flag_masks' in var.attributes:
-#                            mlist = [var2type(m,var.type) for m in var.attributes['flag_masks']]
-#                            var.attributes['flag_masks'] = mlist
-#    return cf
-        
-#  #    print(cfjson['variables'].items())
-#    for x,y in cfjson['variables'].items():
-#        print(x)
-#        print(y)
-#        for z,a in y.items():
-#            print(z)
-#            print(a)
-##    print(cfjson['variables']['longitude']['type'])
-#    exit ()      
-#    print(cfjson['variables'].items())
-#    for x in cfjson['variables']:
-#        print(x)
-#        for y in cfjson['variables'][x]:
-#            if y=='shape':
-#                print(cfjson['variables'][x][y])
-#    exit()    
-#        print(y)
-#        for z,a in y.items():
-#            print(z)
-#            print(a)
-##    print(cfjson['variables']['longitude']['type'])
-#    exit ()
-        
-#    for x in cfjson['variables']:
-##        if hasattr(cfjson['variables'][x],'type'):
-##        print(cfjson['variables'][x])
-#        print(len(cfjson['variables'][x]['shape']))
-##        print(cfjson['variables'][x]['attributes']['units'])
-##
-##        print(cfjson['variables'][x]['data'])
-##            x=f.createVariable(x,cfjson['variables'][x]['type'],cfjson['variables'][x]['shape'])
-##            f[x].setncatts(cfjson['variables'][x]['attributes'])
-##            f[x].units=cfjson['variables'][x]['attributes']['units']
-##            f[x][:]=cfjson['variables'][x]['data']
-##        else:
-##            if len(cfjson['variables'][x]['shape'])==3:
-###                f[x][0,0,:]=d_bts1day[x]
-##            elif len(cfjson['variables'][x]['shape'])==4:
-###                f[x][0,0,:,:]=d_bts1day[x]   
-#    print(f)        
-#                   
-                
-                            
-                            
-                            
