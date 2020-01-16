@@ -33,7 +33,7 @@ The software package includes
 
 ## Usage
 ```
-python ni.py -s 20180913 -e 20181231
+python BTS_main_process.py -s 20180913 -e 20181231
 ```
 
 ## Authors
