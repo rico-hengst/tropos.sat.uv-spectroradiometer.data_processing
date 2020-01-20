@@ -2,7 +2,7 @@ import os
 import numpy as np
 from datetime import datetime
 from datetime import timedelta
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 def fileex(file,info=0,ver=0): #Test if a file exists
   vex=-2
