@@ -17,6 +17,7 @@ import calendar
 import BTS2NetCDF 
 import argparse
 import json
+import configparser
 
 """Insert de initial and final dates as strings as 20190107(year:2019/month:01/day:07)"""
 
@@ -45,19 +46,49 @@ def statistic(i8date,f8date):
     fm=int(f8date[4:6])
     fda=int(f8date[6:8])
     
+    
+    """Read config file"""
+    config = configparser.ConfigParser()
+    config.read('config.private')
+    
+    
+    """Check if directories etc exists"""
+    if not os.path.isdir( config.get('DEFAULT','main_path') ):
+        print('Path main_path not exists '+ config.get('DEFAULT','main_path'))
+        quit()
+        
+    if not os.path.isdir( config.get('DEFAULT','image_path') ):
+        print('Path image_path not exists '+ config.get('DEFAULT','image_path'))
+        quit()
+        
+    if not os.path.isdir( config.get('DEFAULT','netCDF_path') ):
+        print('Path netcdf_path not exists '+ config.get('DEFAULT','netCDF_path'))
+        quit()
+        
+    if not os.path.isfile( config.get('DEFAULT','json_file') ):
+        print('File json not exists '+ config.get('DEFAULT','json_file'))
+        quit()
+    
+    #quit()
+    
+    '''
     """Define the main path where the files are in"""
     main_path="/vols/satellite/datasets/surfrad/uv_radiometer/"
     
     """Define the main path where the images should be saved"""
-    image_path="/vols/satellite/home/bayer/uv/images/"
+    image_path="/vols/satellite/home/hengst/BT/images/"
     
     """Define the main path where the netCDF files should be saved"""
-    netCDF_path = "/vols/satellite/home/bayer/uv/netCDF/"
+    netCDF_path = "/vols/satellite/home/hengst/BT/netcdf/"
     
-    """Define the JSON path where the json metadata file should be saved"""
-    json_file = '/vols/satellite/home/bayer/uv/uv_js_meta.json'
+    """Define the JSON path where the json metadata are located"""
+    json_file = '/vols/satellite/home/hengst/scripte/python/sat-uv-spectroradiometer.data_processing/uv_js_meta.json'
+    '''
+    
+    
+    """Load content of json_file to python variable cfjson"""
     cfjson={}
-    with open(json_file) as f:
+    with open( config.get('DEFAULT','json_file') ) as f:
             cfjson= json.load(f)
         
     """Start the loop"""
@@ -82,7 +113,10 @@ def statistic(i8date,f8date):
                     elif imonth==fm and ys==fy and iday>fda:
                         break
                     elif iday>=ida and iday<=numberOfDays:
-                        path_file=main_path+str(ys)+"/"+str(imonth).zfill(2)+"/"+str(iday).zfill(2)+"/"+"MP"+str(ys-2000).zfill(2)+str(imonth).zfill(2)+str(iday).zfill(2)+".OR0"
+                        """Compose PathFileName of OR0-File"""
+                        path_file = config.get('DEFAULT','main_path') + \
+                            str(ys) + "/" + str(imonth).zfill(2) + "/" + str(iday).zfill(2) + "/" + \
+                            "MP" +str(ys-2000).zfill(2) + str(imonth).zfill(2) + str(iday).zfill(2) + ".OR0"
                         if os.path.isfile(path_file):  # see if the .OR0 file exist
                             if os.stat(path_file).st_size<1:  # controls if the file is not empty
                                 print('file is empty '+path_file)
@@ -92,9 +126,9 @@ def statistic(i8date,f8date):
                                 """Obtanin the directory data from the OR0 files"""
                                 d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
                                 """Ploting function"""
-                                BTS2plot.plotme(d_bts1day,i8date,image_path)
+                                BTS2plot.plotme(d_bts1day,i8date,config.get('DEFAULT','image_path'))
                                 """checking if the file does already exist, and delete if so."""
-                                nc_file = netCDF_path + str(i8date[:]) + '.nc'
+                                nc_file = config.get('DEFAULT','netCDF_path') + str(i8date[:]) + '.nc'
                                 if os.path.isfile(nc_file):
                                     os.remove(nc_file)
                                     BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 

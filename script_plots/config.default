@@ -1,0 +1,13 @@
+[DEFAULT]
+
+# """Define the main path where the files are in"""
+main_path = /vols/satellite/datasets/surfrad/uv_radiometer/
+    
+# """Define the main path where the images should be saved"""
+image_path = /images/
+    
+# """Define the main path where the netCDF files should be saved"""
+netCDF_path = /netcdf/
+    
+# """Define the JSON path where the json metadata are located"""
+json_file = uv_js_meta.json
