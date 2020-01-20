@@ -55,7 +55,7 @@ def statistic(i8date,f8date):
     """Define the main path where the netCDF files should be saved"""
     netCDF_path = "/home/bayer/uv/netCDF/"
     
-    """Define the JSON path where the json metadata file should be saved"""
+    """Define the JSON path where the json metadata are located"""
     json_file = '/home/bayer/uv/uv_js_meta.json'
 #    cfjson=js.read_cf_json(json_file)
     cfjson={}
