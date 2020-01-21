@@ -22,18 +22,19 @@ The software package includes
 ## Requirements
 
 * <img src="https://www.python.org/static/community_logos/python-logo-generic.svg" alt="Python logo" style="width:130px;"> version??
- * argparse
- * calendar
- * datetime
- * matplotlib
- * NetCDF
- * numpy
- * os
- * pygal
+* argparse
+* calendar
+* datetime
+* matplotlib
+* NetCDF
+* numpy
+* os
+* pygal
+* configparser
 
 ## Usage
 ```
-python BTS_main_process.py -s 20180913 -e 20181231
+python BTS_main_process.py -s 20190101 -e 20190102
 ```
 
 ## Authors
