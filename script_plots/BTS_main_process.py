@@ -68,24 +68,14 @@ def statistic(i8date,f8date):
     if not os.path.isfile( config.get('DEFAULT','json_file') ):
         print('File json not exists '+ config.get('DEFAULT','json_file'))
         quit()
-    
-    #quit()
-    
-    '''
-    """Define the main path where the files are in"""
-    main_path="/vols/satellite/datasets/surfrad/uv_radiometer/"
-    
-    """Define the main path where the images should be saved"""
-    image_path="/vols/satellite/home/hengst/BT/images/"
-    
-    """Define the main path where the netCDF files should be saved"""
-    netCDF_path = "/vols/satellite/home/hengst/BT/netcdf/"
-    
-    """Define the JSON path where the json metadata are located"""
-    json_file = '/vols/satellite/home/hengst/scripte/python/sat-uv-spectroradiometer.data_processing/uv_js_meta.json'
-    '''
-    
-    
+    print(config.get('DEFAULT', 'station_prefix')+'test')
+    if config.get('DEFAULT','station_prefix') is None:
+        print('Station prefix not exists ')
+        quit()
+#    if not os.path.exists( config.get('DEFAULT','station_prefix') ):
+#        print('Station prefix not exists '+ config.get('DEFAULT','station_prefix'))
+#        quit()
+        
     """Load content of json_file to python variable cfjson"""
     cfjson={}
     with open( config.get('DEFAULT','json_file') ) as f:
@@ -116,7 +106,7 @@ def statistic(i8date,f8date):
                         """Compose PathFileName of OR0-File"""
                         path_file = config.get('DEFAULT','main_path') + \
                             str(ys) + "/" + str(imonth).zfill(2) + "/" + str(iday).zfill(2) + "/" + \
-                            "MP" +str(ys-2000).zfill(2) + str(imonth).zfill(2) + str(iday).zfill(2) + ".OR0"
+                            config.get('DEFAULT','station_prefix') +str(ys-2000).zfill(2) + str(imonth).zfill(2) + str(iday).zfill(2) + ".OR0"
                         if os.path.isfile(path_file):  # see if the .OR0 file exist
                             if os.stat(path_file).st_size<1:  # controls if the file is not empty
                                 print('file is empty '+path_file)
