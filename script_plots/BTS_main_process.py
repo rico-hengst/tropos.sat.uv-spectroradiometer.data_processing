@@ -68,10 +68,7 @@ def statistic(i8date,f8date):
     if not os.path.isfile( config.get('DEFAULT','json_file') ):
         print('File json not exists '+ config.get('DEFAULT','json_file'))
         quit()
-    print(config.get('DEFAULT', 'station_prefix')+'test')
-    if config.has_option('DEFAULT','station_prefix', fallback=None) is None:
-        print('Station prefix not exists ')
-        quit()
+
 #    if not os.path.exists( config.get('DEFAULT','station_prefix') ):
 #        print('Station prefix not exists '+ config.get('DEFAULT','station_prefix'))
 #        quit()
