@@ -2,7 +2,8 @@
     "attributes": {
         "conventions"    : "  ",
         "title"          : "UV Radiometer Messuremnts",
-        "contact_person" : "Hartwig Deneke; mail to:deneke@tropos.de"},
+        "contact_person" : "Hartwig Deneke; mail to:deneke@tropos.de",
+	"description": "metadata from uv_js_meta.json and data calculated from BTS2048.py"},
         
     "dimensions": {
         "latitude": 1,
