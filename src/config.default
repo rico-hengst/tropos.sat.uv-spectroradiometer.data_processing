@@ -12,4 +12,4 @@ netCDF_path = /netcdf/
 # """Define the JSON path where the json metadata are located"""
 json_file = uv_js_meta.json
 
-station_prefix= MP
+station_prefix= YOUR_LOCATION_PREFIX
