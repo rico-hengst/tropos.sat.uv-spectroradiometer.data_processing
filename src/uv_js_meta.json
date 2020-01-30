@@ -8,7 +8,7 @@
     "dimensions": {
         "latitude": 1,
         "longitude": 1,
-        "seconds": -1,
+        "time": -1,
 	"wvl": -1},  
           
     "variables": {
@@ -22,9 +22,14 @@
             "shape": ["latitude"],
             "data":[51.526],
 	    "attributes": {"units": "degrees_north"}},
+	"time":{
+	    "type": "f4",
+            "shape": ["time"],
+            "data":[],
+	    "attributes": {"units": "hours"}},	
         "uva": {
             "type": "f4",
-            "shape": ["longitude","latitude","seconds"],
+            "shape": ["longitude","latitude","time"],
             "data":[],
             "attributes": {
                 "units": "mW*m^{-2}",
@@ -32,7 +37,7 @@
                 "standard_name": "Ultraviolet-A_index"}},
         "uvb": {
             "type": "f4",
-            "shape": ["longitude","latitude","seconds"],
+            "shape": ["longitude","latitude","time"],
             "data":[],
             "attributes": {
                 "units": "mW*m^{-2}",
@@ -40,7 +45,7 @@
                 "standard_name": "Ultraviolet-A_index"}},
         "uvind": {
             "type": "f4",
-            "shape": ["longitude","latitude","seconds"],
+            "shape": ["longitude","latitude","time"],
             "data":[],
             "attributes": {
                 "units": "1",
@@ -48,7 +53,7 @@
                 "standard_name": "ultraviolet_index"}},
         "uvint": {
             "type": "f4",
-            "shape": ["longitude","latitude","seconds"],
+            "shape": ["longitude","latitude","time"],
             "data":[],
             "attributes": {
                 "units": " ",
@@ -63,7 +68,7 @@
 				"units" : "m"}},
         "spect": {
             "type": "f4",
-            "shape": ["longitude","latitude","seconds","wvl"],
+            "shape": ["longitude","latitude","time","wvl"],
             "data":[],
             "attributes": {
                 "units": " ",

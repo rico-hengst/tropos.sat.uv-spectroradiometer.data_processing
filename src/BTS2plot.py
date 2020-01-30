@@ -6,6 +6,9 @@ Created on Tue Nov 19 13:13:35 2019
 @author: bayer
 """
 import matplotlib.pyplot as plt
+from datetime import datetime
+import matplotlib.dates as DateFormatter
+import pandas as pd 
 # from matplotlib import colors
 # import matplotlib as mpl
 # import numpy as np
@@ -20,7 +23,8 @@ def plotme(d_bts1day, i8date, image_path):
     ax.plot(d_bts1day["time"],d_bts1day["uva"], 'r', label="UVA")
     ax.xaxis.set_tick_params(labelsize=10)
     ax.set_xlim(6,18)
-#    ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))
+    # ax.set_xlim(datetime(2019, 1, 1, 6, 0),datetime(2019, 1, 1, 18, 30))
+    # ax.xaxis.set_major_formatter(DateFormatter('%h-%m'))
     ax.legend()
     ax.set_xlabel('Time hours in UTC')
     ax.set_ylabel('Radiant flux density [$mW/m^2$]')
