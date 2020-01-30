@@ -45,6 +45,7 @@ python BTS_main_process.py -s 20190101 -e 20190102
 ## Cooperation
 <img src="doc/TROPOS-Logo_ENG.png" alt="TROPOS" style="width:100px;"/>  <img src="doc/Deutscherwetterdienst-logo.png" alt="DWD" style="width:100px;"/>
 
+![A](doc/TROPOS-Logo_ENG.png)
 
 ## ToDo
 * improve script to read, plot auxiliary data
