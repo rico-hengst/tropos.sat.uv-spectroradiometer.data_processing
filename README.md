@@ -21,7 +21,7 @@ The software package includes
 
 ## Requirements
 
-* <img src="https://www.python.org/static/community_logos/python-logo-generic.svg" alt="Python logo" style="width:130px;"> version??
+* <img src="https://www.python.org/static/community_logos/python-logo-generic.svg" alt="Python logo" style="width:30px;"> version 3.x
 * argparse
 * calendar
 * datetime
