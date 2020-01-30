@@ -43,7 +43,7 @@ python BTS_main_process.py -s 20190101 -e 20190102
 * Nicolas Bayer
 
 ## Cooperation
-<img src="doc/TROPOS-Logo_ENG.svg" alt="TROPOS" style="width:100px;">  <img src="doc/Deutscherwetterdienst-logo.svg" alt="DWD" style="width:100px;">
+<img src="doc/TROPOS-Logo_ENG.png" alt="TROPOS" style="width:100px;">  <img src="doc/Deutscherwetterdienst-logo.png" alt="DWD" style="width:100px;">
 
 
 ## ToDo
