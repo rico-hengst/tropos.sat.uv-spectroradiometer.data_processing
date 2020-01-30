@@ -21,7 +21,7 @@ The software package includes
 
 ## Requirements
 
-* <img src="https://www.python.org/static/community_logos/python-logo-generic.svg" alt="Python logo" style="width:130px;"> version??
+* <img src="https://www.python.org/static/community_logos/python-logo-generic.svg" alt="Python logo" style="width:30px;"> version 3.x
 * argparse
 * calendar
 * datetime
@@ -43,7 +43,7 @@ python BTS_main_process.py -s 20190101 -e 20190102
 * Nicolas Bayer
 
 ## Cooperation
-<img src="doc/TROPOS-Logo_ENG.svg" alt="TROPOS" style="width:100px;">  <img src="doc/Deutscherwetterdienst-logo.svg" alt="DWD" style="width:100px;">
+<img src="doc/TROPOS-Logo_ENG.png" alt="TROPOS" style="width:100px;">  <img src="doc/Deutscherwetterdienst-logo.png" alt="DWD" style="width:100px;">
 
 
 ## ToDo
