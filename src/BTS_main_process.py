@@ -18,6 +18,7 @@ import BTS2NetCDF
 import argparse
 import json
 import configparser
+import platform
 
 """Insert de initial and final dates as strings as 20190107(year:2019/month:01/day:07)"""
 
@@ -36,6 +37,14 @@ if len(args.id)!=8 or len(args.fd)!=8:
 if int(args.id)>int(args.fd):
     print('Error: Wrong dates were chosen/ pay attention to the order, please try again.')
     exit()
+    
+"""Check python version"""
+python_version = platform.python_version().split(".")
+if int(python_version[0]) < 3:
+  print("Your python version is: " + platform.python_version() )
+  print("Script will be terminated cause python version < 3 is required !")
+  exit()
+
 
 def statistic(i8date,f8date):
     methodbts = "global" 
