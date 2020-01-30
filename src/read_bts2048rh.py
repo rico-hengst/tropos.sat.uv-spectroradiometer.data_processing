@@ -368,10 +368,10 @@ def read_oro_bts(fbtsday,keybts,i8date):
   mdatetimes = np.array([start + timedelta(seconds=i) for i in mseconds])
   dicbts["datetime"]=mdatetimes
   #print(mdatetimes)
-  print("WVL      " + str(dicbts["wvl"].size))
-  print("SPECT    " + str(dicbts["spect"].size))
-  print("UVA      "+str(dicbts["uva"].size))
-  print("DATETIME "+str(dicbts["datetime"].size))
+  #print("WVL      " + str(dicbts["wvl"].size))
+  #print("SPECT    " + str(dicbts["spect"].size))
+  #print("UVA      "+str(dicbts["uva"].size))
+  #print("DATETIME "+str(dicbts["datetime"].size))
   return dicbts
 
     
