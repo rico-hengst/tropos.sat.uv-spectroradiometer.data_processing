@@ -18,10 +18,12 @@ The software package includes
 * a module to visualize the numerical data and
 * a module to store data as netcdf file(s).
 
+### Scheme
+![BTS scheme](doc/bts_scheme.png)
 
 ## Requirements
 
-* <img src="https://www.python.org/static/community_logos/python-logo-generic.svg" alt="Python logo" style="width:30px;"> version 3.x
+* Python version 3.x
 * argparse
 * calendar
 * datetime
