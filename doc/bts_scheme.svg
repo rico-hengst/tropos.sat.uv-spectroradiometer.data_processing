@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1100 700">
+    
+<title>BTS</title>
+
+<rect width="100%" height="100%" fill="white"/>
+
+<defs>
+    <pattern id="vichy3" width="40" height="40" patternUnits="userSpaceOnUse">
+        <rect x="0" y="0" width="40" height="40" stroke="none"  fill="red" opacity="1"/>
+        <rect x="0" y="0" width="15" height="40" stroke="none"  fill="white" opacity="0.6"/>
+        <line x1="0" y1="25" x2="40" y2="25" stroke="white" stroke-width="3" opacity="0.6"/>
+        <rect x="0" y="0" width="40" height="15" stroke="none"  fill="white" opacity="0.6"/>
+        <line x1="25" y1="0" x2="25" y2="40" stroke="white" stroke-width="3" opacity="0.6"/>
+    </pattern>
+    
+    
+    <g transform="matrix(0.05,0,0,-0.05,1,40)" id="done_filelist">
+        <path d="m 1024,352 v -64 q 0,-14 -9,-23 -9,-9 -23,-9 H 288 q -14,0 -23,9 -9,9 -9,23 v 64 q 0,14 9,23 9,9 23,9 h 704 q 14,0 23,-9 9,-9 9,-23 z m 0,256 v -64 q 0,-14 -9,-23 -9,-9 -23,-9 H 288 q -14,0 -23,9 -9,9 -9,23 v 64 q 0,14 9,23 9,9 23,9 h 704 q 14,0 23,-9 9,-9 9,-23 z M 128,0 H 1152 V 768 H 736 q -40,0 -68,28 -28,28 -28,68 v 416 H 128 V 0 z m 640,896 h 299 L 768,1195 V 896 z M 1280,768 V -32 q 0,-40 -28,-68 -28,-28 -68,-28 H 96 q -40,0 -68,28 -28,28 -28,68 v 1344 q 0,40 28,68 28,28 68,28 h 544 q 40,0 88,-20 48,-20 76,-48 l 408,-408 q 28,-28 48,-76 20,-48 20,-88 z"/>
+    </g>
+    
+    
+    <g transform="matrix(0.70,0,0,0.65,-30,-40)" id="directory1">
+        <path d="M375.25,166.56H241.09l-29.81-29.81H136.75a29.9,29.9,0,0,0-29.81,29.81v59.62H405.06V196.38A29.9,29.9,0,0,0,375.25,166.56Z" fill="#ef9520"/>
+        <path d="M375.25,166.56H136.75a29.9,29.9,0,0,0-29.81,29.81V345.44a29.9,29.9,0,0,0,29.81,29.81h238.5a29.9,29.9,0,0,0,29.81-29.81V196.38A29.9,29.9,0,0,0,375.25,166.56Z" fill="#f8c027"/>
+    </g>
+    
+    <g transform="matrix(0.70,0,0,0.65,-30,-40)" id="directory2">
+        <path d="M375.25,166.56H241.09l-29.81-29.81H136.75a29.9,29.9,0,0,0-29.81,29.81v59.62H405.06V196.38A29.9,29.9,0,0,0,375.25,166.56Z" fill="rgb(50,120,0)"/>
+        <path d="M375.25,166.56H136.75a29.9,29.9,0,0,0-29.81,29.81V345.44a29.9,29.9,0,0,0,29.81,29.81h238.5a29.9,29.9,0,0,0,29.81-29.81V196.38A29.9,29.9,0,0,0,375.25,166.56Z" fill="rgb(90,153,0)"/>
+    </g>
+    
+    
+    
+    <marker id="arrowend" viewBox="0 0 13 10" refX="2" refY="5" markerWidth="5.5" markerHeight="3.5" orient="auto">
+        <path d="M 0 0  C 0 0, 3 5, 0 10   L 0 10  L 13 5"/>
+    </marker>
+
+    <marker id="arrowstart" viewBox="0 0 13 10" refX="11" refY="5" markerWidth="5.5" markerHeight="3.5" orient="auto">
+        <path d="M 13 0  C 13 0, 10 5, 13 10  L 13 10  L 0 5" />
+    </marker>
+    
+    
+
+</defs>
+
+
+<!--
+<circle cx="175" cy="130" r="120" fill="url(#vichy3)" stroke="red" stroke-width="3px"/>
+-->
+
+
+<!--
+######### logo part
+-->
+<!--
+<image x="1%" y="-1.5%" xlink:href="TROPOS-Logo_ENG2.svg" height="15%" width="15%"/>
+-->
+
+
+<!--
+<line x1="1%" y1="7.5%" x2="23%" y2="7.5%" stroke="rgba(28, 99, 183, 1)" stroke-width="1"  />
+-->
+<text x="12%" y="10%" font-family="sans-serif" font-size="35px" fill="rgb(0,0,0)" font-weight="boldaa" text-anchor="start">
+BTS post processing
+</text>
+
+<!--
+######### left hand site data storages
+-->
+
+
+<use xlink:href="#done_filelist" x="5%" y="44%" fill="rgb(50,50,50)"/>
+<text x="0%" y="33%" font-family="sans-serif" font-size="25px" fill="rgb(0,0,0)" text-anchor="start">
+    <tspan x="5%" dy="0" font-weight="boldaa" font-size="23px" >
+        JSON file
+    </tspan>
+    <tspan x="5%" dy="1.5em" font-weight="boldaa" font-size="13px" >
+        meta data source for 
+    </tspan>
+    <tspan x="5%" dy="1.2em" font-weight="boldaa" font-size="13px" >
+        creating netcdf
+    </tspan>
+</text>
+
+<use xlink:href="#done_filelist" x="5%" y="78%" fill="rgb(50,50,50)"/>
+<text x="0%" y="89%" font-family="sans-serif" font-size="25px" fill="rgb(0,0,0)" text-anchor="start">
+    <tspan x="5%" dy="0" font-weight="boldaa" font-size="23px" >
+        Config file
+    </tspan>
+    <tspan x="5%" dy="1.5em" font-weight="boldaa" font-size="13px" >
+        contains information 
+    </tspan>
+    <tspan x="5%" dy="1.2em" font-weight="boldaa" font-size="13px" >
+        about I/O directories, etc.
+    </tspan>
+</text>
+
+<!--
+BOX
+-->
+<rect fill="none" stroke="gray" stroke-width="2" width="25%" height="65%" x="25%" y="30%" rx="1" ry="1" />
+<text x="33%" y="62%" font-family="sans-serif" font-size="25px" fill="rgba(0, 0, 0, 1)" font-weight="boldaa" text-anchor="start">Scripts</text>
+
+
+
+
+<!--
+######### boxes
+-->
+
+
+
+
+<!--
+######### external stuff
+-->
+
+<!--
+######### HOUSE
+-->
+<rect fill="none" stroke="gray" stroke-width="3" width="53%" height="96%" x="2%" y="2%" rx="4" ry="4" />
+
+<!--
+<g id="tropos" transform="translate(0,0) scale(1)">
+<path d="M 328 34  h440 v580 h390 v147 h-830 Z" stroke="blue" fill="none"/>
+</g>
+-->
+
+<!--
+######### arrows
+-->
+
+
+
+<path d="M 865 120 h-140 v110 h-155" stroke="black"  stroke-width="4" fill="none" marker-start="url(#arrowrstart)" marker-end="url(#arrowend)"/>
+<path d="M 850 430 h-295" stroke="black"  stroke-width="4" fill="none" marker-start="url(#arrowstart)" marker-end="url(#arrowendä)"/>
+<path d="M 850 620 h-295" stroke="black"  stroke-width="4" fill="none" marker-start="url(#arrowstart)" marker-end="url(#arrowendä)"/>
+
+
+<path d="M 90 495 v-40 h165" stroke="black"  stroke-width="4" fill="none" marker-start="url(#arrowstart)" marker-end="url(#arrowend)"/>
+<path d="M 90 375 v40 h165" stroke="black"  stroke-width="4" fill="none" marker-start="url(#arrowstart)" marker-end="url(#arrowend)"/>
+
+
+
+<use xlink:href="#directory1" x="75.0%" y="-4.0%"/>
+<use xlink:href="#directory2" x="75.0%" y="40.0%"/>
+<use xlink:href="#directory2" x="75.0%" y="68.0%"/>
+
+<text x="0%" y="15%" font-family="sans-serif" font-size="25px" fill="rgb(250,250,250)">
+    <tspan x="82%" dy="0" font-weight="boldaa" font-size="25px" >
+        File archive
+    </tspan>
+    <tspan x="82%" dy="1.2em" font-weight="boldaa" font-size="18px" >
+        OR0
+    </tspan>
+</text>
+
+<text x="0%" y="59%" font-family="sans-serif" font-size="25px" fill="rgb(250,250,250)">
+    <tspan x="82%" dy="0" font-weight="boldaa" font-size="25px" >
+        Output
+    </tspan>
+    <tspan x="82%" dy="1.2em" font-weight="boldaa" font-size="18px" >
+        NetCDF
+    </tspan>
+</text>
+
+<text x="0%" y="87%" font-family="sans-serif" font-size="25px" fill="rgb(250,250,250)">
+    <tspan x="82%" dy="0" font-weight="boldaa" font-size="25px" >
+        Output
+    </tspan>
+    <tspan x="82%" dy="1.2em" font-weight="boldaa" font-size="18px" >
+        Images
+    </tspan>
+</text>
+
+</svg>
