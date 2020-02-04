@@ -32,9 +32,12 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
         # f[x].setncatts(cfjson['variables'][x]['attributes'])
         f[x].units=cfjson['variables'][x]['attributes']['units']
         if len(cfjson['variables'][x]['shape'])<=2:
-            f[x][:]=cfjson['variables'][x]['data']
+            """In case of "time" add data values from data dictionary"""
+            """otherwise use data values from json file"""
             if x=='time':
-                  f[x][:]= d_bts1day[x]
+                f[x][:]= d_bts1day[x]
+            else:
+                f[x][:]=cfjson['variables'][x]['data']
         elif len(cfjson['variables'][x]['shape'])==3:
             f[x][0,0,:]=d_bts1day[x]
         elif len(cfjson['variables'][x]['shape'])==4:
