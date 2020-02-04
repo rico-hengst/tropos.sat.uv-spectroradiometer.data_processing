@@ -13,13 +13,14 @@ __status__ = "Production"
 import os
 import read_bts2048rh as bts
 import BTS2plot
+import BTS2plot_st
 import calendar
 import BTS2NetCDF 
 import argparse
 import json
 import configparser
 import platform
-
+import matplotlib.pyplot as plt
 """Insert de initial and final dates as strings as 20190107(year:2019/month:01/day:07)"""
 
 """for calling the function from the terminal"""
@@ -28,7 +29,14 @@ parser.add_argument('-s', type=str, dest='id', # la variable se guarda en args.i
                     help='Insert the initial date as 20190107(y:2019 m:01 d:07)')
 parser.add_argument('-e', type=str, dest='fd',
                     help='Insert the final date as 20190107(y:2019 m:01 d:07)')
+parser.add_argument('-i', '--image', action='store_true', 
+                    help="create images files")
+parser.add_argument('-n', '--netcdf', action='store_true', 
+                    help="create netCDF files")
+parser.add_argument('-st', '--statistics', action='store_true', 
+                    help="create statistics of missing files")
 args = parser.parse_args()
+
 
 """Break in case the dates weren't correct"""
 if len(args.id)!=8 or len(args.fd)!=8:
@@ -92,7 +100,8 @@ def statistic(i8date,f8date):
     cfjson={}
     with open( config.get('DEFAULT','json_file') ) as f:
             cfjson= json.load(f)
-        
+    missing_days={}
+    a=0    
     """Start the loop"""
     for ys in range(iy,fy+1):
         for imonth in range(1,13):
@@ -119,28 +128,58 @@ def statistic(i8date,f8date):
                         path_file = config.get('DEFAULT','main_path') + \
                             str(ys) + "/" + str(imonth).zfill(2) + "/" + str(iday).zfill(2) + "/" + \
                             config.get('DEFAULT','station_prefix') +str(ys-2000).zfill(2) + str(imonth).zfill(2) + str(iday).zfill(2) + ".OR0"
+                        i8date=str(ys)+str(imonth).zfill(2)+str(iday).zfill(2)
                         if os.path.isfile(path_file):  # see if the .OR0 file exist
                             if os.stat(path_file).st_size<1:  # controls if the file is not empty
                                 print('file is empty '+path_file)
-                                iday=iday+1
+                                if args.statistics:
+                                    missing_days.update({i8date:a+1})
                             else:
-                                i8date=str(ys)+str(imonth).zfill(2)+str(iday).zfill(2)
+                                if args.statistics:
+                                    missing_days.update({i8date:a})
                                 """Obtanin the directory data from the OR0 files"""
-                                d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
-                                """Ploting function"""
-                                BTS2plot.plotme(d_bts1day,i8date,config.get('DEFAULT','image_path'))
-                                """checking if the file does already exist, and delete if so."""
-                                nc_file = config.get('DEFAULT','netCDF_path') + str(i8date[:]) + '.nc'
-                                if os.path.isfile(nc_file):
-                                    os.remove(nc_file)
-                                    BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
-                                else:
-                                    """Save the data processed by the bts function in a netCDF file"""
-                                    BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
-                                iday=iday+1
+                                if args.image or args.netcdf:
+                                    d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
+                                    if args.image:
+                                        """Ploting function"""
+                                        BTS2plot.plotme(d_bts1day,i8date,config.get('DEFAULT','image_path'))
+                                    if args.netcdf:
+                                        """checking if the file does already exist, and delete if so."""
+                                        nc_file = config.get('DEFAULT','netCDF_path') + str(i8date[:]) + '.nc'
+                                        if os.path.isfile(nc_file):
+                                            os.remove(nc_file)
+                                            BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
+                                        else:
+                                            """Save the data processed by the bts function in a netCDF file"""
+                                            BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
                         else:
                             print(path_file+" does not exist")
-                            iday=iday+1
+                            if args.statistics:
+                                    i8date=str(ys)+str(imonth).zfill(2)+str(iday).zfill(2)
+                                    missing_days.update({i8date:a+1})
+                        iday=iday+1
     
+    if args.statistics:
+        BTS2plot_st.plot_st(missing_days,args.id,args.fd)
+
 #####################################################################################                                                            
 statistic(args.id,args.fd)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
