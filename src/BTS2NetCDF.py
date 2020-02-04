@@ -50,7 +50,7 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
  
     
 """read netCDF"""
-# nc = nc4.Dataset('/vols/satellite/home/bayer/uv/script_plots/test5.nc','r')
+# nc = nc4.Dataset('/vols/satellite/home/bayer/uv/netCDF/20190101.nc','r')
 # for i in nc.variables:
 #     print(i, nc.variables[i].units, nc.variables[i].shape)
 #     i=nc.variables[i][:]
