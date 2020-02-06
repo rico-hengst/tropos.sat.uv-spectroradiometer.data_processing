@@ -6,7 +6,8 @@ Created on Thu Nov 21 13:30:44 2019
 @author: bayer
 """
 import netCDF4 as nc4
-# import os
+from netCDF4 import date2num,num2date
+import numpy as np
 from datetime import datetime
 
 def netCDF_file(d_bts1day,nc_file, cfjson ):
@@ -14,6 +15,14 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
     # """checking if the file does already exist, and delete if so."""
     # if os.path.isfile(netCDF_path+i8date+'.nc'):
     #     os.remove(netCDF_path+i8date+'.nc')
+    
+    
+    """ write dict data to numpy array https://www.quora.com/Is-it-possible-to-convert-a-Python-set-and-dictionary-to-a-NumPy-array """
+    np_datetime = np.array(list(d_bts1day["datetime"]))
+    
+    """ prepare time variable to store seconds since ... in netcdf file"""
+    second_since = date2num(np_datetime, cfjson['variables']['time']['attributes']['units'])
+    
     
     """creating the netCDF file"""    
     f = nc4.Dataset(nc_file,'w', format='NETCDF4') #'w' stands for write 
@@ -35,7 +44,7 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
             """In case of "time" add data values from data dictionary"""
             """otherwise use data values from json file"""
             if x=='time':
-                f[x][:]= d_bts1day[x]
+                f[x][:]= second_since
             else:
                 f[x][:]=cfjson['variables'][x]['data']
         elif len(cfjson['variables'][x]['shape'])==3:
