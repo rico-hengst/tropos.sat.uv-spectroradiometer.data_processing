@@ -46,6 +46,15 @@ The software package includes
 ```
 python BTS_main_process.py -s 20190101 -e 20190102
 
+
+optional arguments:
+  -h, --help         show this help message and exit
+  -s ID              Insert the initial date as 20190107(y:2019 m:01 d:07)
+  -e FD              Insert the final date as 20190107(y:2019 m:01 d:07)
+  -i, --image        create images files
+  -n, --netcdf       create netCDF files
+  -st, --statistics  create statistics of missing files
+
 ```
 
 ## License
