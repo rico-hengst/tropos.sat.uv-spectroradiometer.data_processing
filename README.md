@@ -25,6 +25,7 @@ The software package includes
   * and **YY** year since 2000, **MM** number of month, **DD** day of the month (all filled with zeros)
 * the OR0-Files are in following directory structure "`<YYYY/MM/DD/>`", where
   * and **YYYY** year, **MM** number of month, **DD** day of the month (all filled with zeros)
+  * 
 ### Scheme
 ![BTS scheme](doc/bts_scheme.png)
 
