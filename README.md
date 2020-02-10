@@ -20,7 +20,7 @@ The software package includes
 * a module to visualize data gaps.
 
 ### Assumption
-* the OR0-Files should fits the naming pattern "&lt;IDYYMMDD&gt;.OR0", where 
+* the OR0-Files should fits the naming pattern "`&lt;IDYYMMDD&gt;.OR0`", where 
   * **ID** is a character string with a length of two and respresents a identifier of the UV station
   * and **YY** year since 2000, **MM** number of month, **DD** day of the month (all filled with zeros)
 * the OR0-Files are in following directory structure "&lt;YYYY/MM/DD/&gt;", where
