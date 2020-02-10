@@ -14,9 +14,15 @@ The used file format of the Solarscan export is not well documented. However, th
 ### Objectives
 The software package is written to post-process observed solar radiation data of the array spectroradiometer BTS2018.
 The software package includes
-* a module to read OR0-Files from UV observations with the array spectroradiometer BTS2048 and
+* a module to read OR0-Files from UV observations stred in Solarscan format and
 * a module to visualize the numerical data and
-* a module to store data as netcdf file(s).
+* a module to store data as netcdf file(s)
+* a module to visualize data gaps.
+
+### Assumption
+* The OR0-Files fits the naming pattern "<IDYYMMDD>.OR0", where 
+  * **ID** is a character string with a length of two and respresents a identifier of the UV station
+  * and **YY** year since 2000, **MM** number of month, **DD** day of the month (all filled with zeros)
 
 ### Scheme
 ![BTS scheme](doc/bts_scheme.png)
