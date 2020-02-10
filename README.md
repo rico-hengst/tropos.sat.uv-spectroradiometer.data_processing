@@ -23,7 +23,7 @@ The software package includes
 * the OR0-Files should fits the naming pattern "`<IDYYMMDD>.OR0`", where 
   * **ID** is a character string with a length of two and respresents a identifier of the UV station
   * and **YY** year since 2000, **MM** number of month, **DD** day of the month (all filled with zeros)
-* the OR0-Files are in following directory structure "&lt;YYYY/MM/DD/&gt;", where
+* the OR0-Files are in following directory structure "`<YYYY/MM/DD/>`", where
   * and **YYYY** year, **MM** number of month, **DD** day of the month (all filled with zeros)
 ### Scheme
 ![BTS scheme](doc/bts_scheme.png)
