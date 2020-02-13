@@ -13,7 +13,7 @@
           
     "variables": {
         "longitude": {
-            "type": "f4",
+            "type": "int",
             "shape": ["longitude"],
             "data":[12.928],
             "attributes": {"units": "degrees_east"}},
@@ -23,10 +23,10 @@
             "data":[51.526],
             "attributes": {"units": "degrees_north"}},
         "time":{
-            "type": "f4",
+            "type": "f8",
             "shape": ["time"],
             "data":[],
-            "attributes": {"units": "hours"}},  
+            "attributes": {"units": "seconds since 1970-01-01 00:00:00"}},  
         "uva": {
             "type": "f4",
             "shape": ["longitude","latitude","time"],

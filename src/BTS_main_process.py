@@ -133,10 +133,10 @@ def statistic(i8date,f8date):
                             if os.stat(path_file).st_size<1:  # controls if the file is not empty
                                 print('file is empty '+path_file)
                                 if args.statistics:
-                                    missing_days.update({i8date[4:8]:a+1})
+                                    missing_days.update({i8date[6:8]:a+1})
                             else:
                                 if args.statistics:
-                                    missing_days.update({i8date[4:8]:a})
+                                    missing_days.update({i8date[6:8]:a})
                                 """Obtanin the directory data from the OR0 files"""
                                 if args.image or args.netcdf:
                                     d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
@@ -156,11 +156,11 @@ def statistic(i8date,f8date):
                             print(path_file+" does not exist")
                             if args.statistics:
                                     i8date=str(ys)+str(imonth).zfill(2)+str(iday).zfill(2)
-                                    missing_days.update({i8date[4:8]:a+1})
+                                    missing_days.update({i8date[6:8]:a+1})
                         iday=iday+1
-    
-    if args.statistics:
-        BTS2plot_st.plot_st(missing_days,args.id,args.fd, config.get('DEFAULT','image_path'))
+                if args.statistics:
+                    BTS2plot_st.plot_st(missing_days,iy,imonth-1, config.get('DEFAULT','image_path'))
+                    missing_days.clear()
 
 #####################################################################################                                                            
 statistic(args.id,args.fd)
