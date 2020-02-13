@@ -20,7 +20,12 @@ The software package includes
 * a module to visualize data gaps.
 
 ### Assumption
+<<<<<<< HEAD
 * The OR0-Files fits the naming pattern "<IDYYMMDD>.OR0", where 
+  * **ID** is a character string with a length of two and respresents a identifier of the UV station
+  * and **YY** year since 2000, **MM** number of month, **DD** day of the month (all filled with zeros)
+=======
+* the OR0-Files should fits the naming pattern "`<IDYYMMDD>.OR0`", where 
   * **ID** is a character string with a length of two and respresents a identifier of the UV station
   * and **YY** year since 2000, **MM** number of month, **DD** day of the month (all filled with zeros)
 
@@ -42,25 +47,29 @@ The software package includes
 
 ## Usage
 ```
-python BTS_main_process.py -s 20190101 -e 20190102
+# example to create netCDF files and images
+./python BTS_main_process.py -n -i -s 20190101 -e 20190102
+
+
+optional arguments:
+  -h, --help         show this help message and exit
+  -s ID              Insert the initial date as 20190107(y:2019 m:01 d:07)
+  -e FD              Insert the final date as 20190107(y:2019 m:01 d:07)
+  -i, --image        create images files
+  -n, --netcdf       create netCDF files
+  -st, --statistics  create statistics of missing files
 
 ```
 
 ## License
 [CC BY-SA 4.0 ![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-sa/4.0/)
 
-## DISCLAIMER
-
-Please note: all tools/ scripts in this repository are released for use "AS IS" without any warranties of any kind, including, but not limited to their installation, use, or performance. We disclaim any and all warranties, either express or implied, including but not limited to any warranty of noninfringement, merchantability, and/ or fitness for a particular purpose. We do not warrant that the technology will meet your requirements, that the operation thereof will be uninterrupted or error-free, or that any errors will be corrected.
-
-Any use of these scripts and tools is at your own risk. There is no guarantee that they have been through thorough testing in a comparable environment and we are not responsible for any damage or data loss incurred with their use.
-
-You are responsible for reviewing and testing any scripts you run thoroughly before use in any non-testing environment.
 
 ## Authors
 * Rico Hengst
-* Lionel Doppler
 * Nicolas Bayer
+* Lionel Doppler
+
 
 ## Cooperation
 ![Tropos Logo](doc/TROPOS-Logo_ENG.png)
