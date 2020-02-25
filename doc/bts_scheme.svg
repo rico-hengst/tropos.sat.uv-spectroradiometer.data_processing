@@ -61,8 +61,8 @@
 <!--
 <line x1="1%" y1="7.5%" x2="23%" y2="7.5%" stroke="rgba(28, 99, 183, 1)" stroke-width="1"  />
 -->
-<text x="12%" y="10%" font-family="sans-serif" font-size="35px" fill="rgb(0,0,0)" font-weight="boldaa" text-anchor="start">
-BTS post processing
+<text x="4.55%" y="10%" font-family="sans-serif" font-size="35px" fill="rgb(0,0,0)" font-weight="boldaa" text-anchor="start">
+OR0-file import and processing
 </text>
 
 <!--
@@ -76,10 +76,10 @@ BTS post processing
         JSON file
     </tspan>
     <tspan x="5%" dy="1.5em" font-weight="boldaa" font-size="13px" >
-        meta data source for 
+        meta data source file
     </tspan>
     <tspan x="5%" dy="1.2em" font-weight="boldaa" font-size="13px" >
-        creating netcdf
+        to creating netcdf
     </tspan>
 </text>
 
