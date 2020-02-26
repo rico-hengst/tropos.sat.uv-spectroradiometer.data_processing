@@ -66,7 +66,7 @@ optional arguments:
 * Rico Hengst [![License: CC BY-SA 4.0](https://ndownloader.figshare.com/files/8439122/preview/8439122/preview.gif)](https://orcid.org/0000-0001-8994-5868)
 * Nicolas Bayer
 * Lionel Doppler
-* ![gif](https://ndownloader.figshare.com/files/8439122/preview/8439122/preview.gif)
+* ![gif](doc/ORCIDiD_icon32x32.png)
 
 
 ## Cooperation
