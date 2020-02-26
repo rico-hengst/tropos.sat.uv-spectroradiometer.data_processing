@@ -63,15 +63,9 @@ optional arguments:
 
 
 ## Authors
-* Rico Hengst [![License: CC BY-SA 4.0](doc/ORCIDiD_icon16x16.png)](https://orcid.org/0000-0001-8994-5868)
+* Rico Hengst ![Logo](doc/ORCIDiD_icon16x16.png) [https://orcid.org/0000-0001-8994-5868](https://orcid.org/0000-0001-8994-5868)
 * Nicolas Bayer
-* Lionel Doppler <a href="https://orcid.org/0000-0003-3162-8602"><img src="doc/ORCIDiD_icon16x16.png"></a>
-
-Rico Hengst ![Logo](doc/ORCIDiD_icon16x16.png) [https://orcid.org/0000-0001-8994-5868](https://orcid.org/0000-0001-8994-5868)
-
-Nicolas Bayer
-
-Lionel Doppler ![Logo](doc/ORCIDiD_icon16x16.png) [https://orcid.org/0000-0003-3162-8602](https://orcid.org/0000-0003-3162-8602)
+* Lionel Doppler ![Logo](doc/ORCIDiD_icon16x16.png) [https://orcid.org/0000-0003-3162-8602](https://orcid.org/0000-0003-3162-8602)
 
 ## Cooperation
 ![Tropos Logo](doc/TROPOS-Logo_ENG.png)
