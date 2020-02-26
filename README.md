@@ -60,6 +60,7 @@ optional arguments:
 
 ## License
 [CC BY-SA 4.0 ![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-sa/4.0/)
+Logos and icons of this repository are not affected by the license of this repository.
 
 
 ## Authors
