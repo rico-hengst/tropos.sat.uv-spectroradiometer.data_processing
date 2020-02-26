@@ -67,7 +67,7 @@ optional arguments:
 * Nicolas Bayer
 * Lionel Doppler <a href="https://orcid.org/0000-0003-3162-8602"><img src="doc/ORCIDiD_icon16x16.png"></a>
 
-[aa<img src="doc/ORCIDiD_icon16x16.png">](http://google.com)
+[aa![b](doc/ORCIDiD_icon16x16.png)](http://google.com)
 
 
 
