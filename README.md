@@ -63,7 +63,7 @@ optional arguments:
 
 
 ## Authors
-* Rico Hengst [![License: CC BY-SA 4.0](doc/ORCIDiD_icon32x32.png)](https://orcid.org/0000-0001-8994-5868)
+* Rico Hengst [![License: CC BY-SA 4.0](doc/ORCIDiD_icon16x16.png)](https://orcid.org/0000-0001-8994-5868)
 * Nicolas Bayer
 * Lionel Doppler
 * ![gif](doc/ORCIDiD_icon32x32.png)
