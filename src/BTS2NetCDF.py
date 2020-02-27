@@ -58,6 +58,8 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
     for x in cfjson['attributes']:
         setattr(f,x,cfjson['attributes'][x])
     f.close()
+
+    print("%-21s: %-60s" %('Write data to netcdf', nc_file))
     
  
     

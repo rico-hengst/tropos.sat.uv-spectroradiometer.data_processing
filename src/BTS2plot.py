@@ -53,17 +53,20 @@ def plotme(d_bts1day, i8date, image_path):
     ax3.set_xlabel('Time hours in UTC')
     ax3.set_ylabel('UV index')
     ax3.set_ylim(( 0, 11))
-    ax3.grid()
+    #ax3.grid()
     """Set the colors inside the plot """
     ax3.axhspan(0, 3, facecolor='green', alpha=0.5)
     ax3.axhspan(3, 6, facecolor='yellow', alpha=0.5)
     ax3.axhspan(6, 8, facecolor='orange', alpha=0.5)
     ax3.axhspan(8, 11, facecolor='red', alpha=0.5) 
-    ax3.text(17, 2, 'Low', fontsize=15)
-    ax3.text(16.5, 5, 'Moderate', fontsize=15)
-    ax3.text(17, 7, 'High', fontsize=15)
-    ax3.text(16.5, 10, 'Very High', fontsize=15)
+    ax3.text(17.8, 1.5, 'Low', fontsize=15, ha='right')
+    ax3.text(17.8, 4.5, 'Moderate', fontsize=15, ha='right')
+    ax3.text(17.8, 7, 'High', fontsize=15, ha='right')
+    ax3.text(17.8, 9, 'Very High', fontsize=15, ha='right')
 #    ax3.colorbar()
     """save the plot as pdf file """
     plot_name = image_path + i8date + '.pdf'
     fig.savefig(plot_name)
+
+    print("%-21s: %-60s" %('Plot data to file', plot_name))
+
