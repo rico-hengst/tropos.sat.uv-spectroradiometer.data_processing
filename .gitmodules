@@ -1,0 +1,3 @@
+[submodule "src/Submodule"]
+	path = src/Submodule
+	url = gitea@gitea.tropos.de:hengst/sat.missing_files.git
