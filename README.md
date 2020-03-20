@@ -75,3 +75,9 @@ Logos, icons and the Solarscan User manual are not affected by the license of th
 
 ## ToDo
 * improve script to read, plot auxiliary data
+
+## Memo relating to git's submodule
+.. to embedding external git repositories in the current repository.
+
+* [vogella.com](https://www.vogella.com/tutorials/GitSubmodules/article.html)
+* [ralfebert.de](https://www.ralfebert.de/git/submodules/)
