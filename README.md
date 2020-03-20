@@ -45,7 +45,9 @@ The software package includes
 ## Usage
 ```
 # example to create netCDF files and images
-./python BTS_main_process.py -n -i -s 20190101 -e 20190102
+cd src
+
+./BTS_main_process.py -n -i -s 20190101 -e 20190102
 
 
 optional arguments:
