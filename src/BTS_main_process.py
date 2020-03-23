@@ -14,13 +14,17 @@ import os
 import read_bts2048rh as bts
 import BTS2plot
 import BTS2plot_st
+#import Submodule/PlotHeatmap as plthtmp
+from Submodule import PlotHeatmap as plthtmp
 import calendar
+import datetime
 import BTS2NetCDF 
 import argparse
 import json
 import configparser
 import platform
 import matplotlib.pyplot as plt
+import pandas as pd
 """Insert de initial and final dates as strings as 20190107(year:2019/month:01/day:07)"""
 
 """for calling the function from the terminal"""
@@ -101,6 +105,12 @@ def statistic(i8date,f8date):
     with open( config.get('DEFAULT','json_file') ) as f:
             cfjson= json.load(f)
     missing_days={}
+    
+    
+    # add dataframe
+    df = pd.DataFrame({'date' : [], 'missing file' : [] })
+    
+    
     a=0    
     """Start the loop"""
     for ys in range(iy,fy+1):
@@ -111,7 +121,15 @@ def statistic(i8date,f8date):
                 break
             else:
                 numberOfDays = calendar.monthrange(ys, imonth)[1]
-                for iday in range(1,numberOfDays+2):
+                #for iday in range(1,numberOfDays+2): # TODO Nicolas, why + 2???
+                for iday in range(1,numberOfDays+1):
+                    
+                    # generate datetime object, used in PlotHeatmap
+                    #print(str(ys) + '-' + str(imonth) + '-' + str(iday) )
+                    dt = datetime.datetime(ys, imonth, iday)
+                    #print(dt)
+                    ###############################################
+                    
                     if iday<ida:
                         iday=iday+1
                     elif iday==numberOfDays+1 and imonth<=11:
@@ -134,9 +152,11 @@ def statistic(i8date,f8date):
                                 print('file is empty '+path_file)
                                 if args.statistics:
                                     missing_days.update({iday:a+1})
+                                    df = df.append({'date': dt, 'missing file' : 0.5}, ignore_index=True)
                             else:
                                 if args.statistics:
                                     missing_days.update({iday:a})
+                                    df = df.append({'date': dt, 'missing file' : 0}, ignore_index=True)
                                 """Obtanin the directory data from the OR0 files"""
                                 if args.image or args.netcdf:
                                     d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
@@ -157,12 +177,70 @@ def statistic(i8date,f8date):
                             if args.statistics:
                                     i8date=str(ys)+str(imonth).zfill(2)+str(iday).zfill(2)
                                     missing_days.update({iday:a+1})
+                                    df = df.append({'date': dt, 'missing file' : 1}, ignore_index=True)
                         iday=iday+1
                 if args.statistics:
                     BTS2plot_st.plot_st(missing_days,iy,imonth-1, config)
                 """Empty variable at the end of the month"""
                 missing_days.clear()
                 missing_days={}
+                
+                # plot statistics
+                if (args.statistics):
+                    
+                    # generate filename
+                    picture_filename = \
+                    config.get('DEFAULT','image_path') + 'MissingFiles_' + \
+                    str( df['date'][0].strftime('%Y-%m-%d') ) + \
+                    '_' + \
+                    str(df['date'][len(df.index)-1].strftime('%Y-%m-%d') )
+                    
+                    
+                    # plot first or second half of year
+                    if (imonth == 6 or imonth == 12):
+                        print('Plot ' + picture_filename )
+                        
+                        
+                        # transform column date to datetime
+                        df['date'] =  pd.to_datetime(df['date'])
+                        
+                        plthtmp.main(
+                        {
+                            'data_import' : 'DataFrame',
+                            'picture_filename' : picture_filename,
+                            'DataFrame' : df
+                        }
+                        )
+                        
+                        # init new dataframe
+                        df = pd.DataFrame({'date' : [], 'missing file' : [] })
+                        
+                        
+                        
+                        
+                        
+                    # plot period after the last half year
+                    elif (ys == fy and imonth == fm):
+                        print('Plot short period: ' + picture_filename )
+                        
+                        # transform column date to datetime
+                        df['date'] =  pd.to_datetime(df['date'])
+                        
+                        plthtmp.main(
+                        {
+                            'data_import' : 'DataFrame',
+                            'picture_filename' : picture_filename,
+                            'DataFrame' : df
+                        }
+                        )
+                        
+
+                        
+                        
+ 
+    
+    
+
 
 #####################################################################################                                                            
 statistic(args.id,args.fd)
