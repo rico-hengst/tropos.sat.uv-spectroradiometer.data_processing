@@ -206,7 +206,7 @@ def statistic(i8date,f8date):
                         
                         plthtmp.main(
                         {
-                            'data_import' : 'DataFrame',
+                            'data_import_type' : 'DataFrame',
                             'picture_filename' : picture_filename,
                             'DataFrame' : df
                         }
@@ -228,7 +228,7 @@ def statistic(i8date,f8date):
                         
                         plthtmp.main(
                         {
-                            'data_import' : 'DataFrame',
+                            'data_import_type' : 'DataFrame',
                             'picture_filename' : picture_filename,
                             'DataFrame' : df
                         }
