@@ -341,6 +341,7 @@ def read_oro_bts(fbtsday,keybts,i8date):
     muva=np.zeros((nmes),dtype=float)
     muvb=np.zeros((nmes),dtype=float)
     for imes in range(nmes):
+      # uva uvb definitions see also https://www.who.int/uv/health/solaruvradfull_180706.pdf
       mspecti=np.zeros((nwvl),dtype=float)
       mspecti[:]=mspect[imes,:]
       muvint[imes]=integband(280,400,mwvl,mspecti)
