@@ -104,14 +104,21 @@ def statistic(i8date,f8date):
     cfjson={}
     with open( config.get('DEFAULT','json_file') ) as f:
             cfjson= json.load(f)
-    missing_days={}
     
     
-    # add dataframe
+    # a lookup value dict for missing files
+    dict_lookup_missing_value = {
+        "file_not_exists": 1,
+        "file_empty": 0.8,
+        "file_less_than_1mb": 0.3,
+        "file_size_ok" : 0
+    }
+    
+    
+    # add dataframe to plot missing files
     df = pd.DataFrame({'date' : [], 'missing file' : [] })
     
     
-    a=0    
     """Start the loop"""
     for ys in range(iy,fy+1):
         for imonth in range(1,13):
@@ -147,16 +154,18 @@ def statistic(i8date,f8date):
                             str(ys) + "/" + str(imonth).zfill(2) + "/" + str(iday).zfill(2) + "/" + \
                             config.get('DEFAULT','station_prefix') +str(ys-2000).zfill(2) + str(imonth).zfill(2) + str(iday).zfill(2) + ".OR0"
                         i8date=str(ys)+str(imonth).zfill(2)+str(iday).zfill(2)
+                        
                         if os.path.isfile(path_file):  # see if the .OR0 file exist
                             if os.stat(path_file).st_size<1:  # controls if the file is not empty
                                 print('file is empty '+path_file)
                                 if args.statistics:
-                                    missing_days.update({iday:a+1})
-                                    df = df.append({'date': dt, 'missing file' : 0.5}, ignore_index=True)
+                                    df = df.append({'date': dt, 'missing file' : dict_lookup_missing_value["file_empty"]}, ignore_index=True)
                             else:
                                 if args.statistics:
-                                    missing_days.update({iday:a})
-                                    df = df.append({'date': dt, 'missing file' : 0}, ignore_index=True)
+                                    if os.stat(path_file).st_size<1048576:  # controls if the file is less than 1mb
+                                        df = df.append({'date': dt, 'missing file' : dict_lookup_missing_value["file_less_than_1mb"]}, ignore_index=True)
+                                    else:
+                                        df = df.append({'date': dt, 'missing file' : dict_lookup_missing_value["file_size_ok"]}, ignore_index=True)
                                 """Obtanin the directory data from the OR0 files"""
                                 if args.image or args.netcdf:
                                     d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
@@ -176,14 +185,8 @@ def statistic(i8date,f8date):
                             print("file not exist "+path_file)
                             if args.statistics:
                                     i8date=str(ys)+str(imonth).zfill(2)+str(iday).zfill(2)
-                                    missing_days.update({iday:a+1})
-                                    df = df.append({'date': dt, 'missing file' : 1}, ignore_index=True)
+                                    df = df.append({'date': dt, 'missing file' : dict_lookup_missing_value["file_not_exists"]}, ignore_index=True)
                         iday=iday+1
-                if args.statistics:
-                    BTS2plot_st.plot_st(missing_days,iy,imonth-1, config)
-                """Empty variable at the end of the month"""
-                missing_days.clear()
-                missing_days={}
                 
                 # plot statistics
                 if (args.statistics):
@@ -205,16 +208,15 @@ def statistic(i8date,f8date):
                         df['date'] =  pd.to_datetime(df['date'])
                         
                         plthtmp.main(
-                        {
+                            {
                             'data_import_type' : 'DataFrame',
                             'picture_filename' : picture_filename,
                             'DataFrame' : df
-                        }
+                            }
                         )
                         
                         # init new dataframe
                         df = pd.DataFrame({'date' : [], 'missing file' : [] })
-                        
                         
                         
                         
@@ -227,11 +229,11 @@ def statistic(i8date,f8date):
                         df['date'] =  pd.to_datetime(df['date'])
                         
                         plthtmp.main(
-                        {
+                            {
                             'data_import_type' : 'DataFrame',
                             'picture_filename' : picture_filename,
                             'DataFrame' : df
-                        }
+                            }
                         )
                         
 
