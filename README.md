@@ -73,6 +73,9 @@ A  .gitmodules
 A  src/Submodule
 $ git commit "added submodule"
 
+# Init submodule and get content from the repository
+$ git submodule update --init
+
 ```
 
 ## License
