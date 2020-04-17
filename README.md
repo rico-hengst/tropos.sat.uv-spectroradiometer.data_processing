@@ -65,7 +65,7 @@ To generate plots about the statistics of missing files in your archiv you have 
 
 # Add submodule repository
 $ git submodule add <repository> <path>
-$ git submodule add https://gitea.tropos.de/hengst/sat.missing_files.git src/Submodule
+$ git submodule add https://github.com/rico-hengst/tropos.heatmap_missing_files src/Submodule
 
 # notice the modification to your main repository
 $ git status -s
