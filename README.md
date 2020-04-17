@@ -40,8 +40,7 @@ The software package includes
 * os
 * pygal
 * configparser
-
-To generate plots about the statistics of missing files in your archiv you have to implement a further python module as git submodule. 
+ 
 ## Usage
 ```
 # example to create netCDF files and images
@@ -56,7 +55,15 @@ optional arguments:
   -e FD              Insert the final date as 20190107(y:2019 m:01 d:07)
   -i, --image        create images files
   -n, --netcdf       create netCDF files
-  -st, --statistics  create statistics of missing files
+  -st, --statistics  create statistics of missing files !! Submodule required, see Requirements 2 !!
+
+``` 
+## Requirements 2
+To generate plots about the statistics of missing files in your archiv you have to implement a further python module as git submodule.
+```
+# go to directory
+cd src
+
 
 ```
 
