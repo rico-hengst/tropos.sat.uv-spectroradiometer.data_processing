@@ -28,7 +28,7 @@ The software package includes
 ### Scheme
 ![BTS scheme](doc/bts_scheme.png)
 
-## Requirements
+## Requirements 1
 
 * Python version 3.x
 * argparse
@@ -59,7 +59,7 @@ optional arguments:
 
 ``` 
 ## Requirements 2
-To generate plots about the statistics of missing files in your archiv you have to implement a further python module as git submodule.
+To generate plots about the statistics of missing files in your archiv you have to implement a further python module [heatmap_missing_files from github](https://github.com/rico-hengst/tropos.heatmap_missing_files) as git submodule.
 ```
 # go to root directory of the current main repo
 
