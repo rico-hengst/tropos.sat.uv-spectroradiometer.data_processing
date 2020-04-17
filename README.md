@@ -61,9 +61,17 @@ optional arguments:
 ## Requirements 2
 To generate plots about the statistics of missing files in your archiv you have to implement a further python module as git submodule.
 ```
-# go to directory
-cd src
+# go to root directory of the current main repo
 
+# Add submodule repository
+$ git submodule add <repository> <path>
+$ git submodule add https://gitea.tropos.de/hengst/sat.missing_files.git src/Submodule
+
+# notice the modification to your main repository
+$ git status -s
+A  .gitmodules
+A  src/Submodule
+$ git commit "added submodule"
 
 ```
 
