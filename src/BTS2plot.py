@@ -67,6 +67,9 @@ def plotme(d_bts1day, i8date, image_path):
     """save the plot as pdf file """
     plot_name = image_path + i8date + '.pdf'
     fig.savefig(plot_name)
+    
+    # close figure
+    plt.close(fig)
 
     print("%-21s: %-60s" %('Plot data to file', plot_name))
 
