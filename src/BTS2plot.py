@@ -13,6 +13,9 @@ import matplotlib.dates as DateFormatter
 # import matplotlib as mpl
 # import numpy as np
 
+# units, see also https://www.uni-kiel.de/med-klimatologie/uvinfo.html
+# https://www.bundesfachverband-besonnung.de/fileadmin/download/solaria2005/Solarium_Sonne.pdf
+
 
 def plotme(d_bts1day, i8date, image_path):
     
@@ -27,8 +30,9 @@ def plotme(d_bts1day, i8date, image_path):
     # ax.xaxis.set_major_formatter(DateFormatter('%h-%m'))
     ax.legend()
     ax.set_xlabel('Time hours in UTC')
-    ax.set_ylabel('Radiant flux density [$mW/m^2$]')
     ax.set_ylim(( 0, 70))  ###y limits
+    ax.set_ylabel('Radiant flux density [$W/m^2$]')
+
     ax1.set_title("UVB")
     ax1.plot(d_bts1day["time"],d_bts1day["uvb"], 'b', label="UVB")
     ax1.xaxis.set_tick_params(labelsize=10)
@@ -36,8 +40,8 @@ def plotme(d_bts1day, i8date, image_path):
 #    ax1.xaxis.set_major_formatter(DateFormatter('%H:%M'))
     ax1.legend()
     ax1.set_xlabel('Time in UTC')
-    ax1.set_ylabel('Radiant flux density [$mW/m^2$]')
     ax1.set_ylim(( 0, 1.6))
+    ax1.set_ylabel('Radiant flux density [$W/m^2$]')
     ax2.set_title("Spektrum")
     ax2.plot(d_bts1day["time"],d_bts1day["spect"], label="spect")
     ax2.xaxis.set_tick_params(labelsize=10)
