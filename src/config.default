@@ -10,7 +10,7 @@ image_path = /images/
 netCDF_path = /netcdf/
     
 # """Define the JSON path where the json metadata are located"""
-json_file = uv_js_meta.json
+json_file = uv_js_meta.json.default
 
 
 [STATION]
