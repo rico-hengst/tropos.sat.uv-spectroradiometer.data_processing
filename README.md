@@ -16,7 +16,7 @@ The software package includes
 * a module to read OR0-Files from UV observations stred in Solarscan format and
 * a module to visualize the numerical data and
 * a module to store data as netcdf file(s)
-* a module to visualize data gaps.
+* a module to visualize data gaps (missing files).
 
 ### Assumption
 * **Filename:** the OR0-Files should fits the naming pattern "`<IDYYMMDD>.OR0`", where
