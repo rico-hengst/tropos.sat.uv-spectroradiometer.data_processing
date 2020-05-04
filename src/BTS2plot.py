@@ -69,7 +69,7 @@ def plotme(d_bts1day, i8date, image_path):
     ax3.text(17.8, 9, 'Very High', fontsize=15, ha='right')
 #    ax3.colorbar()
     """save the plot as pdf file """
-    plot_name = image_path + i8date + '.pdf'
+    plot_name = image_path + i8date + '.png'
     fig.savefig(plot_name)
     
     # close figure

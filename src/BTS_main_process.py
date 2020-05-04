@@ -70,7 +70,15 @@ def statistic(i8date,f8date):
     
     """Read config file"""
     config = configparser.ConfigParser()
-    config.read('config.private')
+    
+    config.read('config.default')
+    
+    """Read private config file"""
+    if not os.path.isfile( 'config.private' ):
+        print('File config.private not exists, use DEFAULT config instead!')
+    else:
+        config.read('config.private')
+    
     
     
     """Check if directories etc exists"""
@@ -152,7 +160,7 @@ def statistic(i8date,f8date):
                         """Compose PathFileName of OR0-File"""
                         path_file = config.get('DEFAULT','main_path') + \
                             str(ys) + "/" + str(imonth).zfill(2) + "/" + str(iday).zfill(2) + "/" + \
-                            config.get('DEFAULT','station_prefix') +str(ys-2000).zfill(2) + str(imonth).zfill(2) + str(iday).zfill(2) + ".OR0"
+                            config.get('STATION','station_prefix') +str(ys-2000).zfill(2) + str(imonth).zfill(2) + str(iday).zfill(2) + ".OR0"
                         i8date=str(ys)+str(imonth).zfill(2)+str(iday).zfill(2)
                         
                         if os.path.isfile(path_file):  # see if the .OR0 file exist
