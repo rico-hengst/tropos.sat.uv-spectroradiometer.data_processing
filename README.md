@@ -19,10 +19,10 @@ The software package includes
 * a module to visualize data gaps.
 
 ### Assumption
-* the OR0-Files should fits the naming pattern "`<IDYYMMDD>.OR0`", where
+* **Filename:** the OR0-Files should fits the naming pattern "`<IDYYMMDD>.OR0`", where
   * **ID** is a character string with a length of two and respresents a identifier of the UV station
   * and **YY** year since 2000, **MM** number of month, **DD** day of the month (all filled with zeros)
-* the OR0-Files are in following directory structure "`<YYYY/MM/DD/>`", where
+* **Directory tree:** the OR0-Files are in following directory structure "`<YYYY/MM/DD/>`", where
   * and **YYYY** year, **MM** number of month, **DD** day of the month (all filled with zeros)
 
 ### Scheme
@@ -51,8 +51,8 @@ cd src
 
 optional arguments:
   -h, --help         show this help message and exit
-  -s ID              Insert the initial date as 20190107(y:2019 m:01 d:07)
-  -e FD              Insert the final date as 20190107(y:2019 m:01 d:07)
+  -s ID              Insert the initial date as 20190107 (YYYYmmdd)
+  -e FD              Insert the final date as 20190107 (YYYmmdd)
   -i, --image        create images files
   -n, --netcdf       create netCDF files
   -st, --statistics  create statistics of missing files !! Submodule required, see Requirements 2 !!
