@@ -6,74 +6,69 @@ Created on Tue Nov 19 13:13:35 2019
 @author: bayer
 """
 import matplotlib.pyplot as plt
-from datetime import datetime
-import matplotlib.dates as DateFormatter
-#import pandas as pd 
-# from matplotlib import colors
-# import matplotlib as mpl
-# import numpy as np
+from mpl_toolkits.axes_grid1 import host_subplot
+import mpl_toolkits.axisartist as AA
 
 # units, see also https://www.uni-kiel.de/med-klimatologie/uvinfo.html
 # https://www.bundesfachverband-besonnung.de/fileadmin/download/solaria2005/Solarium_Sonne.pdf
 
+def plotme(d_bts1day, i8date, image_path):    
 
-def plotme(d_bts1day, i8date, image_path):
+    plt.suptitle("Melpitz (51° 31' N 12° 56' E)\nDate: "+ i8date[0:4] + '/' + i8date[4:6] + '/' +  i8date[6:8])
+    host = host_subplot(111, axes_class=AA.Axes)
+    plt.subplots_adjust(right=0.75)
+    par1 = host.twinx()
+    par2 = host.twinx()
+    offset = 60
+    new_fixed_axis = par2.get_grid_helper().new_fixed_axis
+    par2.axis["right"] = new_fixed_axis(loc="right", axes=par2,
+                                        offset=(offset, 0))
+    par1.axis["right"] = new_fixed_axis(loc="right", axes=par1)
+    par2.axis["right"].toggle(all=True)
     
-    plt.rcParams["figure.figsize"] = (13, 24)
-    fig, (ax,ax1,ax2,ax3)=plt.subplots(4)
-    fig.suptitle('Date: '+ i8date[0:4] + '/' + i8date[4:6] + '/' +  i8date[6:8])
-    ax.set_title("UVA")
-    ax.plot(d_bts1day["time"],d_bts1day["uva"], 'r', label="UVA")
-    ax.xaxis.set_tick_params(labelsize=10)
-    ax.set_xlim(5,18)
-    # ax.set_xlim(datetime(2019, 1, 1, 6, 0),datetime(2019, 1, 1, 18, 30))
-    # ax.xaxis.set_major_formatter(DateFormatter('%h-%m'))
-    ax.legend()
-    ax.set_xlabel('Time hours in UTC')
-    ax.set_ylim(( 0, 70))  ###y limits
-    ax.set_ylabel('Radiant flux density [$W/m^2$]')
+    """Label the axes"""
+    host.set_xlabel("Time (UTC)")
+    host.set_ylabel("UV-Index")
+    par1.set_ylabel("UV-B Irradiance [$W/m^2$]")
+    par2.set_ylabel("UV-A Irradiance [$W/m^2$]")
 
-    ax1.set_title("UVB")
-    ax1.plot(d_bts1day["time"],d_bts1day["uvb"], 'b', label="UVB")
-    ax1.xaxis.set_tick_params(labelsize=10)
-    ax1.set_xlim(5,18)
-#    ax1.xaxis.set_major_formatter(DateFormatter('%H:%M'))
-    ax1.legend()
-    ax1.set_xlabel('Time in UTC')
-    ax1.set_ylim(( 0, 1.6))
-    ax1.set_ylabel('Radiant flux density [$W/m^2$]')
-    ax2.set_title("Spektrum")
-    ax2.plot(d_bts1day["time"],d_bts1day["spect"], label="spect")
-    ax2.xaxis.set_tick_params(labelsize=10)
-    ax2.set_xlim(5,18)    
-#    ax2.xaxis.set_major_formatter(DateFormatter('%H:%M'))
-    ax2.set_xlabel('Time in UTC')
-    ax3.set_title("UV Index")
-    ax3.plot(d_bts1day["time"],d_bts1day["uvind"], 'k', label="UV")
-    ax3.xaxis.set_tick_params(labelsize=10)
-    ax3.set_xlim(5,18)
-#    ax.xaxis.set_major_formatter(DateFormatter('%H:%M'))
-#    ax3.legend()
-    ax3.set_xlabel('Time hours in UTC')
-    ax3.set_ylabel('UV index')
-    ax3.set_ylim(( 0, 11))
-    #ax3.grid()
-    """Set the colors inside the plot """
-    ax3.axhspan(0, 3, facecolor='green', alpha=0.5)
-    ax3.axhspan(3, 6, facecolor='yellow', alpha=0.5)
-    ax3.axhspan(6, 8, facecolor='orange', alpha=0.5)
-    ax3.axhspan(8, 11, facecolor='red', alpha=0.5) 
-    ax3.text(17.8, 1.5, 'Low', fontsize=15, ha='right')
-    ax3.text(17.8, 4.5, 'Moderate', fontsize=15, ha='right')
-    ax3.text(17.8, 7, 'High', fontsize=15, ha='right')
-    ax3.text(17.8, 9, 'Very High', fontsize=15, ha='right')
-#    ax3.colorbar()
+    """adding the varibles for plotting and setting the colors and labels"""
+    p1, = host.plot(d_bts1day["time"],d_bts1day["uvind"],"k-",linestyle=':', label="UV-Index")
+    p2, = par1.plot(d_bts1day["time"],d_bts1day["uvb"]*10, "r-", label="UV-B")
+    p3, = par2.plot(d_bts1day["time"],d_bts1day["uva"], "b-", label="UV-A")
+    
+    """defining the limits of the axes"""
+    host.set_xlim(3, 21)
+    host.set_ylim(0, 13)
+    par1.set_ylim(0, 20)
+    par2.set_ylim(0, 70)
+    
+    """adding legend and function"""
+    host.legend()
+    host.grid()
+
+    """coloring the axis"""
+#    host.axis["left"].label.set_color(p1.get_color())
+    par2.axis["right"].label.set_color(p3.get_color())
+    par1.axis["right"].label.set_color(p2.get_color())
+    
+    """full filling the curve under the UV-Index curve"""
+    plt.fill_between(d_bts1day["time"], d_bts1day["uvind"],  where=d_bts1day["uvind"]<2, 
+                        facecolor='green', alpha='0.5', interpolate=True)
+    plt.fill_between(d_bts1day["time"], d_bts1day["uvind"],  where=d_bts1day["uvind"] >2 , 
+                        facecolor='yellow', alpha='0.5', interpolate=True)
+    plt.fill_between(d_bts1day["time"], d_bts1day["uvind"],  where=d_bts1day["uvind"] >5 , 
+                        facecolor='orange', alpha='0.5', interpolate=True)
+    plt.fill_between(d_bts1day["time"], d_bts1day["uvind"],  where=d_bts1day["uvind"] >7 , 
+                        facecolor='red', alpha='0.5', interpolate=True)
+    plt.fill_between(d_bts1day["time"], d_bts1day["uvind"],  where=d_bts1day["uvind"]>10, 
+                        facecolor='purple', alpha='0.5', interpolate=True)
+    
+    """adding footnote"""
+    plt.annotate('Leibnitz Institut für \nTroposphärenforschung', xy= (0,-1), xycoords='figure fraction',
+                 xytext=(0, 25), textcoords='offset points', ha="left", va="bottom")
+
     """save the plot as pdf file """
-    plot_name = image_path + i8date + '.png'
-    fig.savefig(plot_name)
-    
-    # close figure
-    plt.close(fig)
-
+    plot_name = image_path + 'BTS_plot-' + i8date + '.pdf'
+    plt.savefig(plot_name)
     print("%-21s: %-60s" %('Plot data to file', plot_name))
-

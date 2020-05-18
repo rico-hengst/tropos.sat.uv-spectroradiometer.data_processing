@@ -71,7 +71,7 @@ def statistic(i8date,f8date):
     """Read config file"""
     config = configparser.ConfigParser()
     
-    config.read('config.default')
+    config.read('config.private')
     
     """Read private config file"""
     if not os.path.isfile( 'config.private' ):
