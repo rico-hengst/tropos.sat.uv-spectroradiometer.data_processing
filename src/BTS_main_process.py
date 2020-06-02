@@ -13,17 +13,13 @@ __status__ = "Production"
 import os
 import read_bts2048rh as bts
 import BTS2plot
-import BTS2plot_st
 #import Submodule/PlotHeatmap as plthtmp
 from Submodule import PlotHeatmap as plthtmp
-import calendar
-import datetime
 import BTS2NetCDF 
 import argparse
 import json
 import configparser
 import platform
-import matplotlib.pyplot as plt
 import pandas as pd
 """Insert de initial and final dates as strings as 20190107(year:2019/month:01/day:07)"""
 
@@ -57,17 +53,9 @@ if int(python_version[0]) < 3:
   print("Script will be terminated cause python version < 3 is required !")
   exit()
 
-
 def statistic(i8date,f8date):
     methodbts = "global" 
-    iy=int(i8date[0:4])
-    im=int(i8date[4:6])
-    ida=int(i8date[6:8])
-    fy=int(f8date[0:4])
-    fm=int(f8date[4:6])
-    fda=int(f8date[6:8])
-    
-    
+   
     """Read config file"""
     config = configparser.ConfigParser()
     
@@ -126,131 +114,85 @@ def statistic(i8date,f8date):
     # add dataframe to plot missing files
     df = pd.DataFrame({'date' : [], 'missing file' : [] })
     
-    
-    """Start the loop"""
-    for ys in range(iy,fy+1):
-        for imonth in range(1,13):
-            if ys==iy and imonth<im:
-                continue
-            elif ys==fy and imonth>fm:
-                break
+    """pandas time counter vector instead of loop"""
+    dates=pd.date_range(args.id, args.fd,freq='1D', name=str, normalize=False) 
+    # pd.to_numeric(dates.str.replace('-',''))
+    for day in dates:
+        """Compose PathFileName of OR0-File"""
+        path_file = config.get('DEFAULT','main_path') + day.strftime('%Y')+ "/" +day.strftime('%m')+ \
+                        "/" +day.strftime('%d')+ "/" + config.get('STATION','station_prefix') + \
+                        day.strftime('%y').zfill(2)+day.strftime('%m')+ day.strftime('%d')+".OR0"
+        if os.path.isfile(path_file):  # see if the .OR0 file exist
+            if os.stat(path_file).st_size<1:  # controls if the file is not empty
+                print('file is empty '+path_file)
+                if args.statistics:
+                    df = df.append({'date': day.date(), 'missing file' : dict_lookup_missing_value["file_empty"]}, ignore_index=True)
             else:
-                numberOfDays = calendar.monthrange(ys, imonth)[1]
-                #for iday in range(1,numberOfDays+2): # TODO Nicolas, why + 2???
-                for iday in range(1,numberOfDays+1):
-                    
-                    # generate datetime object, used in PlotHeatmap
-                    #print(str(ys) + '-' + str(imonth) + '-' + str(iday) )
-                    dt = datetime.datetime(ys, imonth, iday)
-                    #print(dt)
-                    ###############################################
-                    
-                    if iday<ida:
-                        iday=iday+1
-                    elif iday==numberOfDays+1 and imonth<=11:
-                        imonth=imonth+1
-                        ida=1
-                    elif iday==numberOfDays+1 and imonth==12:
-                        imonth=1
-                        ida=1
-                        ys=ys+1
-                    elif imonth==fm and ys==fy and iday>fda:
-                        break
-                    elif iday>=ida and iday<=numberOfDays:
-                        """Compose PathFileName of OR0-File"""
-                        path_file = config.get('DEFAULT','main_path') + \
-                            str(ys) + "/" + str(imonth).zfill(2) + "/" + str(iday).zfill(2) + "/" + \
-                            config.get('STATION','station_prefix') +str(ys-2000).zfill(2) + str(imonth).zfill(2) + str(iday).zfill(2) + ".OR0"
-                        i8date=str(ys)+str(imonth).zfill(2)+str(iday).zfill(2)
-                        
-                        if os.path.isfile(path_file):  # see if the .OR0 file exist
-                            if os.stat(path_file).st_size<1:  # controls if the file is not empty
-                                print('file is empty '+path_file)
-                                if args.statistics:
-                                    df = df.append({'date': dt, 'missing file' : dict_lookup_missing_value["file_empty"]}, ignore_index=True)
-                            else:
-                                if args.statistics:
-                                    if os.stat(path_file).st_size<1048576:  # controls if the file is less than 1mb
-                                        df = df.append({'date': dt, 'missing file' : dict_lookup_missing_value["file_less_than_1mb"]}, ignore_index=True)
-                                    else:
-                                        df = df.append({'date': dt, 'missing file' : dict_lookup_missing_value["file_size_ok"]}, ignore_index=True)
-                                """Obtanin the directory data from the OR0 files"""
-                                if args.image or args.netcdf:
-                                    d_bts1day=bts.read_oro_bts(path_file,methodbts,i8date)
-                                    if args.image:
-                                        """Ploting function"""
-                                        BTS2plot.plotme(d_bts1day,i8date,config.get('DEFAULT','image_path'))
-                                    if args.netcdf:
-                                        """checking if the file does already exist, and delete if so."""
-                                        nc_file = config.get('DEFAULT','netCDF_path') + str(i8date[:]) + '.nc'
-                                        if os.path.isfile(nc_file):
-                                            os.remove(nc_file)
-                                            BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
-                                        else:
-                                            """Save the data processed by the bts function in a netCDF file"""
-                                            BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
+                if args.statistics:
+                    if os.stat(path_file).st_size<1048576:  # controls if the file is less than 1mb
+                        df = df.append({'date': day.date(), 'missing file' : dict_lookup_missing_value["file_less_than_1mb"]}, ignore_index=True)
+                    else:
+                        df = df.append({'date': day.date(), 'missing file' : dict_lookup_missing_value["file_size_ok"]}, ignore_index=True)
+                """Obtanin the directory data from the OR0 files"""
+                if args.image or args.netcdf:
+                    d_bts1day=bts.read_oro_bts(path_file,methodbts,day.strftime('%Y%m%d'))
+                    if args.image:
+                        """Ploting function"""
+                        BTS2plot.plotme(d_bts1day,day.strftime('%Y%m%d'),config.get('DEFAULT','image_path'))
+                    if args.netcdf:
+                        """checking if the file does already exist, and delete if so."""
+                        nc_file = config.get('DEFAULT','netCDF_path') + day.strftime('%Y%m%d') + '.nc'
+                        if os.path.isfile(nc_file):
+                            os.remove(nc_file)
+                            BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
                         else:
-                            print("file not exist "+path_file)
-                            if args.statistics:
-                                    i8date=str(ys)+str(imonth).zfill(2)+str(iday).zfill(2)
-                                    df = df.append({'date': dt, 'missing file' : dict_lookup_missing_value["file_not_exists"]}, ignore_index=True)
-                        iday=iday+1
+                            """Save the data processed by the bts function in a netCDF file"""
+                            BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
+        else:
+            print("file not exist "+path_file)
+            if args.statistics:
+                df = df.append({'date': day.date(), 'missing file' : dict_lookup_missing_value["file_not_exists"]}, ignore_index=True)
+        # plot statistics
+        if (args.statistics):
+            # generate filename
+            picture_filename = \
+                config.get('DEFAULT','image_path') + 'MissingFiles_' + \
+                str( df['date'][0].strftime('%Y-%m-%d') ) + \
+                '_' + \
+                str(df['date'][len(df.index)-1].strftime('%Y-%m-%d') )
                 
-                # plot statistics
-                if (args.statistics):
+            # plot first or second half of year
+            if (day.strftime('%m%d')=='0630' or day.strftime('%-m%d')=='1231'):
+                print('Plot ' + picture_filename )
+                
+                # transform column date to datetime
+                df['date'] =  pd.to_datetime(df['date'])
+                
+                plthtmp.main(
+                    {
+                    'data_import_type' : 'DataFrame',
+                    'picture_filename' : picture_filename,
+                    'DataFrame' : df
+                    }
+                )
+                
+                # init new dataframe
+                df = pd.DataFrame({'date' : [], 'missing file' : [] })
+                
+            # plot period after the last half year
+            elif (day.strftime('%Y%m%d') == f8date):
+                print('Plot short period: ' + picture_filename )
                     
-                    # generate filename
-                    picture_filename = \
-                    config.get('DEFAULT','image_path') + 'MissingFiles_' + \
-                    str( df['date'][0].strftime('%Y-%m-%d') ) + \
-                    '_' + \
-                    str(df['date'][len(df.index)-1].strftime('%Y-%m-%d') )
-                    
-                    
-                    # plot first or second half of year
-                    if (imonth == 6 or imonth == 12):
-                        print('Plot ' + picture_filename )
-                        
-                        
-                        # transform column date to datetime
-                        df['date'] =  pd.to_datetime(df['date'])
-                        
-                        plthtmp.main(
-                            {
-                            'data_import_type' : 'DataFrame',
-                            'picture_filename' : picture_filename,
-                            'DataFrame' : df
-                            }
-                        )
-                        
-                        # init new dataframe
-                        df = pd.DataFrame({'date' : [], 'missing file' : [] })
-                        
-                        
-                        
-                        
-                    # plot period after the last half year
-                    elif (ys == fy and imonth == fm):
-                        print('Plot short period: ' + picture_filename )
-                        
-                        # transform column date to datetime
-                        df['date'] =  pd.to_datetime(df['date'])
-                        
-                        plthtmp.main(
-                            {
-                            'data_import_type' : 'DataFrame',
-                            'picture_filename' : picture_filename,
-                            'DataFrame' : df
-                            }
-                        )
-                        
-
-                        
-                        
- 
-    
-    
-
+                # transform column date to datetime
+                df['date'] =  pd.to_datetime(df['date'])
+                
+                plthtmp.main(
+                    {
+                    'data_import_type' : 'DataFrame',
+                    'picture_filename' : picture_filename,
+                    'DataFrame' : df
+                    }
+                )
 
 #####################################################################################                                                            
 statistic(args.id,args.fd)
