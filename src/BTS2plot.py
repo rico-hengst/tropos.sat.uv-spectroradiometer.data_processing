@@ -8,13 +8,15 @@ Created on Tue Nov 19 13:13:35 2019
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import host_subplot
 import mpl_toolkits.axisartist as AA
+import pandas as pd
 
 # units, see also https://www.uni-kiel.de/med-klimatologie/uvinfo.html
 # https://www.bundesfachverband-besonnung.de/fileadmin/download/solaria2005/Solarium_Sonne.pdf
 
-def plotme(d_bts1day, i8date, image_path):    
-
-    plt.suptitle("Melpitz (51° 31' N 12° 56' E)\nDate: "+ i8date[0:4] + '/' + i8date[4:6] + '/' +  i8date[6:8])
+def plotme(d_bts1day, day, config):    
+    plt.suptitle(config.get('STATION','station_name') + ' ('+ config.get('STATION','station_lat') + ' '+\
+                 config.get('STATION','station_lon') + ')\nDate: '+day.strftime('%Y')+ '/' + day.strftime('%m')+ \
+                 '/' + day.strftime('%d'))
     host = host_subplot(111, axes_class=AA.Axes)
     plt.subplots_adjust(right=0.75)
     par1 = host.twinx()
@@ -69,6 +71,6 @@ def plotme(d_bts1day, i8date, image_path):
                  xytext=(0, 25), textcoords='offset points', ha="left", va="bottom")
 
     """save the plot as pdf file """
-    plot_name = image_path + 'BTS_plot-' + i8date + '.pdf'
+    plot_name = config.get('DEFAULT','image_path') + 'BTS_plot-' + day.strftime('%Y%m%d') + '.pdf'
     plt.savefig(plot_name)
     print("%-21s: %-60s" %('Plot data to file', plot_name))
