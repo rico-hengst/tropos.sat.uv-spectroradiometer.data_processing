@@ -38,7 +38,7 @@ def plotme(d_bts1day, i8date, image_path):
     p3, = par2.plot(d_bts1day["time"],d_bts1day["uva"], "b-", label="UV-A")
     
     """defining the limits of the axes"""
-    host.set_xlim(3, 21)
+    host.set_xlim(4, 21)
     host.set_ylim(0, 13)
     par1.set_ylim(0, 20)
     par2.set_ylim(0, 70)
