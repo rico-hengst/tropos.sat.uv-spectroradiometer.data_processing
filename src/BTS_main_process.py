@@ -138,7 +138,7 @@ def statistic(i8date,f8date):
                     d_bts1day=bts.read_oro_bts(path_file,methodbts,day.strftime('%Y%m%d'))
                     if args.image:
                         """Ploting function"""
-                        BTS2plot.plotme(d_bts1day,day.strftime('%Y%m%d'),config.get('DEFAULT','image_path'))
+                        BTS2plot.plotme(d_bts1day,day,config)
                     if args.netcdf:
                         """checking if the file does already exist, and delete if so."""
                         nc_file = config.get('DEFAULT','netCDF_path') + day.strftime('%Y%m%d') + '.nc'
