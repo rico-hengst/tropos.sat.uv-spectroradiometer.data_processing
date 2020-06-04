@@ -63,16 +63,20 @@ To generate plots about the statistics of missing files in your archiv you have 
 ```
 # go to root directory of the current main repo
 
+# Already done during implementation of submodule
 # Add submodule repository
 $ git submodule add <repository> <path>
 $ git submodule add https://github.com/rico-hengst/tropos.heatmap_missing_files src/Submodule
 
+# Already done during implementation of submodule
 # notice the modification to your main repository
 $ git status -s
 A  .gitmodules
 A  src/Submodule
 $ git commit "added submodule"
 
+
+# Last step is always required to get updates
 # Init submodule and get content from the repository
 $ git submodule update --init
 

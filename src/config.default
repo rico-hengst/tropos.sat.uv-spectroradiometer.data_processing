@@ -17,6 +17,8 @@ json_file = uv_js_meta.json.default
 
 station_prefix = YOUR_LOCATION_PREFIX
 station_name= Name
+station_lat= 00° 00' N
+station_lon= 00° 00' E
 
 [INSTRUMENT]
 
