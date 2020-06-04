@@ -140,9 +140,10 @@ def integband(w0,w1,mwvl,mrad,modus="norm",pos="y"):
   return intband
 
 
-
+# nhscan= maybe number of wavelength measurements per line
+# nlinf= total number of lines in data file
 def bts1scan(for0,iline,nlinf,nhscan,nhe):
-  nmscan=221
+  nmscan=221 # number of lines per wavelength measurements data block
   dscan={}
   ntop=iline+nhscan
   nbot=nlinf-ntop-nmscan+1
@@ -198,8 +199,12 @@ def bts1scan(for0,iline,nlinf,nhscan,nhe):
   dscan["kexs"]=["n","mat","info"]
   return dscan
 
-
-
+# for0 = filename Or0
+# scans all data blocks, iteration via nscan
+# nlinehead = number of header lines (in first line declared)
+# nscan = number of timesteps or data blocks
+# iscan = running index of nscan
+# nlinscan = 226 fixed value (number of data lines per nscan) 
 def bts_scans(for0,nscan,nlinhead,nlinscan,nhscan,nwvl,nhe,pref,inst="ben"):
   dscans={}
   miscans=np.zeros((nscan,2),dtype=int)
@@ -207,13 +212,13 @@ def bts_scans(for0,nscan,nlinhead,nlinscan,nhscan,nwvl,nhe,pref,inst="ben"):
   minfo=np.zeros((nscan,4),dtype=float)
   d_or0=readtxt(for0)
   lor0=d_or0["lineslist"]
-  nlinf=d_or0["nlin"]
+  nlinf=d_or0["nlin"] # total number of lines in data file
   for iscan in range(nscan):
-    iline=nlinhead+iscan*nlinscan
+    iline=nlinhead+iscan*nlinscan  # first line of data block
     try:
       utcseci=int(lor0[iline])
-      miscans[iscan,0]=iline
-      miscans[iscan,1]=utcseci
+      miscans[iscan,0]=iline # number of line of current data block
+      miscans[iscan,1]=utcseci # time of current data block
       d1scan=bts1scan(for0,iline,nlinf,nhscan,nhe)
       mscani=d1scan["mat"]
       minfoi=d1scan["info"]
@@ -262,23 +267,25 @@ def bts_or0(for0,idate,pref):
   nlinf=dicf["nlin"]
   linesf=dicf["lineslist"]
   nlinmscan=121
-  nlinhead=int(linesf[0].split()[0].split("=")[1])#182
+  nlinhead=int(linesf[0].split()[0].split("=")[1])#182 # find number of header lines (first line of or0-file)
   nlinscan=226
-  nhscan=5
-  nwvl0=1101
+  nhscan=5 # maybe number of wavelength measurements per line
+  nwvl0=1101 # number of wavelength
   nhe = 3
   if nlinf >= 182:
     dwvl=bts_wvl(for0,nlinf)
     mwvl=dwvl["mat"]
     nwvl=dwvl["n"]
-    nscan=int((nlinf-nlinhead)/nlinscan)
+    nscan=int((nlinf-nlinhead)/nlinscan) # maybe number of timesteps of measurements
+    #print(str(nscan) + " nscan")
     #print "mol4_bentham",nhscan
     if nscan >=1:
       dscans=bts_scans(for0,nscan,nlinhead,nlinscan,nhscan,nwvl,nhe, pref, inst="bts")
       miscans=dscans["info"]
       minfo=dscans["minfo"]
       mscans=dscans["mat"]
-      #print "scans yes", nscan,  mscans.shape#,mscans[int(nscan/2),:]
+      #print("scans yes", nscan,  mscans.shape)#,mscans[int(nscan/2),:]
+      #print(mscans)
     else:
       mscans=np.zeros((0,nwvl0),dtype=float)
       miscans=miscans=np.zeros((0,2),dtype=int)
@@ -296,6 +303,7 @@ def bts_or0(for0,idate,pref):
   d_scans["mscans"]=mscans
   d_scans["miscans"]=miscans
   d_scans["minfo"]=minfo
+  #print(d_scans)
   return d_scans
 
 
@@ -306,7 +314,7 @@ def read_oro_bts(fbtsday,keybts,i8date):
   vex=fileex(fbtsday)
   nmes=0
   nwvl=0
-  nwvl0=1101#120
+  nwvl0=1101#120 # number of wavelength
   muvint=np.zeros((0),dtype=float)
   muvind=np.zeros((0),dtype=float)
   if vex == 1:
