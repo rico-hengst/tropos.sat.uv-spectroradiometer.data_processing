@@ -21,6 +21,7 @@ import json
 import configparser
 import platform
 import pandas as pd
+
 """Insert de initial and final dates as strings as 20190107(year:2019/month:01/day:07)"""
 
 """for calling the function from the terminal"""
@@ -66,9 +67,7 @@ def statistic(i8date,f8date):
         print('File config.private not exists, use DEFAULT config instead!')
     else:
         config.read('config.private')
-    
-    
-    
+
     """Check if directories etc exists"""
     if not os.path.isdir( config.get('DEFAULT','main_path') ):
         print('Path main_path not exists '+ config.get('DEFAULT','main_path'))
@@ -102,7 +101,7 @@ def statistic(i8date,f8date):
             cfjson= json.load(f)
     
     
-    # a lookup value dict for missing files
+    """ a lookup value dict for missing files"""
     dict_lookup_missing_value = {
         "file_not_exists": 1,
         "file_empty": 0.8,
@@ -111,11 +110,12 @@ def statistic(i8date,f8date):
     }
     
     
-    # add dataframe to plot missing files
+    """add dataframe to plot missing files"""
     df = pd.DataFrame({'date' : [], 'missing file' : [] })
     
-    """pandas time counter vector instead of loop"""
+    """pandas time counter vector instead of loop"""    
     dates=pd.date_range(args.id, args.fd,freq='1D', name=str, normalize=False) 
+
     # pd.to_numeric(dates.str.replace('-',''))
     for day in dates:
         """Compose PathFileName of OR0-File"""
@@ -152,20 +152,21 @@ def statistic(i8date,f8date):
             print("file not exist "+path_file)
             if args.statistics:
                 df = df.append({'date': day.date(), 'missing file' : dict_lookup_missing_value["file_not_exists"]}, ignore_index=True)
-        # plot statistics
+        
+        """plot statistics"""
         if (args.statistics):
-            # generate filename
+            """generate filename"""
             picture_filename = \
                 config.get('DEFAULT','image_path') + 'MissingFiles_' + \
                 str( df['date'][0].strftime('%Y-%m-%d') ) + \
                 '_' + \
                 str(df['date'][len(df.index)-1].strftime('%Y-%m-%d') )
                 
-            # plot first or second half of year
+            """plot first or second half of year"""
             if (day.strftime('%m%d')=='0630' or day.strftime('%-m%d')=='1231'):
                 print('Plot ' + picture_filename )
                 
-                # transform column date to datetime
+                """transform column date to datetime"""
                 df['date'] =  pd.to_datetime(df['date'])
                 
                 plthtmp.main(
@@ -176,10 +177,10 @@ def statistic(i8date,f8date):
                     }
                 )
                 
-                # init new dataframe
+                """init new dataframe"""
                 df = pd.DataFrame({'date' : [], 'missing file' : [] })
                 
-            # plot period after the last half year
+            #plot period after the last half year
             elif (day.strftime('%Y%m%d') == f8date):
                 print('Plot short period: ' + picture_filename )
                     
@@ -196,19 +197,6 @@ def statistic(i8date,f8date):
 
 #####################################################################################                                                            
 statistic(args.id,args.fd)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
