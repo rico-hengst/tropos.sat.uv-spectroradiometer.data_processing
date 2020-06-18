@@ -46,11 +46,11 @@ def plotme(d_bts1day, day, config):
     new_timezone = pytz.timezone(config.get('TIMEZONE','local_time', fallback='UTC'))
     
     """changing time for local time"""
-    for x in range(0,len(d_bts1day['datetime'])):
-        a=pd.Timestamp(d_bts1day['datetime'][x])
-        a=pytz.UTC.localize(a)
-        d_bts1day['datetime'][x]=float(a.astimezone(new_timezone).strftime("%H%M"))/100
     x=np.array(d_bts1day['datetime'])
+    for z in range(0,len(d_bts1day['datetime'])):
+        a=pd.Timestamp(d_bts1day['datetime'][z])
+        a=pytz.UTC.localize(a)
+        x[z]=float(a.astimezone(new_timezone).strftime("%H%M"))/100
     x=x.astype('float64') 
     host.set_xlabel("Time ("+str(new_timezone)+")")
     # else:
