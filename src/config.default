@@ -24,3 +24,13 @@ station_lon= 00° 00' E
 
 instrument_name = BTS2048
 last_calibration = YYYY-MM-DD
+
+[TIMEZONE]
+
+instrument_messurement= UTC
+
+# Define the local time for the ploting
+# If the local time is not specified or is commented, the time axis will be in UTC
+# to see which time zones are available, look into pytz
+local_time=Europe/Berlin
+
