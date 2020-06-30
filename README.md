@@ -40,24 +40,7 @@ The software package includes
 * os
 * pygal
 * configparser
- 
-## Usage
-```
-# example to create netCDF files and images
-cd src
 
-./BTS_main_process.py -n -i -s 20190101 -e 20190102
-
-
-optional arguments:
-  -h, --help         show this help message and exit
-  -s ID              Insert the initial date as 20190107 (YYYYmmdd)
-  -e FD              Insert the final date as 20190107 (YYYmmdd)
-  -i, --image        create images files
-  -n, --netcdf       create netCDF files
-  -st, --statistics  create statistics of missing files !! Submodule required, see Requirements 2 !!
-
-``` 
 ## Requirements 2
 To generate plots about the statistics of missing files in your archiv you have to implement a further python module [heatmap_missing_files from github](https://github.com/rico-hengst/tropos.heatmap_missing_files) as git submodule.
 ```
@@ -85,6 +68,43 @@ $ git submodule update --init
 
 * [vogella.com](https://www.vogella.com/tutorials/GitSubmodules/article.html)
 * [ralfebert.de](https://www.ralfebert.de/git/submodules/)
+
+ 
+## Configuration and Usage 
+### Configuration
+
+When using this software code for the first time, we would like to recommend to configure the code in s suggested way. configuration.
+The software has two configuration files. Please copy both configuration files to the software root directory and use the extension ```.private```.
+```bash
+cp src/config.default src/config.private
+cp src/uv_js_meta.json.default src/uv_js_meta.json.private
+```
+Please edit your contact data at the JSON-file ```uv_js_meta.json.private```, that is used for writing UV measurement data and metadata to a netcdf file. 
+Please edit also the content of the INI-file ```config.private```. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
+Please edit also the name of the json_file to ```json_file=uv_js_meta.json.private```.
+
+Now the configuration is done.
+
+
+### Usage
+
+```
+# example to create netCDF files and images
+cd src
+
+./BTS_main_process.py -n -i -s 20190101 -e 20190102
+
+
+optional arguments:
+  -h, --help         show this help message and exit
+  -s ID              Insert the initial date as 20190107 (YYYYmmdd)
+  -e FD              Insert the final date as 20190107 (YYYmmdd)
+  -i, --image        create images files
+  -n, --netcdf       create netCDF files
+  -st, --statistics  create statistics of missing files !! Submodule required, see Requirements 2 !!
+
+``` 
+
 
 ## License
 [CC BY-SA 4.0 ![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-sa/4.0/)
