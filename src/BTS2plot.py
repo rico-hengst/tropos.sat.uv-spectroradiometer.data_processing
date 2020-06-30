@@ -11,6 +11,7 @@ import mpl_toolkits.axisartist as AA
 import pandas as pd
 import pytz
 import numpy as np
+from matplotlib.ticker import FixedLocator
 # units, see also https://www.uni-kiel.de/med-klimatologie/uvinfo.html
 # https://www.bundesfachverband-besonnung.de/fileadmin/download/solaria2005/Solarium_Sonne.pdf
 
@@ -40,8 +41,6 @@ def plotme(d_bts1day, day, config):
     par2.set_ylabel("UV-A Irradiance [$W/m^2$]")
     """adding the varibles for plotting and setting the colors and labels"""
     
-    
-#    if config.get('TIMEZONE','local_time') in config:    
     """define local timezone from the config file"""
     new_timezone = pytz.timezone(config.get('TIMEZONE','local_time', fallback='UTC'))
     
@@ -53,20 +52,18 @@ def plotme(d_bts1day, day, config):
         x[z]=float(a.astimezone(new_timezone).strftime("%H%M"))/100
     x=x.astype('float64') 
     host.set_xlabel("Time ("+str(new_timezone)+")")
-    # else:
-    #     x=np.array(d_bts1day['time'])
-    #     x=x.astype('float64')
-    #     host.set_xlabel("Time (UTC)")
-        
-        
-    p1, = host.plot(x,d_bts1day["uvind"],"k-",linestyle=':', label="UV-Index")
+    
+    #p1, = host.plot(x,d_bts1day["uvind"],"k-",linestyle=':', label="UV-Index")
     p2, = par1.plot(x,d_bts1day["uvb"], "r-", label="UV-B")
     p3, = par2.plot(x,d_bts1day["uva"], "b-", label="UV-A")
     
     """defining the limits of the axes"""  #preguntar como hacer cn los limites
     host.set_xlim(4, 22)
     host.set_ylim(0, 13)
+
     par1.set_ylim(0, 20)
+    par1.yaxis.set_major_locator(FixedLocator(np.arange(0, 20, 3)))
+
     par2.set_ylim(0, 70)
     
     """adding legend and function"""
@@ -74,21 +71,26 @@ def plotme(d_bts1day, day, config):
     host.grid()
 
     """coloring the axis"""
-#    host.axis["left"].label.set_color(p1.get_color())
+    par1.spines["right"].set_color("red")
+    par2.spines["right"].set_color("blue")
+
+    par1.axis["right"].label.set_color(p2.get_color())    #coloring the label    
     par2.axis["right"].label.set_color(p3.get_color())
-    par1.axis["right"].label.set_color(p2.get_color())
     
+    par1.tick_params(axis='y', colors=p2.get_color())     #coloring the ticks
+    par2.tick_params(axis='y', colors=p3.get_color())
+
     """full filling the curve under the UV-Index curve"""
     plt.fill_between(x, d_bts1day["uvind"],  where=d_bts1day["uvind"]<2, 
-                        facecolor='green', alpha='0.5', interpolate=True)
+                        facecolor='green', alpha=0.5, interpolate=True)
     plt.fill_between(x, d_bts1day["uvind"],  where=d_bts1day["uvind"] >2 , 
-                        facecolor='yellow', alpha='0.5', interpolate=True)
+                        facecolor='yellow', alpha=0.5, interpolate=True)
     plt.fill_between(x, d_bts1day["uvind"],  where=d_bts1day["uvind"] >5 , 
-                        facecolor='orange', alpha='0.5', interpolate=True)
+                        facecolor='orange', alpha=0.5, interpolate=True)
     plt.fill_between(x, d_bts1day["uvind"],  where=d_bts1day["uvind"] >7 , 
-                        facecolor='red', alpha='0.5', interpolate=True)
+                        facecolor='red', alpha=0.5, interpolate=True)
     plt.fill_between(x, d_bts1day["uvind"],  where=d_bts1day["uvind"]>10, 
-                        facecolor='purple', alpha='0.5', interpolate=True)
+                        facecolor='purple', alpha=0.5, interpolate=True)
     
     """adding footnote"""
     plt.annotate('Leibnitz Institut für \nTroposphärenforschung', xy= (0,-1), xycoords='figure fraction',
