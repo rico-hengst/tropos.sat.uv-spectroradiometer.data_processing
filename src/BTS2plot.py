@@ -35,7 +35,6 @@ def plotme(d_bts1day, day, config):
     par2.axis["right"].toggle(all=True)
     
     """Label the axes"""
-    host.set_xlabel("Time (UTC)")
     host.set_ylabel("UV-Index")
     par1.set_ylabel("UV-B Irradiance [$W/m^2$]")
     par2.set_ylabel("UV-A Irradiance [$W/m^2$]")
@@ -51,7 +50,7 @@ def plotme(d_bts1day, day, config):
         a=pytz.UTC.localize(a)
         x[z]=float(a.astimezone(new_timezone).strftime("%H%M"))/100
     x=x.astype('float64') 
-    host.set_xlabel("Time ("+str(new_timezone)+")")
+    host.set_xlabel("Time ("+str(new_timezone)+") [Hs]")
     
     #p1, = host.plot(x,d_bts1day["uvind"],"k-",linestyle=':', label="UV-Index")
     p2, = par1.plot(x,d_bts1day["uvb"], "r-", label="UV-B")
