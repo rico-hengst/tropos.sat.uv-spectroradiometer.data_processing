@@ -70,8 +70,7 @@ $ git submodule update --init
 * [ralfebert.de](https://www.ralfebert.de/git/submodules/)
 
  
-## Configuration and Usage 
-### Configuration
+## Configuration
 
 When using this software code for the first time, we would like to recommend to configure the code in s suggested way. configuration.
 The software has two configuration files. Please copy both configuration files to the software root directory and use the extension ```.private```.
@@ -86,7 +85,7 @@ Please edit also the name of the json_file to ```json_file=uv_js_meta.json.priva
 Now the configuration is done.
 
 
-### Usage
+## Usage
 
 ```
 # example to create netCDF files and images
