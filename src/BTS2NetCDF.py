@@ -36,7 +36,6 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
         f.createVariable(x,cfjson['variables'][x]['type'],(cfjson['variables'][x]['shape']),zlib=True,least_significant_digit=3)
         """Adding units to the variables"""
         # f[x].setncatts(cfjson['variables'][x]['attributes'])
-        print(x)
         f[x].units=cfjson['variables'][x]['attributes']['units']
         if x=='time':
             f[x][:]= second_since
