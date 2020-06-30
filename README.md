@@ -120,8 +120,3 @@ Logos, icons and the Solarscan User manual are not affected by the license of th
 ## Cooperationjson_file
 ![Tropos Logo](doc/TROPOS-Logo_ENG.png)
 ![DWD Logo](doc/Deutscherwetterdienst-logo.png)
-
-## ToDo
-* improve script to read, plot auxiliary data
-
-
