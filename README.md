@@ -42,7 +42,7 @@ The software package includes
 * configparser
 
 ## Requirements 2
-To generate plots about the statistics of missing files in your archiv you have to implement a further python module [heatmap_missing_files from github](https://github.com/rico-hengst/tropos.heatmap_missing_files) as git submodule.
+To generate plots about the statistics of missing files in your archiv you have to implement a further python module [github.com/rico-hengst/tropos.heatmap_missing_files](https://github.com/rico-hengst/tropos.heatmap_missing_files) from as git submodule.
 ```
 # go to root directory of the current main repo
 
@@ -116,7 +116,7 @@ Logos, icons and the Solarscan User manual are not affected by the license of th
 * Nicolas Bayer
 * Lionel Doppler ![Logo](doc/ORCIDiD_icon16x16.png) [https://orcid.org/0000-0003-3162-8602](https://orcid.org/0000-0003-3162-8602)
 
-## Cooperation
+## Cooperationjson_file
 ![Tropos Logo](doc/TROPOS-Logo_ENG.png)
 ![DWD Logo](doc/Deutscherwetterdienst-logo.png)
 
