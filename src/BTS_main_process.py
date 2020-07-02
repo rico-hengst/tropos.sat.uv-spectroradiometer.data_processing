@@ -111,7 +111,8 @@ def statistic(i8date,f8date):
     
     
     """add dataframe to plot missing files"""
-    df = pd.DataFrame({'date' : [], 'missing file' : [] })
+    missing_files_key_name = "missing data"
+    df = pd.DataFrame({'date' : [], missing_files_key_name : [] })
     
     """pandas time counter vector instead of loop"""    
     dates=pd.date_range(args.id, args.fd,freq='1D', name=str, normalize=False) 
@@ -126,13 +127,13 @@ def statistic(i8date,f8date):
             if os.stat(path_file).st_size<1:  # controls if the file is not empty
                 print('file is empty '+path_file)
                 if args.statistics:
-                    df = df.append({'date': day.date(), 'missing file' : dict_lookup_missing_value["file_empty"]}, ignore_index=True)
+                    df = df.append({'date': day.date(), missing_files_key_name : dict_lookup_missing_value["file_empty"]}, ignore_index=True)
             else:
                 if args.statistics:
                     if os.stat(path_file).st_size<1048576:  # controls if the file is less than 1mb
-                        df = df.append({'date': day.date(), 'missing file' : dict_lookup_missing_value["file_less_than_1mb"]}, ignore_index=True)
+                        df = df.append({'date': day.date(), missing_files_key_name : dict_lookup_missing_value["file_less_than_1mb"]}, ignore_index=True)
                     else:
-                        df = df.append({'date': day.date(), 'missing file' : dict_lookup_missing_value["file_size_ok"]}, ignore_index=True)
+                        df = df.append({'date': day.date(), missing_files_key_name : dict_lookup_missing_value["file_size_ok"]}, ignore_index=True)
                 """Obtanin the directory data from the OR0 files"""
                 if args.image or args.netcdf:
                     d_bts1day=bts.read_oro_bts(path_file,methodbts,day.strftime('%Y%m%d'))
@@ -151,16 +152,17 @@ def statistic(i8date,f8date):
         else:
             print("file not exist "+path_file)
             if args.statistics:
-                df = df.append({'date': day.date(), 'missing file' : dict_lookup_missing_value["file_not_exists"]}, ignore_index=True)
+                df = df.append({'date': day.date(), missing_files_key_name : dict_lookup_missing_value["file_not_exists"]}, ignore_index=True)
         
         """plot statistics"""
         if (args.statistics):
             """generate filename"""
             picture_filename = \
-                config.get('DEFAULT','image_path') + 'MissingFiles_' + \
-                str( df['date'][0].strftime('%Y-%m-%d') ) + \
+                config.get('DEFAULT','image_path') + config.get('STATION','station_prefix') + '_' + \
+                str( df['date'][0].strftime('%Y%m%d') ) + \
                 '_' + \
-                str(df['date'][len(df.index)-1].strftime('%Y-%m-%d') )
+                str(df['date'][len(df.index)-1].strftime('%Y%m%d') ) + \
+                '_missing_data'
                 
             """plot first or second half of year"""
             if (day.strftime('%m%d')=='0630' or day.strftime('%-m%d')=='1231'):
@@ -178,7 +180,7 @@ def statistic(i8date,f8date):
                 )
                 
                 """init new dataframe"""
-                df = pd.DataFrame({'date' : [], 'missing file' : [] })
+                df = pd.DataFrame({'date' : [], missing_files_key_name : [] })
                 
             #plot period after the last half year
             elif (day.strftime('%Y%m%d') == f8date):

@@ -117,6 +117,6 @@ Logos, icons and the Solarscan User manual are not affected by the license of th
 * Nicolas Bayer
 * Lionel Doppler ![Logo](doc/ORCIDiD_icon16x16.png) [https://orcid.org/0000-0003-3162-8602](https://orcid.org/0000-0003-3162-8602)
 
-## Cooperationjson_file
+## Cooperation
 ![Tropos Logo](doc/TROPOS-Logo_ENG.png)
 ![DWD Logo](doc/Deutscherwetterdienst-logo.png)
