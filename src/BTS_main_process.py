@@ -86,14 +86,6 @@ def statistic(i8date,f8date):
         quit()
 
 
-#    print(config.get('DEFAULT', 'station_prefix')+'test')
-#    if config.get('DEFAULT','station_prefix') is None:
-#       print('Station prefix not exists ')
-#        quit()
-
-#    if not os.path.exists( config.get('DEFAULT','station_prefix') ):
-#        print('Station prefix not exists '+ config.get('DEFAULT','station_prefix'))
-#        quit()
         
     """Load content of json_file to python variable cfjson"""
     cfjson={}
@@ -119,10 +111,21 @@ def statistic(i8date,f8date):
 
     # pd.to_numeric(dates.str.replace('-',''))
     for day in dates:
+        
         """Compose PathFileName of OR0-File"""
-        path_file = config.get('DEFAULT','main_path') + day.strftime('%Y')+ "/" +day.strftime('%m')+ \
-                        "/" +day.strftime('%d')+ "/" + config.get('STATION','station_prefix') + \
+        or0_file = config.get('STATION','station_prefix') + \
                         day.strftime('%y').zfill(2)+day.strftime('%m')+ day.strftime('%d')+".OR0"
+        path_file = ""
+        
+        
+        """path_file is dependent on the mai_path_tree"""
+        if (config.get('DEFAULT','main_path_tree') == 'flat') :
+            path_file = config.get('DEFAULT','main_path') + or0_file
+        elif (config.get('DEFAULT','main_path_tree') == 'yyyy/mm/dd/') :
+            path_file = config.get('DEFAULT','main_path') + \
+                day.strftime('%Y')+ "/" + day.strftime('%m') + "/" + day.strftime('%d') + "/" + or0_file
+
+        """check file exists"""
         if os.path.isfile(path_file):  # see if the .OR0 file exist
             if os.stat(path_file).st_size<1:  # controls if the file is not empty
                 print('file is empty '+path_file)

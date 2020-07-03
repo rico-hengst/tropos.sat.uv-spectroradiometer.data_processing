@@ -21,7 +21,7 @@ from matplotlib.cm import ScalarMappable
 def plotme(d_bts1day, day, config):
     
     """get wished timezone from the config file"""
-    new_timezone = pytz.timezone(config.get('TIMEZONE','local_time', fallback='UTC'))
+    new_timezone = pytz.timezone(config.get('TIMEZONE','plotting_timezone', fallback='UTC'))
     
     fig, ax = plt.subplots()
     ax.axis('off')
