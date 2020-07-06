@@ -43,8 +43,8 @@ The software package includes
 * pygal
 
 
-## Requirements 2
-To generate plots about the statistics of missing files in your archiv you have to implement a further python module [github.com/rico-hengst/tropos.heatmap_missing_files](https://github.com/rico-hengst/tropos.heatmap_missing_files) from as git submodule.
+## Requirements 2 (optional)
+To generate plots about the statistics of **missing data** in your archiv you have to implement a further python module [github.com/rico-hengst/tropos.heatmap_missing_files](https://github.com/rico-hengst/tropos.heatmap_missing_files) from as git submodule.
 ```
 # go to root directory of the current main repo
 
