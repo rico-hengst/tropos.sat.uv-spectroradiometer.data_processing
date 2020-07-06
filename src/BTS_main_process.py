@@ -14,7 +14,7 @@ import os
 import read_bts2048rh as bts
 import BTS2plot
 #import Submodule/PlotHeatmap as plthtmp
-from Submodule import PlotHeatmap as plthtmp
+#from Submodule import PlotHeatmap as plthtmp
 import BTS2NetCDF 
 import argparse
 import json
@@ -53,6 +53,17 @@ if int(python_version[0]) < 3:
   print("Your python version is: " + platform.python_version() )
   print("Script will be terminated cause python version < 3 is required !")
   exit()
+  
+  
+"""Check python Submodule is already installed"""
+if (args.statistics):
+    try:
+        from Submodule import PlotHeatmap as plthtmp
+    except ImportError:
+        print('\nThere was no such module installed: PlotHeatmap')"
+    exit()
+    
+    
 
 def statistic(i8date,f8date):
     methodbts = "global" 
