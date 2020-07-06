@@ -4,6 +4,7 @@
 main_path = /your/data/directory/
 
 # """Define the branching of the directory tree in main_path: possible values are: "flat" or "yyyy/mm/dd/" """
+# in case of "yyyy/mm/dd/" make sure, that the directory tree or the file pathname are named in that way
 main_path_tree = flat
     
 # """Define the main path where the images should be saved"""
