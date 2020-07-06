@@ -31,13 +31,17 @@ The software package includes
 * Python version 3.x
 * argparse
 * calendar
+* configparser
 * datetime
 * matplotlib
-* NetCDF
+* mpl_toolkits
+* netCDF4
 * numpy
 * os
+* pandas
+* pytz
 * pygal
-* configparser
+
 
 ## Requirements 2
 To generate plots about the statistics of missing files in your archiv you have to implement a further python module [github.com/rico-hengst/tropos.heatmap_missing_files](https://github.com/rico-hengst/tropos.heatmap_missing_files) from as git submodule.
