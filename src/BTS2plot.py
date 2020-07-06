@@ -72,8 +72,8 @@ def plotme(d_bts1day, day, config):
     par1.set_ylim(0, 70)
     par1.yaxis.set_major_locator(FixedLocator(np.arange(0, 70.1, 14)))
 
-    par2.set_ylim(0, 15)
-    par2.yaxis.set_major_locator(FixedLocator(np.arange(0, 15.1, 3)))
+    par2.set_ylim(0, 10)
+    par2.yaxis.set_major_locator(FixedLocator(np.arange(0, 10.1, 2)))
     
     """adding legend and function"""
     host.legend()
