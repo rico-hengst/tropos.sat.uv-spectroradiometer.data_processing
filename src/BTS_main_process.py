@@ -61,7 +61,7 @@ if (args.statistics):
         from Submodule import PlotHeatmap as plthtmp
     except ImportError:
         print('\nThere was no such module installed: PlotHeatmap')
-    exit()
+        exit()
     
     
 
