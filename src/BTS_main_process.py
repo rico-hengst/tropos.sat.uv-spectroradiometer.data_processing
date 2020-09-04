@@ -13,7 +13,6 @@ __status__ = "Production"
 import os
 import read_bts2048rh as bts
 import BTS2plot
-#import Submodule/PlotHeatmap as plthtmp
 #from Submodule import PlotHeatmap as plthtmp
 import BTS2NetCDF 
 import argparse
