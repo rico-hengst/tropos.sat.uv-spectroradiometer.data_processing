@@ -15,10 +15,11 @@ from matplotlib.ticker import FixedLocator
 import matplotlib.cm as cm
 from matplotlib.colors import Normalize
 from matplotlib.cm import ScalarMappable
+import xarray as xr
 # units, see also https://www.uni-kiel.de/med-klimatologie/uvinfo.html
 # https://www.bundesfachverband-besonnung.de/fileadmin/download/solaria2005/Solarium_Sonne.pdf
 
-def plotme(d_bts1day, day, config):
+def plotme(nc, day, config):
     
     """get wished timezone from the config file"""
     new_timezone = pytz.timezone(config.get('TIMEZONE','plotting_timezone', fallback='UTC'))
@@ -52,20 +53,22 @@ def plotme(d_bts1day, day, config):
     
     
     """changing time for local time"""
-    x_dict = {"datetime_new":[],"hour_decimal":[]}
-    for z in range(0,len(d_bts1day['datetime'])):
-        x_dict["datetime_new"].append( d_bts1day['datetime'][z].astimezone(new_timezone) );
-        x_dict["hour_decimal"].append( x_dict["datetime_new"][-1].hour + x_dict["datetime_new"][-1].minute/60 + x_dict["datetime_new"][-1].second/3600)
-   
+    time=nc.time.to_index()
+    time_utc = time.tz_localize(pytz.UTC)
+    time_local = time_utc.tz_convert(new_timezone)
+    time_local=time_local[:].hour+time_local[:].minute/60 +time_local[:].second/3600
+    
     
     #p0, = host.plot(x,d_bts1day["uvind"],"k-",linestyle=':', label="UV-Index")
-    p1, = par1.plot(x_dict["hour_decimal"],d_bts1day["uva"], "b-", label="UV-A")
-    p2, = par2.plot(x_dict["hour_decimal"],d_bts1day["uvb"], "r-", label="UV-B")
+    p1, = par1.plot(time_local,nc["uva"], "b-", label="UV-A")
+    p2, = par2.plot(time_local,nc["uvb"], "r-", label="UV-B")
     
     
     """defining the limits of the axes"""  #preguntar como hacer cn los limites
-    utcoffset = x_dict["datetime_new"][1].utcoffset().total_seconds()/3600
-    host.set_xlim(2+utcoffset, 20+utcoffset)
+    # utcoffset = x_dict["datetime_new"][1].utcoffset().total_seconds()/3600
+    # host.set_xlim(2+utcoffset, 20+utcoffset)
+    host.set_xlim(time_local[0]-1, max(time_local)+1)
+    host.xaxis.set_major_locator(FixedLocator(np.arange(round(time_local[0]-1), round(max(time_local)+1), 2)))
     host.set_ylim(0, 10)
     par1.yaxis.set_major_locator(FixedLocator(np.arange(0, 10, 2)))
 
@@ -102,7 +105,7 @@ def plotme(d_bts1day, day, config):
     # Get normalize function (takes data in range [vmin, vmax] -> [0, 1])
     my_norm = Normalize(vmin=0, vmax=10)
     time_step=1/30 # in hours
-    plt.bar(x_dict["hour_decimal"], d_bts1day["uvind"], color=my_cmap_r(my_norm(d_bts1day["uvind"])), edgecolor='none', width=time_step)
+    plt.bar(time_local, nc["uvind"], color=my_cmap_r(my_norm(nc["uvind"])), edgecolor='none', width=time_step)
     
     """Add colorbar"""
     # https://stackoverflow.com/questions/51204505/python-barplot-with-colorbar
