@@ -20,6 +20,7 @@ import json
 import configparser
 import platform
 import pandas as pd
+import xarray as xr
 
 """Insert de initial and final dates as strings as 20190107(year:2019/month:01/day:07)"""
 
@@ -148,11 +149,8 @@ def statistic(i8date,f8date):
                     else:
                         df = df.append({'date': day.date(), missing_files_key_name : dict_lookup_missing_value["file_size_ok"]}, ignore_index=True)
                 """Obtanin the directory data from the OR0 files"""
-                if args.image or args.netcdf:
+                if args.netcdf:
                     d_bts1day=bts.read_oro_bts(path_file,methodbts,day.strftime('%Y%m%d'))
-                    if args.image:
-                        """Ploting function"""
-                        BTS2plot.plotme(d_bts1day,day,config)
                     if args.netcdf:
                         """checking if the file does already exist, and delete if so."""
                         nc_file = config.get('DEFAULT','netCDF_path') + day.strftime('%Y%m%d') + '.nc'
@@ -161,7 +159,37 @@ def statistic(i8date,f8date):
                             BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
                         else:
                             """Save the data processed by the bts function in a netCDF file"""
-                            BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
+                            BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson)
+                
+                if args.image:
+                    """checking if the file does already exist"""
+                    nc_file = config.get('DEFAULT','netCDF_path') + day.strftime('%Y%m%d') + '.nc'
+                    """ If it exist, opens data in xarray.
+                        If not, creates netCDF file and load data in xarray"""
+                    if os.path.isfile(nc_file):
+                        nc=xr.open_dataset(nc_file)
+                    else:
+                        d_bts1day=bts.read_oro_bts(path_file,methodbts,day.strftime('%Y%m%d')) 
+                        BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson)
+                        nc=xr.open_dataset(nc_file)
+                    
+                    """Ploting function"""
+                    BTS2plot.plotme(nc,day,config)
+                    
+                    
+                    # d_bts1day=bts.read_oro_bts(path_file,methodbts,day.strftime('%Y%m%d'))
+                    # if args.image:
+                    #     """Ploting function"""
+                    #     BTS2plot.plotme(d_bts1day,day,config)
+                    # if args.netcdf:
+                    #     """checking if the file does already exist, and delete if so."""
+                    #     nc_file = config.get('DEFAULT','netCDF_path') + day.strftime('%Y%m%d') + '.nc'
+                    #     if os.path.isfile(nc_file):
+                    #         os.remove(nc_file)
+                    #         BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
+                    #     else:
+                    #         """Save the data processed by the bts function in a netCDF file"""
+                    #         BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
         else:
             print("file not exist "+path_file)
             if args.statistics:
