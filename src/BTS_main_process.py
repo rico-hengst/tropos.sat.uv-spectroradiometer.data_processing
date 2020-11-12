@@ -129,12 +129,22 @@ def statistic(i8date,f8date):
         path_file = ""
         
         
-        """path_file is dependent on the mai_path_tree"""
+        """path_file is dependent on the main_path_tree"""
         if (config.get('DEFAULT','main_path_tree') == 'flat') :
             path_file = config.get('DEFAULT','main_path') + or0_file
         elif (config.get('DEFAULT','main_path_tree') == 'yyyy/mm/dd/') :
             path_file = config.get('DEFAULT','main_path') + \
                 day.strftime('%Y')+ "/" + day.strftime('%m') + "/" + day.strftime('%d') + "/" + or0_file
+                
+                
+        """netcdf_file is dependent on the netCDF_path_tree"""
+        if (config.get('DEFAULT','netCDF_path_tree') == 'flat') :
+            netcdf_path = config.get('DEFAULT','netCDF_path')
+        elif (config.get('DEFAULT','netCDF_path_tree') == 'yyyy/mm/dd/') :
+            netcdf_path = config.get('DEFAULT','netCDF_path') + \
+                day.strftime('%Y')+ "/" + day.strftime('%m') + "/" + day.strftime('%d')
+                
+                
 
         """check file exists"""
         if os.path.isfile(path_file):  # see if the .OR0 file exist
@@ -148,12 +158,22 @@ def statistic(i8date,f8date):
                         df = df.append({'date': day.date(), missing_files_key_name : dict_lookup_missing_value["file_less_than_1mb"]}, ignore_index=True)
                     else:
                         df = df.append({'date': day.date(), missing_files_key_name : dict_lookup_missing_value["file_size_ok"]}, ignore_index=True)
+                        
+                """Check if netcdf (sub)directory exists"""
+                if args.netcdf or args.image:
+                    nc_file = netcdf_path + config.get('STATION','station_prefix') + '_' + day.strftime('%Y%m%d') + '.nc'
+                    
+                    """checking if the directory already exists, create subdir"""
+                    if not os.path.isdir(netcdf_path):
+                        os.makedirs(netcdf_path)
+                        print('Create directory     : ' + netcdf_path )
+                
                 """Obtanin the directory data from the OR0 files"""
                 if args.netcdf:
                     d_bts1day=bts.read_oro_bts(path_file,methodbts,day.strftime('%Y%m%d'))
                     if args.netcdf:
+                        
                         """checking if the file does already exist, and delete if so."""
-                        nc_file = config.get('DEFAULT','netCDF_path') + day.strftime('%Y%m%d') + '.nc'
                         if os.path.isfile(nc_file):
                             os.remove(nc_file)
                             BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
@@ -163,7 +183,6 @@ def statistic(i8date,f8date):
                 
                 if args.image:
                     """checking if the file does already exist"""
-                    nc_file = config.get('DEFAULT','netCDF_path') + day.strftime('%Y%m%d') + '.nc'
                     """ If it exist, opens data in xarray.
                         If not, creates netCDF file and load data in xarray"""
                     if os.path.isfile(nc_file):
@@ -191,7 +210,7 @@ def statistic(i8date,f8date):
                     #         """Save the data processed by the bts function in a netCDF file"""
                     #         BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
         else:
-            print("file not exist "+path_file)
+            print("file not exist "+ path_file)
             if args.statistics:
                 df = df.append({'date': day.date(), missing_files_key_name : dict_lookup_missing_value["file_not_exists"]}, ignore_index=True)
         

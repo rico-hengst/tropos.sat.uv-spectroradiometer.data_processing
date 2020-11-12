@@ -5,6 +5,7 @@ Created on Tue Nov 19 13:13:35 2019
 
 @author: bayer
 """
+import os
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import host_subplot
 import mpl_toolkits.axisartist as AA
@@ -29,8 +30,8 @@ def plotme(nc, day, config):
   
     """creating plot title"""
     plt.suptitle('Station: ' + config.get('STATION','station_name') + \
-    '\nDate/Timezone: '+day.strftime('%Y-%m-%d')+ \
-    ' / ' + str(new_timezone))
+    '\nDate: '+day.strftime('%Y-%m-%d')+ \
+    ', Timezone: ' + str(new_timezone))
         
     """creating the 3 y axes for the ploting"""
     host = host_subplot(111, axes_class=AA.Axes)
@@ -39,8 +40,7 @@ def plotme(nc, day, config):
     par2 = host.twinx()
     offset = 50
     new_fixed_axis = par2.get_grid_helper().new_fixed_axis
-    par2.axis["right"] = new_fixed_axis(loc="right", axes=par2,
-                                        offset=(offset, 0))
+    par2.axis["right"] = new_fixed_axis(loc="right", axes=par2, offset=(offset, 0))
     par1.axis["right"] = new_fixed_axis(loc="right", axes=par1)
     par2.axis["right"].toggle(all=True)
     
@@ -120,9 +120,22 @@ def plotme(nc, day, config):
     cbar.ax.tick_params(labelsize=7)
     # END # colornar
     
+    
+    """image_path is dependent on the image_path_tree"""
+    if (config.get('DEFAULT','image_path_tree') == 'flat') :
+        image_path = config.get('DEFAULT','image_path')
+    elif (config.get('DEFAULT','image_path_tree') == 'yyyy/mm/dd/') :
+        image_path = config.get('DEFAULT','image_path') + \
+                day.strftime('%Y')+ "/" + day.strftime('%m') + "/" + day.strftime('%d')
+   
+                    
+    """checking if the directory already exists, create subdir"""
+    if not os.path.isdir(image_path):
+        os.makedirs(image_path)
+        print('Create directory     : ' + image_path )
 
     """save the plot as file """
-    plot_name = config.get('DEFAULT','image_path') + config.get('STATION','station_prefix') + '_' + day.strftime('%Y%m%d') + '_plot.png'
-    plt.savefig(plot_name, dpi=300)
+    image_name = image_path + '/' + config.get('STATION','station_prefix') + '_' + day.strftime('%Y%m%d') + '_plot.png'
+    plt.savefig(image_name, dpi=300)
     plt.close()
-    print("%-21s: %-60s" %('Plot data to file', plot_name))
+    print("%-21s: %-60s" %('Plot data to file', image_name))
