@@ -9,9 +9,13 @@ main_path_tree = flat
     
 # """Define the main path where the images should be saved"""
 image_path = /images/
+
+image_path_tree = flat
     
 # """Define the main path where the netCDF files should be saved"""
 netCDF_path = /netcdf/
+
+netCDF_path_tree = flat
     
 # """Define the JSON path where the json metadata are located"""
 json_file = uv_js_meta.json.default
