@@ -41,6 +41,7 @@ The software package includes
 * pandas
 * pytz
 * pygal
+* xarray
 
 
 ## Requirements 2 (optional)
