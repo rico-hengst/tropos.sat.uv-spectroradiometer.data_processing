@@ -3,3 +3,9 @@ __pycache__/*
 read_bts2048.py
 *.pyc
 images/*
+/Papers UV/
+gas_aerosol_equations.pdf
+test.py
+testtime.py
+/netCDF
+/script_plots/

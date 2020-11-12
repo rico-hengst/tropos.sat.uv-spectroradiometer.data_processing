@@ -1,5 +1,5 @@
 # Data import and processing of SOLARSCAN OR0-files
-[![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-sa/4.0/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 The repository contains post-processing scripts to read and visualize solar radiation data exported by the  "Solarscan Software System" (hereinafter referred as Solarscan).
 
@@ -16,14 +16,12 @@ The software package includes
 * a module to read OR0-Files from UV observations stred in Solarscan format and
 * a module to visualize the numerical data and
 * a module to store data as netcdf file(s)
-* a module to visualize data gaps (missing files).
+* a switch to visualize data gaps (missing files).
 
 ### Assumption
-* **Filename:** the OR0-Files should fits the naming pattern "`<IDYYMMDD>.OR0`", where
+**Filename:** the OR0-Files should fits the naming pattern "`<IDYYMMDD>.OR0`", where
   * **ID** is a character string with a length of two and respresents a identifier of the UV station
   * and **YY** year since 2000, **MM** number of month, **DD** day of the month (all filled with zeros)
-* **Directory tree:** the OR0-Files are in following directory structure "`<YYYY/MM/DD/>`", where
-  * and **YYYY** year, **MM** number of month, **DD** day of the month (all filled with zeros)
 
 ### Scheme
 ![BTS scheme](doc/bts_scheme.png)
@@ -33,15 +31,65 @@ The software package includes
 * Python version 3.x
 * argparse
 * calendar
+* configparser
 * datetime
 * matplotlib
-* NetCDF
+* mpl_toolkits
+* netCDF4
 * numpy
 * os
+* pandas
+* pytz
 * pygal
-* configparser
+
+
+## Requirements 2 (optional)
+To generate plots about the statistics of **missing data** in your archiv you have to implement a further python module [github.com/rico-hengst/tropos.heatmap_missing_files](https://github.com/rico-hengst/tropos.heatmap_missing_files) from as git submodule.
+```
+# go to root directory of the current main repo
+
+# Already done during implementation of submodule
+# Add submodule repository
+$ git submodule add <repository> <path>
+$ git submodule add https://github.com/rico-hengst/tropos.heatmap_missing_files src/Submodule
+
+# Already done during implementation of submodule
+# notice the modification to your main repository
+$ git status -s
+A  .gitmodules
+A  src/Submodule
+$ git commit "added submodule"
+
+
+# Last step is always required to get updates
+# Init submodule and get content from the repository
+$ git submodule update --init
+
+```
+... to embedding external git repositories in the current repository.
+
+* [vogella.com](https://www.vogella.com/tutorials/GitSubmodules/article.html)
+* [ralfebert.de](https://www.ralfebert.de/git/submodules/)
+
  
+## Configuration
+
+When using this software code for the first time, we would like to recommend to configure the code in s suggested way. configuration.
+The software has two configuration files. Please copy both configuration files to the software root directory and use the extension ```.private```.
+```bash
+cp src/config.default src/config.private
+cp src/uv_js_meta.json.default src/uv_js_meta.json.private
+```
+
+* ```uv_js_meta.json.private```: Please edit your contact data at the JSON-file ```uv_js_meta.json.private```, that is used for writing UV measurement data and metadata to a netcdf file. 
+* ```config.private```: Please edit also the content of the INI-file ```config.private```. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
+Please edit also the name of the json_file to ```json_file=uv_js_meta.json.private```.
+
+Now the configuration is done.
+
+
 ## Usage
+
 ```
 # example to create netCDF files and images
 cd src
@@ -58,32 +106,10 @@ optional arguments:
   -st, --statistics  create statistics of missing files !! Submodule required, see Requirements 2 !!
 
 ``` 
-## Requirements 2
-To generate plots about the statistics of missing files in your archiv you have to implement a further python module [heatmap_missing_files from github](https://github.com/rico-hengst/tropos.heatmap_missing_files) as git submodule.
-```
-# go to root directory of the current main repo
 
-# Add submodule repository
-$ git submodule add <repository> <path>
-$ git submodule add https://github.com/rico-hengst/tropos.heatmap_missing_files src/Submodule
-
-# notice the modification to your main repository
-$ git status -s
-A  .gitmodules
-A  src/Submodule
-$ git commit "added submodule"
-
-# Init submodule and get content from the repository
-$ git submodule update --init
-
-```
-... to embedding external git repositories in the current repository.
-
-* [vogella.com](https://www.vogella.com/tutorials/GitSubmodules/article.html)
-* [ralfebert.de](https://www.ralfebert.de/git/submodules/)
 
 ## License
-[CC BY-SA 4.0 ![License: CC BY-SA 4.0](https://licensebuttons.net/l/by-sa/4.0/80x15.png)](https://creativecommons.org/licenses/by-sa/4.0/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Logos, icons and the Solarscan User manual are not affected by the license of this repository.
 
@@ -96,8 +122,3 @@ Logos, icons and the Solarscan User manual are not affected by the license of th
 ## Cooperation
 ![Tropos Logo](doc/TROPOS-Logo_ENG.png)
 ![DWD Logo](doc/Deutscherwetterdienst-logo.png)
-
-## ToDo
-* improve script to read, plot auxiliary data
-
-

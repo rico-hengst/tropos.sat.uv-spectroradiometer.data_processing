@@ -29,28 +29,20 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
 
     """Creating the dimensions in the NetCDF file from the JSON file"""
     for x,y in cfjson['dimensions'].items(): 
-        if y!=-1:
-            f.createDimension(x,1)
-        elif y==-1:
-            f.createDimension(x,len(d_bts1day[x]))
-
+        f.createDimension(x,len(d_bts1day[x]))
+        # print(f.dimensions)
     """Building variables    time = uv_grp.createVariable('Time', 'i4', 'time')"""
     for x in cfjson['variables']:
-        f.createVariable(x,cfjson['variables'][x]['type'],cfjson['variables'][x]['shape'])
+        f.createVariable(x,cfjson['variables'][x]['type'],(cfjson['variables'][x]['shape']),zlib=True,least_significant_digit=3)
         """Adding units to the variables"""
         # f[x].setncatts(cfjson['variables'][x]['attributes'])
         f[x].units=cfjson['variables'][x]['attributes']['units']
-        if len(cfjson['variables'][x]['shape'])<=2:
-            """In case of "time" add data values from data dictionary"""
-            """otherwise use data values from json file"""
-            if x=='time':
-                f[x][:]= second_since
-            else:
-                f[x][:]=cfjson['variables'][x]['data']
-        elif len(cfjson['variables'][x]['shape'])==3:
-            f[x][0,0,:]=d_bts1day[x]
-        elif len(cfjson['variables'][x]['shape'])==4:
-            f[x][0,0,:,:]=d_bts1day[x]   
+        if x=='time':
+            f[x][:]= second_since
+        elif cfjson['variables'][x]['shape']==['time']:
+            f[x][:]=d_bts1day[x]
+        elif len(cfjson['variables'][x]['shape'])==2:
+            f[x][:,:]=d_bts1day[x]
     today = datetime.today()
     f.history = "Created " + today.strftime("%d/%m/%y")
 
@@ -59,16 +51,18 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
         setattr(f,x,cfjson['attributes'][x])
     f.close()
 
+    
     print("%-21s: %-60s" %('Write data to netcdf', nc_file))
     
  
     
-"""read netCDF"""
-# nc = nc4.Dataset('/vols/satellite/home/bayer/uv/netCDF/20190101.nc','r')
+# """read netCDF"""
+# nc = nc4.Dataset('/vols/satellite/home/bayer/uv/netCDF/20190701.nc','r')
 # for i in nc.variables:
-#     print(i, nc.variables[i].units, nc.variables[i].shape)
+#     print(i,nc.variables[i] )#, nc.variables[i].units, nc.variables[i].shape)
+#     print(nc.variables)
 #     i=nc.variables[i][:]
-#     print(i)
+#     #print(i)
 # print(nc.history)
-# print(nc.variables)
+# print(nc.variables["uva"][:])
 # print(nc)
