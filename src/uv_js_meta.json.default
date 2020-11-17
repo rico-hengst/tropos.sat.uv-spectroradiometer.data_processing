@@ -27,6 +27,13 @@
             "attributes": {
                 "long_name" : "Level height",
                 "units" : "m"}},
+	"wvl":{
+	    "type" : "f4", 
+            "shape": ["wvl"],
+            "data":[],
+            "attributes": {
+                "long_name" : "Wavelength",
+                "units" : "nm"}},
         "time":{
             "type": "f8",
             "shape": ["time"],
