@@ -28,27 +28,30 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
     f = nc4.Dataset(nc_file,'w', format='NETCDF4') #'w' stands for write 
 
     """Creating the dimensions in the NetCDF file from the JSON file"""
-    for x,y in cfjson['dimensions'].items(): 
-        f.createDimension(x,len(d_bts1day[x]))
+    for name,shape in cfjson['dimensions'].items(): 
+        f.createDimension(name,len(d_bts1day[name]))
         # print(f.dimensions)
+        
     """Building variables    time = uv_grp.createVariable('Time', 'i4', 'time')"""
-    for x in cfjson['variables']:
-        f.createVariable(x,cfjson['variables'][x]['type'],(cfjson['variables'][x]['shape']),zlib=True,least_significant_digit=3)
+    for variable in cfjson['variables']:
+        f.createVariable(variable,cfjson['variables'][variable]['type'],(cfjson['variables'][variable]['shape'])) #,zlib=True,least_significant_digit=3)
         """Adding units to the variables"""
         # f[x].setncatts(cfjson['variables'][x]['attributes'])
-        f[x].units=cfjson['variables'][x]['attributes']['units']
-        if x=='time':
-            f[x][:]= second_since
-        elif cfjson['variables'][x]['shape']==['time']:
-            f[x][:]=d_bts1day[x]
-        elif len(cfjson['variables'][x]['shape'])==2:
-            f[x][:,:]=d_bts1day[x]
+        f[variable].units=cfjson['variables'][variable]['attributes']['units']
+        if variable=='time':
+            f[variable][:]= second_since
+        elif cfjson['variables'][variable]['shape']==['time']:
+            f[variable][:]=d_bts1day[variable]
+        elif len(cfjson['variables'][variable]['shape'])==2:
+            f[variable][:,:]=d_bts1day[variable]
+        elif cfjson['variables'][variable]['shape']==['wvl']:
+            f[variable][:]=d_bts1day[variable]
     today = datetime.today()
     f.history = "Created " + today.strftime("%d/%m/%y")
 
     """adding attributer"""
-    for x in cfjson['attributes']:
-        setattr(f,x,cfjson['attributes'][x])
+    for atributes in cfjson['attributes']:
+        setattr(f,atributes,cfjson['attributes'][atributes])
     f.close()
 
     
