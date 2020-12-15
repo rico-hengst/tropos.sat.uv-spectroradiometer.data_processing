@@ -24,7 +24,9 @@ json_file = uv_js_meta.json.default
 [STATION]
 
 station_prefix = YOUR_STATION_PREFIX
-station_name= YOUR_STATION_NAME
+station_name = YOUR_STATION_NAME
+station_lat = YOUR_LAT
+station_lon = YOUR_LON
 
 
 [INSTRUMENT]
