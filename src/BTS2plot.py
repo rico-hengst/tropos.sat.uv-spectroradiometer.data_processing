@@ -60,8 +60,8 @@ def plotme(nc, day, config):
     
     
     #p0, = host.plot(x,d_bts1day["uvind"],"k-",linestyle=':', label="UV-Index")
-    p1, = par1.plot(time_local,nc["uva"], "b-", label="UV-A")
-    p2, = par2.plot(time_local,nc["uvb"], "r-", label="UV-B")
+    p1, = par1.plot(time_local,nc["uva"], "b-", label="UV-A", linewidth=1)
+    p2, = par2.plot(time_local,nc["uvb"], "r-", label="UV-B", linewidth=1)
     
     
     """defining the limits of the axes"""  #preguntar como hacer cn los limites
@@ -125,8 +125,7 @@ def plotme(nc, day, config):
     if (config.get('DEFAULT','image_path_tree') == 'flat') :
         image_path = config.get('DEFAULT','image_path')
     elif (config.get('DEFAULT','image_path_tree') == 'yyyy/mm/dd/') :
-        image_path = config.get('DEFAULT','image_path') + \
-                day.strftime('%Y')+ "/" + day.strftime('%m') + "/" + day.strftime('%d')
+        image_path = config.get('DEFAULT','image_path') + day.strftime('%Y/%m/%d')
    
                     
     """checking if the directory already exists, create subdir"""
