@@ -25,7 +25,7 @@ import xarray as xr
 """Insert de initial and final dates as strings as 20190107(year:2019/month:01/day:07)"""
 
 """for calling the function from the terminal"""
-parser = argparse.ArgumentParser(description='Process UVradiometer Messurments in Melpitz.') 
+parser = argparse.ArgumentParser(description='Process UV radiometer measurements.') 
 parser.add_argument('-s', type=str, dest='id', # la variable se guarda en args.id como string
                     help='Insert the initial date as 20190107(y:2019 m:01 d:07)')
 parser.add_argument('-e', type=str, dest='fd',
