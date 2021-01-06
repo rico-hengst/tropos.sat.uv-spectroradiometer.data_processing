@@ -71,13 +71,12 @@ def statistic(i8date,f8date):
     """Read config file"""
     config = configparser.ConfigParser()
     
-    config.read('config.private')
     
     """Read private config file"""
-    if not os.path.isfile( 'config.private' ):
-        print('File config.private not exists, use DEFAULT config instead!')
+    if not os.path.isfile( 'config/config.ini' ):
+        print('File config/config.ini not exists, use DEFAULT config/templates/config.ini instead!')
     else:
-        config.read('config.private')
+        config.read('config/config.ini')
 
     """Check if directories etc exists"""
     if not os.path.isdir( config.get('DEFAULT','main_path') ):
@@ -121,11 +120,11 @@ def statistic(i8date,f8date):
     dates=pd.date_range(args.id, args.fd,freq='1D', name=str, normalize=False) 
 
     # pd.to_numeric(dates.str.replace('-',''))
-    for day in dates:
+    for date in dates:
         
-        """Compose PathFileName of OR0-File"""
+        """Compose PathFileName of or0-File"""
         or0_file = config.get('STATION','station_prefix') + \
-                        day.strftime('%y').zfill(2)+day.strftime('%m')+ day.strftime('%d')+".OR0"
+                        date.strftime('%y').zfill(2)+date.strftime('%m')+ date.strftime('%d')+".OR0"
         path_file = ""
         
         
@@ -133,86 +132,72 @@ def statistic(i8date,f8date):
         if (config.get('DEFAULT','main_path_tree') == 'flat') :
             path_file = config.get('DEFAULT','main_path') + or0_file
         elif (config.get('DEFAULT','main_path_tree') == 'yyyy/mm/dd/') :
-            path_file = config.get('DEFAULT','main_path') + \
-                day.strftime('%Y')+ "/" + day.strftime('%m') + "/" + day.strftime('%d') + "/" + or0_file
-                
-                
-        """netcdf_file is dependent on the netCDF_path_tree"""
-        if (config.get('DEFAULT','netCDF_path_tree') == 'flat') :
-            netcdf_path = config.get('DEFAULT','netCDF_path')
-        elif (config.get('DEFAULT','netCDF_path_tree') == 'yyyy/mm/dd/') :
-            netcdf_path = config.get('DEFAULT','netCDF_path') + \
-                day.strftime('%Y')+ "/" + day.strftime('%m') + "/" + day.strftime('%d')
-                
-                
+            path_file = config.get('DEFAULT','main_path') + date.strftime('%Y/%m/%d/') + or0_file
+            
+        
+        """Compose PathFileName of image-File and add to config to use in plot module"""
+        image_path_file = config.get('DEFAULT','image_path') + eval( config.get('DEFAULT','image_subpath_file_regex') )
+        config.set("DEFAULT", "image_path_file", image_path_file)
+        
+        
+        """Compose PathFileName of netcdf-File and add to config"""        
+        netcdf_path_file = config.get('DEFAULT','netcdf_path') + eval( config.get('DEFAULT','netcdf_subpath_file_regex') )
+        config.set("DEFAULT", "netcdf_path_file", netcdf_path_file)
+
 
         """check file exists"""
         if os.path.isfile(path_file):  # see if the .OR0 file exist
             if os.stat(path_file).st_size<1:  # controls if the file is not empty
                 print('file is empty '+path_file)
                 if args.statistics:
-                    df = df.append({'date': day.date(), missing_files_key_name : dict_lookup_missing_value["file_empty"]}, ignore_index=True)
+                    df = df.append({'date': date.date(), missing_files_key_name : dict_lookup_missing_value["file_empty"]}, ignore_index=True)
             else:
                 if args.statistics:
                     if os.stat(path_file).st_size<1048576:  # controls if the file is less than 1mb
-                        df = df.append({'date': day.date(), missing_files_key_name : dict_lookup_missing_value["file_less_than_1mb"]}, ignore_index=True)
+                        df = df.append({'date': date.date(), missing_files_key_name : dict_lookup_missing_value["file_less_than_1mb"]}, ignore_index=True)
                     else:
-                        df = df.append({'date': day.date(), missing_files_key_name : dict_lookup_missing_value["file_size_ok"]}, ignore_index=True)
+                        df = df.append({'date': date.date(), missing_files_key_name : dict_lookup_missing_value["file_size_ok"]}, ignore_index=True)
                         
                 """Check if netcdf (sub)directory exists"""
                 if args.netcdf or args.image:
-                    nc_file = netcdf_path + config.get('STATION','station_prefix') + '_' + day.strftime('%Y%m%d') + '.nc'
                     
                     """checking if the directory already exists, create subdir"""
-                    if not os.path.isdir(netcdf_path):
-                        os.makedirs(netcdf_path)
-                        print('Create directory     : ' + netcdf_path )
+                    if not os.path.isdir( os.path.dirname(netcdf_path_file) ):
+                        os.makedirs( os.path.dirname(netcdf_path_file) )
+                        print('Create directory     : ' + os.path.dirname(netcdf_path_file) )
                 
                 """Obtanin the directory data from the OR0 files"""
                 if args.netcdf:
-                    d_bts1day=bts.read_oro_bts(path_file,methodbts,day.strftime('%Y%m%d'))
+                    d_bts1day=bts.read_oro_bts(path_file,methodbts,date.strftime('%Y%m%d'))
                     if args.netcdf:
                         
                         """checking if the file does already exist, and delete if so."""
-                        if os.path.isfile(nc_file):
-                            os.remove(nc_file)
-                            BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
+                        if os.path.isfile( netcdf_path_file ):
+                            os.remove( netcdf_path_file )
+                            BTS2NetCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson) 
                         else:
                             """Save the data processed by the bts function in a netCDF file"""
-                            BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson)
+                            BTS2NetCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson)
                 
                 if args.image:
                     """checking if the file does already exist"""
                     """ If it exist, opens data in xarray.
                         If not, creates netCDF file and load data in xarray"""
-                    if os.path.isfile(nc_file):
-                        nc=xr.open_dataset(nc_file)
+                    if os.path.isfile( netcdf_path_file ):
+                        nc=xr.open_dataset( netcdf_path_file )
                     else:
-                        d_bts1day=bts.read_oro_bts(path_file,methodbts,day.strftime('%Y%m%d')) 
-                        BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson)
-                        nc=xr.open_dataset(nc_file)
+                        d_bts1day=bts.read_oro_bts(path_file,methodbts,date.strftime('%Y%m%d')) 
+                        BTS2NetCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson)
+                        nc=xr.open_dataset(netcdf_path_file)
                     
-                    """Ploting function"""
-                    BTS2plot.plotme(nc,day,config)
+                    """Plotting data"""
+                    BTS2plot.plotme(nc,date,config)
                     
-                    
-                    # d_bts1day=bts.read_oro_bts(path_file,methodbts,day.strftime('%Y%m%d'))
-                    # if args.image:
-                    #     """Ploting function"""
-                    #     BTS2plot.plotme(d_bts1day,day,config)
-                    # if args.netcdf:
-                    #     """checking if the file does already exist, and delete if so."""
-                    #     nc_file = config.get('DEFAULT','netCDF_path') + day.strftime('%Y%m%d') + '.nc'
-                    #     if os.path.isfile(nc_file):
-                    #         os.remove(nc_file)
-                    #         BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
-                    #     else:
-                    #         """Save the data processed by the bts function in a netCDF file"""
-                    #         BTS2NetCDF.netCDF_file(d_bts1day,nc_file,cfjson) 
+
         else:
             print("file not exist "+ path_file)
             if args.statistics:
-                df = df.append({'date': day.date(), missing_files_key_name : dict_lookup_missing_value["file_not_exists"]}, ignore_index=True)
+                df = df.append({'date': date.date(), missing_files_key_name : dict_lookup_missing_value["file_not_exists"]}, ignore_index=True)
         
         """plot statistics"""
         if (args.statistics):
@@ -225,7 +210,7 @@ def statistic(i8date,f8date):
                 '_missing_data'
                 
             """plot first or second half of year"""
-            if (day.strftime('%m%d')=='0630' or day.strftime('%-m%d')=='1231'):
+            if (date.strftime('%m%d')=='0630' or date.strftime('%-m%d')=='1231'):
                 print('Plot ' + picture_filename )
                 
                 """transform column date to datetime"""
@@ -243,7 +228,7 @@ def statistic(i8date,f8date):
                 df = pd.DataFrame({'date' : [], missing_files_key_name : [] })
                 
             #plot period after the last half year
-            elif (day.strftime('%Y%m%d') == f8date):
+            elif (date.strftime('%Y%m%d') == f8date):
                 print('Plot short period: ' + picture_filename )
                     
                 # transform column date to datetime

@@ -56,7 +56,13 @@ def plotme(nc, day, config):
     time=nc.time.to_index()
     time_utc = time.tz_localize(pytz.UTC)
     time_local = time_utc.tz_convert(new_timezone)
+    
+    # get offset to utc
+    utcoffset_hours = int(time_local[0].utcoffset().seconds)/3600
+
+    # set axis to hours
     time_local=time_local[:].hour+time_local[:].minute/60 +time_local[:].second/3600
+    
     
     
     #p0, = host.plot(x,d_bts1day["uvind"],"k-",linestyle=':', label="UV-Index")
@@ -67,8 +73,9 @@ def plotme(nc, day, config):
     """defining the limits of the axes"""  #preguntar como hacer cn los limites
     # utcoffset = x_dict["datetime_new"][1].utcoffset().total_seconds()/3600
     # host.set_xlim(2+utcoffset, 20+utcoffset)
-    host.set_xlim(time_local[0]-1, max(time_local)+1)
-    host.xaxis.set_major_locator(FixedLocator(np.arange(round(time_local[0]-1), round(max(time_local)+1), 2)))
+    host.set_xlim(5 + utcoffset_hours - 1, 21 + utcoffset_hours - 1)
+    
+    #host.xaxis.set_major_locator(FixedLocator(np.arange(6,20,2)))
     host.set_ylim(0, 10)
     par1.yaxis.set_major_locator(FixedLocator(np.arange(0, 10, 2)))
 
@@ -119,22 +126,15 @@ def plotme(nc, day, config):
     #cbar.set_label('UV index', rotation=90,labelpad=5)
     cbar.ax.tick_params(labelsize=7)
     # END # colornar
-    
-    
-    """image_path is dependent on the image_path_tree"""
-    if (config.get('DEFAULT','image_path_tree') == 'flat') :
-        image_path = config.get('DEFAULT','image_path')
-    elif (config.get('DEFAULT','image_path_tree') == 'yyyy/mm/dd/') :
-        image_path = config.get('DEFAULT','image_path') + day.strftime('%Y/%m/%d')
    
+    image_path_file = config.get('DEFAULT','image_path_file')
                     
     """checking if the directory already exists, create subdir"""
-    if not os.path.isdir(image_path):
-        os.makedirs(image_path)
-        print('Create directory     : ' + image_path )
+    if not os.path.isdir(  os.path.dirname(image_path_file) ):
+        os.makedirs( os.path.dirname(image_path_file) )
+        print('Create directory     : ' + os.path.dirname(image_path_file) )
 
     """save the plot as file """
-    image_name = image_path + '/' + config.get('STATION','station_prefix') + '_' + day.strftime('%Y%m%d') + '_plot.png'
-    plt.savefig(image_name, dpi=300)
+    plt.savefig(image_path_file, dpi=300)
     plt.close()
-    print("%-21s: %-60s" %('Plot data to file', image_name))
+    print("%-21s: %-60s" %('Plot data to file', image_path_file))
