@@ -75,16 +75,15 @@ $ git submodule update --init
  
 ## Configuration
 
-When using this software code for the first time, we would like to recommend to configure the code in s suggested way. configuration.
-The software has two configuration files. Please copy both configuration files to the software root directory and use the extension ```.private```.
+When using this software code for the first time, we would like to recommend to configure the code in s suggested way.
+The software has two configuration files. Please copy the template configuration files to the software root directory.
 ```bash
-cp src/config.default src/config.private
-cp src/uv_js_meta.json.default src/uv_js_meta.json.private
+cp src/templates/* src/config/
 ```
 
-* ```uv_js_meta.json.private```: Please edit your contact data at the JSON-file ```uv_js_meta.json.private```, that is used for writing UV measurement data and metadata to a netcdf file. 
-* ```config.private```: Please edit also the content of the INI-file ```config.private```. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
-Please edit also the name of the json_file to ```json_file=uv_js_meta.json.private```.
+* ```config/uv_js_meta.json```: Please edit your contact data at the JSON-file ```uv_js_meta.json```, that is used for writing UV measurement data and metadata to a netcdf file. 
+* ```config/config.ini```: Please edit also the content of the INI-file ```config.ini```. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
+
 
 Now the configuration is done.
 
