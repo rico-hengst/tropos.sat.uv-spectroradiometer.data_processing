@@ -29,9 +29,10 @@ def plotme(nc, day, config):
     ax.axis('off')
   
     """creating plot title"""
-    plt.suptitle('Station: ' + config.get('STATION','station_name') + \
-    '\nDate: '+day.strftime('%Y-%m-%d')+ \
-    ', Timezone: ' + str(new_timezone))
+    plt.suptitle('UV irradiation measurement ',ha='right')
+    
+    plt.text(1.01, 1.073, 'Station ' + config.get('STATION','station_name') + \
+    '\n' + day.strftime('%Y-%m-%d'), fontsize=8, ha='right')
         
     """creating the 3 y axes for the ploting"""
     host = host_subplot(111, axes_class=AA.Axes)
@@ -46,7 +47,7 @@ def plotme(nc, day, config):
     
     """Label the axes"""
     host.set_ylabel("UV-Index")
-    host.set_xlabel("Time [$hour$]")
+    host.set_xlabel("Time [$hour$]                TZ = " + str(new_timezone))
     par1.set_ylabel("UV-A Irradiance [$W/m^2$]")
     par2.set_ylabel("UV-B Irradiance [$W/m^2$]")
     """adding the varibles for plotting and setting the colors and labels"""
@@ -73,7 +74,7 @@ def plotme(nc, day, config):
     """defining the limits of the axes"""  #preguntar como hacer cn los limites
     # utcoffset = x_dict["datetime_new"][1].utcoffset().total_seconds()/3600
     # host.set_xlim(2+utcoffset, 20+utcoffset)
-    host.set_xlim(5 + utcoffset_hours - 1, 21 + utcoffset_hours - 1)
+    host.set_xlim(4 + utcoffset_hours - 1, 21 + utcoffset_hours - 1)
     
     #host.xaxis.set_major_locator(FixedLocator(np.arange(6,20,2)))
     host.set_ylim(0, 10)
