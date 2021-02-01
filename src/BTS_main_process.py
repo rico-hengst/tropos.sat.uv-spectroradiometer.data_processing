@@ -75,6 +75,7 @@ def statistic(i8date,f8date):
     """Read private config file"""
     if not os.path.isfile( 'config/config.ini' ):
         print('File config/config.ini not exists, use DEFAULT config/templates/config.ini instead!')
+        exit()
     else:
         config.read('config/config.ini')
 
