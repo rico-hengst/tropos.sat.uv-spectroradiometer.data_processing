@@ -67,17 +67,23 @@ if (args.statistics):
 
 def statistic(i8date,f8date):
     methodbts = "global" 
+    
+    current_dirname = os.path.dirname(os.path.realpath(__file__))
+    config_file     = current_dirname + '/config/config.ini'
+    
+    
    
     """Read config file"""
     config = configparser.ConfigParser()
     
     
+    
     """Read private config file"""
-    if not os.path.isfile( 'config/config.ini' ):
-        print('File config/config.ini not exists, use DEFAULT config/templates/config.ini instead!')
+    if not os.path.isfile( config_file ):
+        print('File config/config.ini not exists, use DEFAULT config/templates/config.ini instead!' + config_file)
         exit()
     else:
-        config.read('config/config.ini')
+        config.read( config_file )
 
     """Check if directories etc exists"""
     if not os.path.isdir( config.get('DEFAULT','main_path') ):
@@ -92,15 +98,16 @@ def statistic(i8date,f8date):
         print('Path netcdf_path not exists '+ config.get('DEFAULT','netCDF_path'))
         quit()
         
-    if not os.path.isfile( config.get('DEFAULT','json_file') ):
-        print('File json not exists '+ config.get('DEFAULT','json_file'))
+    json_file       = current_dirname + "/" + config.get('DEFAULT','json_file')
+    if not os.path.isfile( json_file ):
+        print( 'File json not exists '+ json_file )
         quit()
 
 
         
     """Load content of json_file to python variable cfjson"""
     cfjson={}
-    with open( config.get('DEFAULT','json_file') ) as f:
+    with open( json_file ) as f:
             cfjson= json.load(f)
     
     
