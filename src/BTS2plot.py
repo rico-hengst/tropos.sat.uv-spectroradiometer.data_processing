@@ -17,6 +17,11 @@ import matplotlib.cm as cm
 from matplotlib.colors import Normalize
 from matplotlib.cm import ScalarMappable
 import xarray as xr
+import logging
+
+# create logger, name important
+module_logger = logging.getLogger('uv-processing.BTS2plot')
+
 # units, see also https://www.uni-kiel.de/med-klimatologie/uvinfo.html
 # https://www.bundesfachverband-besonnung.de/fileadmin/download/solaria2005/Solarium_Sonne.pdf
 
@@ -133,9 +138,9 @@ def plotme(nc, day, config):
     """checking if the directory already exists, create subdir"""
     if not os.path.isdir(  os.path.dirname(image_path_file) ):
         os.makedirs( os.path.dirname(image_path_file) )
-        print('Create directory     : ' + os.path.dirname(image_path_file) )
+        module_logger.info( 'Create directory : ' + os.path.dirname(image_path_file) )
 
     """save the plot as file """
     plt.savefig(image_path_file, dpi=300)
     plt.close()
-    print("%-21s: %-60s" %('Plot data to file', image_path_file))
+    module_logger.info('Plot data to file ' + image_path_file)

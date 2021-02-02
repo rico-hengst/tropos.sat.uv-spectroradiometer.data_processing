@@ -9,6 +9,11 @@ import netCDF4 as nc4
 from netCDF4 import date2num,num2date
 import numpy as np
 from datetime import datetime
+import logging
+
+# create logger, name important
+module_logger = logging.getLogger('uv-processing.BTS2NetCDF')
+
 
 def netCDF_file(d_bts1day,nc_file, cfjson ):
 
@@ -55,7 +60,7 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
     f.close()
 
     
-    print("%-21s: %-60s" %('Write data to netcdf', nc_file))
+    module_logger.info( 'Write data to netcdf: ' + nc_file )
     
  
     

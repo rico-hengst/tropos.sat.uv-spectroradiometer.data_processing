@@ -21,6 +21,19 @@ import configparser
 import platform
 import pandas as pd
 import xarray as xr
+import logging
+
+
+
+# get name of directory where main script is located
+current_dirname = os.path.dirname(os.path.realpath(__file__))
+
+# define log_path_file + create dir
+log_path_file = current_dirname + "/log/uv_processing.log"
+if not os.path.isdir(  os.path.dirname( log_path_file ) ):
+    os.makedirs( os.path.dirname( log_path_file ) )
+    print('Create directory     : ' + os.path.dirname(log_path_file) )
+
 
 """Insert de initial and final dates as strings as 20190107(year:2019/month:01/day:07)"""
 
@@ -36,23 +49,58 @@ parser.add_argument('-n', '--netcdf', action='store_true',
                     help="create netCDF files")
 parser.add_argument('-st', '--statistics', action='store_true', 
                     help="create statistics of missing files")
+parser.add_argument('-l', '--loglevel', default='INFO',
+                    help="define loglevel of screen INFO (default) | WARNING | ERROR ")
 args = parser.parse_args()
+
+
+# create logger with 'UV'
+logger = logging.getLogger('uv-processing')
+logger.setLevel(logging.DEBUG)
+
+# create file handler which logs even debug messages
+fh = logging.FileHandler( log_path_file )
+fh.setLevel(logging.DEBUG)
+
+# create/check level
+screen_level = logging.getLevelName(args.loglevel)
+
+# create console handler with a higher log level
+ch = logging.StreamHandler()
+#ch.setLevel(logging.WARNING)
+ch.setLevel(screen_level)
+
+# create formatter and add it to the handlers
+formatter = logging.Formatter(fmt='%(asctime)s | %(name)-24s | %(levelname)-8s | %(message)s | %(module)s (%(lineno)d)', datefmt='%Y-%m-%d %H:%M:%S',)
+
+# add formatter to the handlers
+fh.setFormatter(formatter)
+ch.setFormatter(formatter)
+
+# add the handlers to the logger
+logger.addHandler(fh)
+logger.addHandler(ch)
+
+
+# add first log mesage
+logger.info('Start uv-processing')
+
 
 
 """Break in case the dates weren't correct"""
 if len(args.id)!=8 or len(args.fd)!=8:
-    print('Error: Wrong date introduced, please try again')
+    logger.error('Wrong date introduced, 8 digits required!')
     exit()
 if int(args.id)>int(args.fd):
-    print('Error: Wrong dates were chosen/ pay attention to the order, please try again.')
+    logger.error('Wrong date, start date < = end date required!')
     exit()
     
 """Check python version"""
 python_version = platform.python_version().split(".")
 if int(python_version[0]) < 3:
-  print("Your python version is: " + platform.python_version() )
-  print("Script will be terminated cause python version < 3 is required !")
-  exit()
+    logger.error( "Your python version is: " + platform.python_version() )
+    logger.error( "Script will be terminated cause python version < 3 is required !" )
+    exit()
   
   
 """Check python Submodule is already installed"""
@@ -60,7 +108,7 @@ if (args.statistics):
     try:
         from Submodule import PlotHeatmap as plthtmp
     except ImportError:
-        print('\nThere was no such module installed: PlotHeatmap')
+        logger.error('There was no such module installed: PlotHeatmap')
         exit()
     
     
@@ -68,7 +116,6 @@ if (args.statistics):
 def statistic(i8date,f8date):
     methodbts = "global" 
     
-    current_dirname = os.path.dirname(os.path.realpath(__file__))
     config_file     = current_dirname + '/config/config.ini'
     
     
@@ -80,27 +127,27 @@ def statistic(i8date,f8date):
     
     """Read private config file"""
     if not os.path.isfile( config_file ):
-        print('File config/config.ini not exists, use DEFAULT config/templates/config.ini instead!' + config_file)
+        logger.error('File config/config.ini not exists, use DEFAULT config/templates/config.ini instead!' + config_file)
         exit()
     else:
         config.read( config_file )
 
     """Check if directories etc exists"""
     if not os.path.isdir( config.get('DEFAULT','main_path') ):
-        print('Path main_path not exists '+ config.get('DEFAULT','main_path'))
+        logger.error('Path main_path not exists '+ config.get('DEFAULT','main_path'))
         quit()
         
     if not os.path.isdir( config.get('DEFAULT','image_path') ):
-        print('Path image_path not exists '+ config.get('DEFAULT','image_path'))
+        logger.error('Path image_path not exists '+ config.get('DEFAULT','image_path'))
         quit()
         
     if not os.path.isdir( config.get('DEFAULT','netCDF_path') ):
-        print('Path netcdf_path not exists '+ config.get('DEFAULT','netCDF_path'))
+        logger.error('Path netcdf_path not exists '+ config.get('DEFAULT','netCDF_path'))
         quit()
         
     json_file       = current_dirname + "/" + config.get('DEFAULT','json_file')
     if not os.path.isfile( json_file ):
-        print( 'File json not exists '+ json_file )
+        logger.error( 'File json not exists '+ json_file )
         quit()
 
 
@@ -156,7 +203,7 @@ def statistic(i8date,f8date):
         """check file exists"""
         if os.path.isfile(path_file):  # see if the .OR0 file exist
             if os.stat(path_file).st_size<1:  # controls if the file is not empty
-                print('file is empty '+path_file)
+                logger.warn('file is empty '+path_file)
                 if args.statistics:
                     df = df.append({'date': date.date(), missing_files_key_name : dict_lookup_missing_value["file_empty"]}, ignore_index=True)
             else:
@@ -172,7 +219,7 @@ def statistic(i8date,f8date):
                     """checking if the directory already exists, create subdir"""
                     if not os.path.isdir( os.path.dirname(netcdf_path_file) ):
                         os.makedirs( os.path.dirname(netcdf_path_file) )
-                        print('Create directory     : ' + os.path.dirname(netcdf_path_file) )
+                        logger.info('Create directory     : ' + os.path.dirname(netcdf_path_file) )
                 
                 """Obtanin the directory data from the OR0 files"""
                 if args.netcdf:
@@ -203,7 +250,7 @@ def statistic(i8date,f8date):
                     
 
         else:
-            print("file not exist "+ path_file)
+            logger.error("File not exist "+ path_file)
             if args.statistics:
                 df = df.append({'date': date.date(), missing_files_key_name : dict_lookup_missing_value["file_not_exists"]}, ignore_index=True)
         
@@ -219,7 +266,7 @@ def statistic(i8date,f8date):
                 
             """plot first or second half of year"""
             if (date.strftime('%m%d')=='0630' or date.strftime('%-m%d')=='1231'):
-                print('Plot ' + picture_filename )
+                logger.info('Plot ' + picture_filename )
                 
                 """transform column date to datetime"""
                 df['date'] =  pd.to_datetime(df['date'])
@@ -237,7 +284,7 @@ def statistic(i8date,f8date):
                 
             #plot period after the last half year
             elif (date.strftime('%Y%m%d') == f8date):
-                print('Plot short period: ' + picture_filename )
+                logger.info('Plot short period: ' + picture_filename )
                     
                 # transform column date to datetime
                 df['date'] =  pd.to_datetime(df['date'])
@@ -249,6 +296,7 @@ def statistic(i8date,f8date):
                     'DataFrame' : df
                     }
                 )
+    logger.info('End uv-processing')
 
 #####################################################################################                                                            
 statistic(args.id,args.fd)
