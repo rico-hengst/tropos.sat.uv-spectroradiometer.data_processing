@@ -12,3 +12,6 @@ Test\ scripts/
 
 __pycache__/plotme.cpython-37.pyc
 __pycache__/read_bts2048rh.cpython-37.pyc
+
+sunpos.py
+uv_js_meta.json.private
