@@ -9,9 +9,9 @@ import netCDF4 as nc4
 from netCDF4 import date2num,num2date
 import numpy as np
 from datetime import datetime
+import logging
 # Hartwigs sunpos routine
 from trosat import sunpos as sp
-import logging
 
 # create logger, name important
 module_logger = logging.getLogger('uv-processing.BTS2NetCDF')
@@ -74,15 +74,6 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
         else:
             print('This variable was not saved in the netCDF-File:',variable)
             continue
-        # # f[x].setncatts(cfjson['variables'][x]['attributes'])
-        # if variable=='time':
-        #     f[variable][:]= second_since
-        # elif cfjson['variables'][variable]['shape']==['time']:
-        #     f[variable][:]=d_bts1day[variable]
-        # elif len(cfjson['variables'][variable]['shape'])==2:
-        #     f[variable][:,:]=d_bts1day[variable]
-        # elif cfjson['variables'][variable]['shape']==['wvl']:
-        #     f[variable][:]=d_bts1day[variable]
     today = datetime.today()
     f.history = "Created " + today.strftime("%d/%m/%y")
 
@@ -91,8 +82,6 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
         setattr(f,atributes,cfjson['attributes'][atributes])
     f.close()
 
-    
-    # print("%-21s: %-60s" %('Write data to netcdf', nc_file))
     module_logger.info( 'Write data to netcdf: ' + nc_file )  
  
     
@@ -111,3 +100,13 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
 # nc = nc4.Dataset('/vols/satellite/home/bayer/uv/netCDF/2019/08/bts2048_uv_20190826_mp_l1_c1.nc','r')
 # with open('/vols/satellite/home/bayer/uv/src/config/templates/uv_js_meta.json') as f:
 #     cfjson= json.load(f)
+
+        # # f[x].setncatts(cfjson['variables'][x]['attributes'])
+        # if variable=='time':
+        #     f[variable][:]= second_since
+        # elif cfjson['variables'][variable]['shape']==['time']:
+        #     f[variable][:]=d_bts1day[variable]
+        # elif len(cfjson['variables'][variable]['shape'])==2:
+        #     f[variable][:,:]=d_bts1day[variable]
+        # elif cfjson['variables'][variable]['shape']==['wvl']:
+        #     f[variable][:]=d_bts1day[variable]

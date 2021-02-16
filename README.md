@@ -72,7 +72,7 @@ $ git submodule update --init
 * [vogella.com](https://www.vogella.com/tutorials/GitSubmodules/article.html)
 * [ralfebert.de](https://www.ralfebert.de/git/submodules/)
 
- 
+
 ## Configuration
 
 When using this software code for the first time, we would like to recommend to configure the code in s suggested way.
@@ -81,7 +81,7 @@ The software has two configuration files. Please copy the template configuration
 cp src/config/templates/* src/config/
 ```
 
-* ```src/config/uv_js_meta.json```: Please edit your contact data at the JSON-file ```uv_js_meta.json```, that is used for writing UV measurement data and metadata to a netcdf file. 
+* ```src/config/uv_js_meta.json```: Please edit your contact data at the JSON-file ```uv_js_meta.json```, that is used for writing UV measurement data and metadata to a netcdf file.
 * ```src/config/config.ini```: Please edit also the content of the INI-file ```config.ini```. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
 
 
@@ -104,8 +104,8 @@ optional arguments:
   -i, --image        create images files
   -n, --netcdf       create netCDF files
   -st, --statistics  create statistics of missing files !! Submodule required, see Requirements 2 !!
-
-``` 
+  -l, --loglevel     define loglevel of screen INFO (default) | WARNING | ERROR
+```
 
 
 ## License

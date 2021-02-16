@@ -17,6 +17,11 @@ import matplotlib.cm as cm
 from matplotlib.colors import Normalize
 from matplotlib.cm import ScalarMappable
 import xarray as xr
+import logging
+
+# create logger, name important
+module_logger = logging.getLogger('uv-processing.BTS2plot')
+
 # units, see also https://www.uni-kiel.de/med-klimatologie/uvinfo.html
 # https://www.bundesfachverband-besonnung.de/fileadmin/download/solaria2005/Solarium_Sonne.pdf
 
@@ -67,8 +72,8 @@ def plotme(nc, day, config):
     
     
     #p0, = host.plot(x,d_bts1day["uvind"],"k-",linestyle=':', label="UV-Index")
-    p1, = par1.plot(time_local,nc["uva"], "b-", label="UV-A", linewidth=1)
-    p2, = par2.plot(time_local,nc["uvb"], "r-", label="UV-B", linewidth=1)
+    p1, = par1.plot(time_local,nc["uva_irrad"], "b-", label="UV-A", linewidth=1)
+    p2, = par2.plot(time_local,nc["uvb_irrad"], "r-", label="UV-B", linewidth=1)
     
     
     """defining the limits of the axes"""  #preguntar como hacer cn los limites
@@ -113,7 +118,7 @@ def plotme(nc, day, config):
     # Get normalize function (takes data in range [vmin, vmax] -> [0, 1])
     my_norm = Normalize(vmin=0, vmax=10)
     time_step=1/30 # in hours
-    plt.bar(time_local, nc["uvind"], color=my_cmap_r(my_norm(nc["uvind"])), edgecolor='none', width=time_step)
+    plt.bar(time_local, nc["uv_index"], color=my_cmap_r(my_norm(nc["uv_index"])), edgecolor='none', width=time_step)
     
     """Add colorbar"""
     # https://stackoverflow.com/questions/51204505/python-barplot-with-colorbar
@@ -133,9 +138,9 @@ def plotme(nc, day, config):
     """checking if the directory already exists, create subdir"""
     if not os.path.isdir(  os.path.dirname(image_path_file) ):
         os.makedirs( os.path.dirname(image_path_file) )
-        print('Create directory     : ' + os.path.dirname(image_path_file) )
+        module_logger.info( 'Create directory : ' + os.path.dirname(image_path_file) )
 
     """save the plot as file """
     plt.savefig(image_path_file, dpi=300)
     plt.close()
-    print("%-21s: %-60s" %('Plot data to file', image_path_file))
+    module_logger.info('Plot data to file ' + image_path_file)
