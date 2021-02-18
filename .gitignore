@@ -9,3 +9,5 @@ test.py
 testtime.py
 /netCDF
 /script_plots/
+
+src/log/
