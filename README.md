@@ -85,7 +85,7 @@ cp src/config/templates/* src/config/
 ```
 and edit their edit their content.
 
-* ```src/config/uv_js_meta.json```: Please edit your contact data at the JSON-file ```uv_js_meta.json```, that is used for writing UV measurement data and metadata to a netcdf file.
+* ```src/config/uv_js_meta.json```: Please edit your contact data and station specific information labeled with "???" at the JSON-file ```uv_js_meta.json```, that is used for writing UV measurement data and metadata to a netcdf file.
 * ```src/config/config.ini```: Please edit also the content of the INI-file ```config.ini```. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
 
 
