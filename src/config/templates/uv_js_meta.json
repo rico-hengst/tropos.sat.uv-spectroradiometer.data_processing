@@ -2,9 +2,9 @@
     "attributes": {
         "conventions"    : "CF-1.8",
         "title"          : "UV Radiometer Messuremnts",
-        "contact_person" : "Name of person; mail to:email",
+        "contact_person" : "???Name of person; mail to:email",
         "description": "metadata was taken from uv_js_meta.json and data were processed via BTS_main_process.py",
-        "serial_number_instrument" : " ",
+        "serial_number_instrument" : "???",
         "last_calibration" : " "
     },
         
@@ -17,7 +17,7 @@
         "lon": {
             "type": "f4",
             "shape": [],
-            "data": 12.928,
+            "data": ???,
             "attributes": {
                 "units": "degrees_east",
                 "long_name" : "Longitude",
@@ -28,7 +28,7 @@
         "lat": {
             "type": "f4",
             "shape": [],
-            "data": 51.526,
+            "data": ???,
             "attributes": {
                 "units": "degrees_north",
                 "long_name" : "Latitude",
@@ -39,7 +39,7 @@
         "elev": {
             "type" : "f4", 
             "shape": [],
-            "data": 86,
+            "data": ???,
             "attributes": {
                 "long_name" : "Surface Elevation",
                 "units" : "m"
