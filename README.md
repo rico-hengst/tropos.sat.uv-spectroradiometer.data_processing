@@ -76,7 +76,8 @@ $ git submodule update --init
 ## Configuration
 
 When using this software code for the first time, we would like to recommend to configure the code in s suggested way.
-The software has two configuration files. Please copy the template configuration files to the software root directory.
+The software has two configuration files, that will be tracked by the git version control system. 
+Do n TODO Please copy the template configuration files to the software root directory.
 ```bash
 cp src/config/templates/* src/config/
 ```
