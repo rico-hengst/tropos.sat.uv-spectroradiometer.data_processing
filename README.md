@@ -42,6 +42,7 @@ The software package includes
 * pytz
 * pygal
 * xarray
+* trosat-base, install procedure see [github.com/hdeneke/trosat-base](https://github.com/hdeneke/trosat-base/blob/master/examples/cfconv_usage.ipynb)
 
 
 ## Requirements 2 (optional)
