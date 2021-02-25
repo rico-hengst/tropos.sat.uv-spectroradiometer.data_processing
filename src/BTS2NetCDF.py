@@ -5,13 +5,13 @@ Created on Thu Nov 21 13:30:44 2019
 
 @author: bayer
 """
-import netCDF4 as nc4
-from netCDF4 import date2num,num2date
+
+from netCDF4 import date2num
 import numpy as np
-from datetime import datetime
 import logging
 # Hartwigs sunpos routine
 from trosat import sunpos as sp
+from trosat import cfconv as cf
 
 # create logger, name important
 module_logger = logging.getLogger('uv-processing.BTS2NetCDF')
@@ -32,54 +32,45 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
     """ prepare time variable to store seconds since ... in netcdf file"""
     second_since = date2num(np_datetime, cfjson['variables']['time']['attributes']['units'])
     
+    """ Create dictionary for connecting data """
+    data={"lon":{"conf":"lon"},
+          "lat":{"conf":"lat"},
+          "elev":{"conf":"elev"},
+          "uva_irrad":{"bts":"uva"},
+          "uvb_irrad":{"bts":"uvb"},
+          "uv_index":{"bts":"uvind"},
+          "spec_irrad":{"bts":"spect"},
+          "wvl":{"bts":"wvl"},
+          "uv_irrad":{"bts":"uvint"},
+          "sazi":{"calculated":sazi},
+          "szen":{"calculated":szen},
+          "esd":{"calculated":esd},
+          "time":{"calculated":second_since}
+          }
     
-    """creating the netCDF file"""    
-    f = nc4.Dataset(nc_file,'w', format='NETCDF4') #'w' stands for write 
-
-    """Creating the dimensions in the NetCDF file from the JSON file"""
-    for name,shape in cfjson['dimensions'].items(): 
-        f.createDimension(name,len(d_bts1day[name]))
-        # print(f.dimensions)
-        
-    """Building variables    time = uv_grp.createVariable('Time', 'i4', 'time')"""
-    for variable in cfjson['variables']:
-        f.createVariable(variable,cfjson['variables'][variable]['type'],(cfjson['variables'][variable]['shape'])) #,zlib=True,least_significant_digit=3)
-        for attr in cfjson['variables'][variable]['attributes']:
-            setattr(f[variable],attr,cfjson['variables'][variable]['attributes'][attr])
-            # f[variable].attr=cfjson['variables'][variable]['attributes'][attr]
-        # f[variable].units=cfjson['variables'][variable]['attributes']['units']
-        """Adding units to the variables"""
-        if variable=='time':
-            f[variable][:]= second_since
-        elif variable=='lon' or variable=='lat' or variable=='elev':
-            f[variable][:]= cfjson['variables'][variable]['data']
-        elif variable=='uva_irrad':
-            f[variable][:]=d_bts1day['uva']
-        elif variable=='uvb_irrad':
-            f[variable][:]=d_bts1day['uvb']        
-        elif variable=='uv_index':
-            f[variable][:]=d_bts1day['uvind']        
-        elif variable=='uv_irrad':
-            f[variable][:]=d_bts1day['uvint']
-        elif variable=='spec_irrad':
-            f[variable][:,:]=d_bts1day['spect']
-        elif variable=='wvl':
-            f[variable][:]=d_bts1day['wvl']
-        elif variable=='esd':
-            f[variable][:]=esd
-        elif variable=='szen':
-            f[variable][:]=szen
-        elif variable=='sazi':
-            f[variable][:]=sazi
-        else:
-            print('This variable was not saved in the netCDF-File:',variable)
-            continue
-    today = datetime.today()
-    f.history = "Created " + today.strftime("%d/%m/%y")
-
-    """adding attributer"""
-    for atributes in cfjson['attributes']:
-        setattr(f,atributes,cfjson['attributes'][atributes])
+    """ Introduce the size of the dimensions for each case"""        
+    cfjson.setDim('time', len(d_bts1day['time']))
+    cfjson.setDim('wvl', len(d_bts1day['wvl']) )
+    
+    """ add data to the variables """
+    for key,value in data.items():
+        for origin,name in value.items():
+            # if origin=='conf':
+            #     f[key][:]=config.get('STATION','station_'+name)
+            # if origin=='conf':
+                # print(key,cfjson['variables'][key]['data'])
+                # f[key][:]=cfjson['variables'][name]['data']
+            if origin=='bts':
+                cfjson.setData(key,d_bts1day[name])
+                # if key=='spec_irrad':
+                #     f[key][:,:]=d_bts1day[name]
+                #     continue
+                # f[key][:]=d_bts1day[name]
+            elif origin=='calculated':
+                # f[key][:]=name
+                cfjson.setData(key,name)
+    """creating the netCDF file"""
+    f = cf.create_file(nc_file, cfdict=cfjson)
     f.close()
 
     module_logger.info( 'Write data to netcdf: ' + nc_file )  

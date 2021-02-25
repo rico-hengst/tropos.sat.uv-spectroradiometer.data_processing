@@ -16,13 +16,12 @@ import BTS2plot
 #from Submodule import PlotHeatmap as plthtmp
 import BTS2NetCDF 
 import argparse
-import json
 import configparser
 import platform
 import pandas as pd
 import xarray as xr
 import logging
-
+from trosat import cfconv as cf
 
 
 # get name of directory where main script is located
@@ -153,9 +152,10 @@ def statistic(i8date,f8date):
 
         
     """Load content of json_file to python variable cfjson"""
-    cfjson={}
-    with open( json_file ) as f:
-            cfjson= json.load(f)
+    cfjson=cf.read_cfjson(json_file)
+    # {}
+    # with open( json_file ) as f:
+    #         cfjson= json.load(f)
     
     
     """ a lookup value dict for missing files"""
