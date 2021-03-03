@@ -19,27 +19,39 @@ from matplotlib.cm import ScalarMappable
 import xarray as xr
 import logging
 
-# create logger, name important
+""" Create logger, name important """
 module_logger = logging.getLogger('uv-processing.BTS2plot')
 
 # units, see also https://www.uni-kiel.de/med-klimatologie/uvinfo.html
 # https://www.bundesfachverband-besonnung.de/fileadmin/download/solaria2005/Solarium_Sonne.pdf
 
 def plotme(nc, day, config):
+    """
+    Crates the ploptting for the UV measurements.
+
+    Parameters
+    ----------
+    nc : netCDF File read as xarray
+        Uses the previously created netCDF File where the data is stored.
+    day : datetime
+        Selected date.
+    config : dictionary
+        Config File, which contains the configurations and path required for creating the image.
+    """
     
-    """get wished timezone from the config file"""
+    """ Get wished timezone from the config file """
     new_timezone = pytz.timezone(config.get('TIMEZONE','plotting_timezone', fallback='UTC'))
     
     fig, ax = plt.subplots()
     ax.axis('off')
   
-    """creating plot title"""
+    """ Creating plot title """
     plt.suptitle('UV irradiation measurement ',ha='right')
     
     plt.text(1.01, 1.073, 'Station ' + config.get('STATION','station_name') + \
     '\n' + day.strftime('%Y-%m-%d'), fontsize=8, ha='right')
         
-    """creating the 3 y axes for the ploting"""
+    """ Creating the 3 y axes for the ploting """
     host = host_subplot(111, axes_class=AA.Axes)
     plt.subplots_adjust(right=0.75)
     par1 = host.twinx()
@@ -50,35 +62,29 @@ def plotme(nc, day, config):
     par1.axis["right"] = new_fixed_axis(loc="right", axes=par1)
     par2.axis["right"].toggle(all=True)
     
-    """Label the axes"""
+    """ Label the axes """
     host.set_ylabel("UV-Index")
     host.set_xlabel("Time [$hour$]                TZ = " + str(new_timezone))
     par1.set_ylabel("UV-A Irradiance [$W/m^2$]")
     par2.set_ylabel("UV-B Irradiance [$W/m^2$]")
-    """adding the varibles for plotting and setting the colors and labels"""
-    
-    
-    """changing time for local time"""
+        
+    """ Changing time for local time """
     time=nc.time.to_index()
     time_utc = time.tz_localize(pytz.UTC)
     time_local = time_utc.tz_convert(new_timezone)
     
-    # get offset to utc
+    """ Get offset to utc """
     utcoffset_hours = int(time_local[0].utcoffset().seconds)/3600
 
-    # set axis to hours
+    """ Set axis to hours """
     time_local=time_local[:].hour+time_local[:].minute/60 +time_local[:].second/3600
-    
-    
     
     #p0, = host.plot(x,d_bts1day["uvind"],"k-",linestyle=':', label="UV-Index")
     p1, = par1.plot(time_local,nc["uva_irrad"], "b-", label="UV-A", linewidth=1)
     p2, = par2.plot(time_local,nc["uvb_irrad"], "r-", label="UV-B", linewidth=1)
     
     
-    """defining the limits of the axes"""  #preguntar como hacer cn los limites
-    # utcoffset = x_dict["datetime_new"][1].utcoffset().total_seconds()/3600
-    # host.set_xlim(2+utcoffset, 20+utcoffset)
+    """ Defining the limits of the axes """  
     host.set_xlim(4 + utcoffset_hours - 1, 21 + utcoffset_hours - 1)
     
     #host.xaxis.set_major_locator(FixedLocator(np.arange(6,20,2)))
@@ -91,12 +97,12 @@ def plotme(nc, day, config):
     par2.set_ylim(0, 10)
     par2.yaxis.set_major_locator(FixedLocator(np.arange(0, 10.1, 2)))
     
-    """adding legend and function"""
+    """ Adding legend and function """
     host.legend()
     host.grid()
 
 
-    """coloring the axis"""
+    """ Coloring the axis """
     par1.axis["right"].label.set_color(p1.get_color())    #coloring the label    
     par2.axis["right"].label.set_color(p2.get_color())
     
@@ -109,7 +115,7 @@ def plotme(nc, day, config):
     par2.axis["right"].major_ticklabels.set_color(p2.get_color())
 
 
-    """Add chart plot UV index"""
+    """ Add chart plot UV index """
     # Get a color map
     my_cmap = cm.get_cmap('RdYlGn',10)
     # reverse
@@ -132,15 +138,17 @@ def plotme(nc, day, config):
     #cbar.set_label('UV index', rotation=90,labelpad=5)
     cbar.ax.tick_params(labelsize=7)
     # END # colornar
-   
+
+    """ Gewt saving path from config file """   
     image_path_file = config.get('DEFAULT','image_path_file')
                     
-    """checking if the directory already exists, create subdir"""
+    """ Checking if the directory already exists, create subdir """
     if not os.path.isdir(  os.path.dirname(image_path_file) ):
         os.makedirs( os.path.dirname(image_path_file) )
         module_logger.info( 'Create directory : ' + os.path.dirname(image_path_file) )
 
-    """save the plot as file """
+    """ Save the plot as file """
     plt.savefig(image_path_file, dpi=300)
     plt.close()
+    
     module_logger.info('Plot data to file ' + image_path_file)
