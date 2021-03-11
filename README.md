@@ -76,19 +76,28 @@ $ git submodule update --init
 
 ## Configuration
 
-When using this software code for the first time, we would like to recommend to configure the code in s suggested way.
-The software has two configuration files, that will be tracked by the git version control system. 
-Do not use theses files ```src/config/templates/*``` for your configuration.
-Please create your location specific config and this directory: ```src/config/```. 
-To create your local config, please copy at first the template configuration files:
+### Template configuration files
+
+The software has two configuration files
+ 
+* ```src/config/templates/uv_js_meta.json``` and
+* ```src/config/templates/config.ini```,
+
+that will be tracked by the git version control system. 
+Please do not edit the configuation files, use this file as templates only.
+
+
+### Local configuration 
+
+When using this software code for the first time, we would like to recommend to configure the code in the suggested way.
+
+* to create your local config, please copy at first the template configuration files:
 ```bash
 cp src/config/templates/* src/config/
 ```
-and edit their edit their content.
-
-* ```src/config/uv_js_meta.json```: Please edit your contact data and station specific information labeled with "???" at the JSON-file ```uv_js_meta.json```, that is used for writing UV measurement data and metadata to a netcdf file.
-* ```src/config/config.ini```: Please edit also the content of the INI-file ```config.ini```. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
-
+* customize the configuration files:
+  * ```src/config/uv_js_meta.json```: Please edit your contact data and station specific information labeled with "???" at the JSON-file, that is used for writing UV measurement data and metadata to a netcdf file.
+  * ```src/config/config.ini```: Please edit also the content of the INI-file. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
 
 Now the configuration is done.
 
