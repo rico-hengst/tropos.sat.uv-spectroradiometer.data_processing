@@ -99,17 +99,15 @@ cp src/config/templates/* src/config/
   * ```src/config/uv_js_meta.json```
   * ```src/config/config.ini```
 * Please **customize** your local configuration files.
-  * ```src/config/uv_js_meta.json```
-  Please edit your contact data and station specific information labeled with "???" at the JSON-file, that is used for writing UV measurement data and metadata to a netcdf file.
-  * ```src/config/config.ini```
-  Please edit also the content of the INI-file. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
+  * ```src/config/uv_js_meta.json``` - Please edit your contact data and station specific information labeled with "???" at the JSON-file, that is used for writing UV measurement data and metadata to a netcdf file.
+  * ```src/config/config.ini``` - Please edit also the content of the INI-file. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
 
 Now the configuration is done.
 
 
 ## Usage
 
-```
+```bash
 # example to create netCDF files and images
 cd src
 
