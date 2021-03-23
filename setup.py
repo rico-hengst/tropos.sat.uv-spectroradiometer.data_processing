@@ -20,4 +20,13 @@ setuptools.setup(
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     python_requires='>=3.6',
+    #entry_points='''
+    #    [console_scripts]
+    #    yourscript=yourscript:cli
+    #''',
+    entry_points={ 
+        'console_scripts': [ 
+            'tropos.solarscan_or0_import = src.BTS_main_process:main' 
+        ] 
+    }, 
 )
