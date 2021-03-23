@@ -29,20 +29,11 @@ The software package includes
 ## Requirements 1
 
 * Python version 3.x
-* argparse
-* calendar
-* configparser
-* datetime
-* matplotlib
-* mpl_toolkits
-* netCDF4
-* numpy
-* os
-* pandas
-* pytz
-* pygal
-* xarray
-* trosat-base, install procedure see [github.com/hdeneke/trosat-base](https://github.com/hdeneke/trosat-base/blob/master/examples/cfconv_usage.ipynb)
+
+```bash
+# to install required packages via pip please execute following command
+pip install -r requirements.txt
+```
 
 
 ## Requirements 2 (optional)
