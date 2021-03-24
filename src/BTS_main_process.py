@@ -11,10 +11,10 @@ __email__ = "bayer@tropos.de"
 __status__ = "Production"
 """
 import os
-import read_bts2048rh as bts
-import BTS2plot
+import src.read_bts2048rh as bts
+import src.BTS2plot
 #from Submodule import PlotHeatmap as plthtmp
-import BTS2NetCDF 
+import src.BTS2NetCDF 
 import argparse
 import configparser
 import platform
