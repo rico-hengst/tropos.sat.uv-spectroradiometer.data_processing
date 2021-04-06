@@ -112,7 +112,7 @@ if (args.statistics):
     
     
 
-def statistic(i8date,f8date):
+def main(i8date,f8date):
     methodbts = "global" 
     
     config_file     = current_dirname + '/config/config.ini'
@@ -299,9 +299,10 @@ def statistic(i8date,f8date):
     logger.info('End uv-processing')
 
 #####################################################################################                                                            
-statistic(args.id,args.fd)
 
-
+if __name__ == "__main__":
+    # execute only if run as a script
+    main(args.id,args.fd)
 
 
 
