@@ -1,13 +1,6 @@
-.ipynb_checkpoints
-__pycache__/*
-read_bts2048.py
-*.pyc
-images/*
-/Papers UV/
-gas_aerosol_equations.pdf
-test.py
-testtime.py
-/netCDF
-/script_plots/
 
+__pycache__/*
 src/log/
+build/
+dist/
+tropos.solarscan_or0_import.egg-info/
