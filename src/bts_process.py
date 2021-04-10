@@ -22,14 +22,14 @@ from copy import deepcopy
 from trosat import cfconv as cf
 
 try:
-    from troposzz import read_bts2048rh as bts
+    from tropos_uv import read_bts2048rh as bts
 except:
     print("imoprt local read_bts2048rh") 
     import read_bts2048rh as bts
 
     
 try: 
-    from troposzz import BTS2plot
+    from tropos_uv import BTS2plot
 except:
     print("import local BTS2plot")
     import BTS2plot
@@ -37,14 +37,14 @@ except:
 
 try: 
     
-    from troposzz import BTS2NetCDF
+    from tropos_uv import BTS2NetCDF
 except:
     print("import local BTS2NetCDF")
     import BTS2NetCDF
     
 
 try: 
-    from troposzz import get_config
+    from tropos_uv import get_config
 except:
     print("import local get_config")
     import get_config
