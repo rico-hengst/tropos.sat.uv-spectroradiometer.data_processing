@@ -4,40 +4,19 @@ import setuptools
     #long_description = fh.read()
 
 setuptools.setup(
-    name="tropos.solarscan_or0_import", # Replace with your own username
-    version="0.0.1",
+    name="troposzz", 
+    version="1.1",
     author="Rico Hengst, Nicolas Bayer, Lionel Doppler",
     author_email="rico.hengst@tropos.de",
     description="The software package contains scripts to process UV radiation data, based on measurements with the spectroradiometer BTS2048. The Python software package is tailored to read the data in the manufacturer data format 'Solarscan'. The software package is able to export the data in the netcdf format and to generate plots of the measured and dervied variables.",
-    #long_description=long_description,
-    #long_description_content_type="text/markdown",
-    #url="https://github.com/rico-hengst/tropos.solarscan_or0_import",
-    #packages=setuptools.find_packages(where="src"),        # include all packages under src
-    #packages=setuptools.find_packages(),                   # include all packages under src
-    package_dir = {"":"src"},                               # tell distutils packages are under src
+    package_dir = {'': 'src'}, # Our packages live under src but src is not a package itself
+    packages=setuptools.find_packages(where="src"),
     install_requires=[
         'argparse',
-        'numpy',
-        'datetime',
-        'matplotlib',
-        'pandas',
-        'xarray',
-        'logging',
-        'netCDF4',
-        'attrdict',
     ],
-    dependency_links=['https://github.com/hdeneke/trosat-base DOESNT WORK'],
-    #package_dir={"": "src"},
-    #packages=setuptools.find_packages(where="src"),
-    #python_requires='>=3.6',
-    
-    #entry_points='''
-    #    [console_scripts]
-    #    yourscript=yourscript:cli
-    #''',
     entry_points={ 
         'console_scripts': [ 
-            'tropos.solarscan_or0_import = src.BTS_main_process:main' 
+            'troposzz = src.troposzz.bts_process.__main__' 
         ] 
     },  
      classifiers=[

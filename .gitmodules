@@ -1,3 +1,0 @@
-[submodule "src/Submodule"]
-	path = src/Submodule
-	url = https://github.com/rico-hengst/tropos.heatmap_missing_files
