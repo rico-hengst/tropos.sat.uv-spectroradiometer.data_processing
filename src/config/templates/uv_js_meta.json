@@ -17,7 +17,7 @@
         "lon": {
             "type": "f4",
             "shape": [],
-            "data": ???,
+            "data": null,
             "attributes": {
                 "units": "degrees_east",
                 "long_name" : "Longitude",
@@ -28,7 +28,7 @@
         "lat": {
             "type": "f4",
             "shape": [],
-            "data": ???,
+            "data": null,
             "attributes": {
                 "units": "degrees_north",
                 "long_name" : "Latitude",
@@ -39,7 +39,7 @@
         "elev": {
             "type" : "f4", 
             "shape": [],
-            "data": ???,
+            "data": null,
             "attributes": {
                 "long_name" : "Surface Elevation",
                 "units" : "m"

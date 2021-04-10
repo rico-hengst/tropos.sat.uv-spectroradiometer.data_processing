@@ -16,7 +16,7 @@ from trosat import cfconv as cf
 """ Create logger, name important """
 module_logger = logging.getLogger('uv-processing.BTS2NetCDF')
 
-def netCDF_file(d_bts1day,nc_file, cfjson ):
+def netCDF_file(d_bts1day,nc_file, cfjson, config ):
     """
     Creates netCDEF-File for UV measurements for a specific date. 
 
@@ -31,7 +31,10 @@ def netCDF_file(d_bts1day,nc_file, cfjson ):
     """
     
     """ Calculate cosine of zenith, angle and earth-sun-distance """
-    szen, sazi = sp.sun_angles(d_bts1day['datetime'],cfjson['variables']['lat']['data'], cfjson['variables']['lon']['data'])
+    szen, sazi = sp.sun_angles( d_bts1day['datetime'], float( config.get('STATION','station_lat') ), float( config.get('STATION','station_lon') ) )
+    
+    
+    
     esd=sp.earth_sun_distance(d_bts1day['datetime'])
 
     """ Write dict data to numpy array https://www.quora.com/Is-it-possible-to-convert-a-Python-set-and-dictionary-to-a-NumPy-array """
