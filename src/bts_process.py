@@ -63,30 +63,32 @@ def loop(args, config, logger):
 
 
     """Check if directories etc exists"""
-    if not os.path.isdir( config.get('DEFAULT','main_path') ):
-        logger.error('Path main_path not exists '+ config.get('DEFAULT','main_path'))
+    if not os.path.isdir( config.get('PATHFILE','main_path') ):
+        logger.error('Path main_path not exists '+ config.get('PATHFILE','main_path'))
         quit()
         
-    if not os.path.isdir( config.get('DEFAULT','image_path') ):
-        logger.error('Path image_path not exists '+ config.get('DEFAULT','image_path'))
+    if not os.path.isdir( config.get('PATHFILE','image_path') ):
+        logger.error('Path image_path not exists '+ config.get('PATHFILE','image_path'))
         quit()
         
-    if not os.path.isdir( config.get('DEFAULT','netCDF_path') ):
-        logger.error('Path netcdf_path not exists '+ config.get('DEFAULT','netCDF_path'))
+    if not os.path.isdir( config.get('PATHFILE','netCDF_path') ):
+        logger.error('Path netcdf_path not exists '+ config.get('PATHFILE','netCDF_path'))
         quit()
         
-    json_file       = current_dirname + "/" + config.get('DEFAULT','json_file')
+
+    json_file  = os.path.dirname(os.path.realpath(__file__))  + '/config/templates/uv_js_meta.json'
     if not os.path.isfile( json_file ):
         logger.error( 'File json not exists '+ json_file )
         quit()
 
 
-        
-    """Load content of json_file to python variable cfjson"""
-    cfjson=cf.read_cfjson(json_file)
-    # {}
-    # with open( json_file ) as f:
-    #         cfjson= json.load(f)
+    
+    if args.netcdf:
+        """Load content of json_file to python variable cfjson"""
+        cfjson=cf.read_cfjson(json_file)
+        # {}
+        # with open( json_file ) as f:
+        #         cfjson= json.load(f)
     
     
     """ a lookup value dict for missing files"""
@@ -115,20 +117,20 @@ def loop(args, config, logger):
         
         
         """path_file is dependent on the main_path_tree"""
-        if (config.get('DEFAULT','main_path_tree') == 'flat') :
-            path_file = config.get('DEFAULT','main_path') + or0_file
-        elif (config.get('DEFAULT','main_path_tree') == 'yyyy/mm/dd/') :
-            path_file = config.get('DEFAULT','main_path') + date.strftime('%Y/%m/%d/') + or0_file
+        if (config.get('PATHFILE','main_path_tree') == 'flat') :
+            path_file = config.get('PATHFILE','main_path') + or0_file
+        elif (config.get('PATHFILE','main_path_tree') == 'yyyy/mm/dd/') :
+            path_file = config.get('PATHFILE','main_path') + date.strftime('%Y/%m/%d/') + or0_file
             
         
         """Compose PathFileName of image-File and add to config to use in plot module"""
-        image_path_file = config.get('DEFAULT','image_path') + eval( config.get('DEFAULT','image_subpath_file_regex') )
-        config.set("DEFAULT", "image_path_file", image_path_file)
+        image_path_file = config.get('PATHFILE','image_path') + eval( config.get('PATHFILE','image_subpath_file_regex') )
+        config.set("PATHFILE", "image_path_file", image_path_file)
         
         
         """Compose PathFileName of netcdf-File and add to config"""        
-        netcdf_path_file = config.get('DEFAULT','netcdf_path') + eval( config.get('DEFAULT','netcdf_subpath_file_regex') )
-        config.set("DEFAULT", "netcdf_path_file", netcdf_path_file)
+        netcdf_path_file = config.get('PATHFILE','netcdf_path') + eval( config.get('PATHFILE','netcdf_subpath_file_regex') )
+        config.set("PATHFILE", "netcdf_path_file", netcdf_path_file)
 
 
         """check file exists"""
@@ -160,10 +162,10 @@ def loop(args, config, logger):
                         """checking if the file does already exist, and delete if so."""
                         if os.path.isfile( netcdf_path_file ):
                             os.remove( netcdf_path_file )
-                            BTS2NetCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson) 
+                            BTS2NetCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson,config) 
                         else:
                             """Save the data processed by the bts function in a netCDF file"""
-                            BTS2NetCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson)
+                            BTS2NetCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson,config)
                 
                 if args.image:
                     """checking if the file does already exist"""
@@ -189,7 +191,7 @@ def loop(args, config, logger):
         if (args.statistics):
             """generate filename"""
             picture_filename = \
-                config.get('DEFAULT','image_path') + config.get('STATION','station_prefix') + '_' + \
+                config.get('PATHFILE','image_path') + config.get('STATION','station_prefix') + '_' + \
                 str( df['date'][0].strftime('%Y%m%d') ) + \
                 '_' + \
                 str(df['date'][len(df.index)-1].strftime('%Y%m%d') ) + \
