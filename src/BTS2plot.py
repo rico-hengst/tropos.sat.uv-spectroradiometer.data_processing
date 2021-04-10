@@ -140,7 +140,7 @@ def plotme(nc, day, config):
     # END # colornar
 
     """ Gewt saving path from config file """   
-    image_path_file = config.get('DEFAULT','image_path_file')
+    image_path_file = config.get('PATHFILE','image_path_file')
                     
     """ Checking if the directory already exists, create subdir """
     if not os.path.isdir(  os.path.dirname(image_path_file) ):
