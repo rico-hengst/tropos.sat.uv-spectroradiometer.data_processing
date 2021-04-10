@@ -11,6 +11,7 @@ __email__ = "bayer@tropos.de"
 __status__ = "Production"
 """
 import os
+import sys
 import argparse
 import configparser
 import platform
@@ -57,7 +58,7 @@ except:
 
     
 
-def run(args, config):
+def loop(args, config, logger):
     methodbts = "global" 
 
 
@@ -233,9 +234,8 @@ def run(args, config):
 
 
 #####################################################################################                                                    
-
-if __name__ == "__main__":
-    # execute only if run as a script
+# getting args, setting logger, load configs
+def adjust(argv):
     
     # get name of directory where main script is located
     current_dirname = os.path.dirname(os.path.realpath(__file__))
@@ -339,8 +339,18 @@ if __name__ == "__main__":
     config = get_config.main(default_config_file, your_config_file)
     
     # call main function
-    run(args, config)
+    loop(args, config, logger)
 
 
+#####################################################################################                                                    
+if __name__ == "__main__":
+    # execute only if run as a script
+    print("___ bts_process __main__")
+    adjust(sys.argv[1:])
 
+#####################################################################################                                                    
+def run():
+    # execute only if run as a setuptoolscript
+    print("___ bts_process run")
+    adjust(sys.argv[1:])
 
