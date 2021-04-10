@@ -11,14 +11,6 @@ __email__ = "bayer@tropos.de"
 __status__ = "Production"
 """
 import os
-#import read_bts2048rh as bts
-from troposzz import read_bts2048rh as bts
-#import BTS2plot
-from troposzz import BTS2plot
-#import BTS2NetCDF 
-from troposzz import BTS2NetCDF
-#import get_config
-from troposzz import get_config
 import argparse
 import configparser
 import platform
@@ -27,6 +19,39 @@ import xarray as xr
 import logging
 from copy import deepcopy
 from trosat import cfconv as cf
+
+try:
+    from troposzz import read_bts2048rh as bts
+except:
+    print("imoprt local read_bts2048rh") 
+    import read_bts2048rh as bts
+
+    
+try: 
+    from troposzz import BTS2plot
+except:
+    print("import local BTS2plot")
+    import BTS2plot
+    
+
+try: 
+    
+    from troposzz import BTS2NetCDF
+except:
+    print("import local BTS2NetCDF")
+    import BTS2NetCDF
+    
+
+try: 
+    from troposzz import get_config
+except:
+    print("import local get_config")
+    import get_config
+    
+
+    
+
+
 
 
 
@@ -203,7 +228,11 @@ def run(args, config):
                 )
     logger.info('End uv-processing')
 
-#####################################################################################                                                            
+#####################################################################################        
+
+
+
+#####################################################################################                                                    
 
 if __name__ == "__main__":
     # execute only if run as a script
