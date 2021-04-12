@@ -22,25 +22,25 @@ from copy import deepcopy
 from trosat import cfconv as cf
 
 try:
-    from tropos_uv import read_bts2048rh as bts
+    from tropos_uv import read_bts2048rh as bts_read
 except:
     print("imoprt local read_bts2048rh") 
-    import read_bts2048rh as bts
+    import read_bts2048rh as bts_read
 
     
 try: 
-    from tropos_uv import BTS2plot
+    from tropos_uv import bts2plot
 except:
-    print("import local BTS2plot")
-    import BTS2plot
+    print("import local bts2plot")
+    import bts2plot
     
 
 try: 
     
-    from tropos_uv import BTS2NetCDF
+    from tropos_uv import bts2netCDF
 except:
-    print("import local BTS2NetCDF")
-    import BTS2NetCDF
+    print("import local bts2netCDF")
+    import bts2netCDF
     
 
 try: 
@@ -156,16 +156,16 @@ def loop(args, config, logger):
                 
                 """Obtanin the directory data from the OR0 files"""
                 if args.netcdf:
-                    d_bts1day=bts.read_oro_bts(path_file,methodbts,date.strftime('%Y%m%d'))
+                    d_bts1day=bts_read.read_oro_bts(path_file,methodbts,date.strftime('%Y%m%d'))
                     if args.netcdf:
                         
                         """checking if the file does already exist, and delete if so."""
                         if os.path.isfile( netcdf_path_file ):
                             os.remove( netcdf_path_file )
-                            BTS2NetCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson,config) 
+                            bts2netCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson,config) 
                         else:
                             """Save the data processed by the bts function in a netCDF file"""
-                            BTS2NetCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson,config)
+                            bts2netCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson,config)
                 
                 if args.image:
                     """checking if the file does already exist"""
@@ -175,11 +175,11 @@ def loop(args, config, logger):
                         nc=xr.open_dataset( netcdf_path_file )
                     else:
                         d_bts1day=bts.read_oro_bts(path_file,methodbts,date.strftime('%Y%m%d')) 
-                        BTS2NetCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson)
+                        bts2netCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson)
                         nc=xr.open_dataset(netcdf_path_file)
                     
                     """Plotting data"""
-                    BTS2plot.plotme(nc,date,config)
+                    bts2plot.plotme(nc,date,config)
                     
 
         else:
