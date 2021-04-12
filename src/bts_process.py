@@ -242,13 +242,14 @@ def adjust(argv):
     # get name of directory where main script is located
     current_dirname = os.path.dirname(os.path.realpath(__file__))
     
+    # get the name of the directory from where the script was executed
+    exec_dirname = os.getcwd()
+    
     # define log_path_file + create dir
-    log_path_file = current_dirname + "/log/uv_processing.log"
-    if not os.path.isdir(  os.path.dirname( log_path_file ) ):
-        os.makedirs( os.path.dirname( log_path_file ) )
-        print('Create directory     : ' + os.path.dirname(log_path_file) )
-        
-        
+    #log_path_file = current_dirname + "/log/uv_processing.log"
+    log_path_file = exec_dirname + "/uv_processing.log"
+    
+    
         
     """Insert de initial and final dates as strings as 20190107(year:2019/month:01/day:07)"""
     
@@ -258,7 +259,7 @@ def adjust(argv):
                     help='Insert the initial date as 20190107(y:2019 m:01 d:07)')
     parser.add_argument('-e', required=True, type=str, dest='fd',
                     help='Insert the final date as 20190107(y:2019 m:01 d:07)')
-    parser.add_argument('-c', required=True, type=str, dest='your_config_file',
+    parser.add_argument('--configfile', required=True, type=str, dest='your_config_file',
                     help='config  path and file name')
     parser.add_argument('-i', '--image', action='store_true', 
                     help="create images files")
@@ -266,9 +267,18 @@ def adjust(argv):
                     help="create netCDF files")
     parser.add_argument('-st', '--statistics', action='store_true', 
                     help="create statistics of missing files")
-    parser.add_argument('-l', '--loglevel', default='INFO',
+    parser.add_argument('--loglevel', default='INFO', dest='loglevel',
                     help="define loglevel of screen INFO (default) | WARNING | ERROR ")
+    parser.add_argument('--logfile', default=log_path_file, dest='logfile',
+                    help="define logfile (default: directory where you execute the script) ")
     args = parser.parse_args()
+    
+    # create directory to store logfile if necessary
+    log_path_file = args.logfile
+    if not os.path.isdir(  os.path.dirname( log_path_file ) ):
+        os.makedirs( os.path.dirname( log_path_file ) )
+        print('Create directory     : ' + os.path.dirname(log_path_file) )
+    
     
         
     # create logger with 'UV'
