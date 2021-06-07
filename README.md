@@ -13,7 +13,7 @@ The used file format of the Solarscan export is not well documented. However, th
 ### Objectives
 The software package is written to post-process observed solar radiation data of the array spectroradiometer BTS2018.
 The software package includes
-* a module to read OR0-Files from UV observations stred in Solarscan format and
+* a module to read OR0-Files from UV observations stored in Solarscan format and
 * a module to visualize the numerical data and
 * a module to store data as netcdf file(s)
 * a switch to visualize data gaps (missing files).
@@ -29,11 +29,13 @@ The software package includes
 ## Requirements 1
 
 * Python version 3.x
+* pip install git+https://github.com/hdeneke/trosat-base
 
 ```bash
 # to install required packages via pip please execute following command
 pip install -r requirements.txt
 ```
+
 
 
 ## Requirements 2 (optional)
@@ -65,36 +67,57 @@ $ git submodule update --init
 * [ralfebert.de](https://www.ralfebert.de/git/submodules/)
 
 
+## Installation
+
+### Option 1 - manual download and install
+You can get a local clone of the current software repository and install via:
+```bash
+git clone https://TODO ~/tmp/uv/
+
+cd ~/tmp/uv
+python setup.py install
+```
+
+### Option 2 - install via pip
+You can install the software via:
+```bash
+pip install git+https://github.com/ TODO
+```
+### Uninstall
+To uninstall the software, please use:
+```bash
+pip uninstall TODO
+```
+
+
 ## Configuration
+When using this software code for the first time, we would like to recommend to configure the code in the suggested way.
 
 ### Template configuration files
 
-The software has two configuration files
- 
-* ```src/config/templates/uv_js_meta.json``` and
-* ```src/config/templates/config.ini```,
+The software has two configuration files. The template files are
 
-that will be tracked by the git version control system. 
-Please **do not edit the configuation files**, use this file as templates only.
+* [src/config/templates/uv_js_meta.json](src/config/templates/uv_js_meta.json) and
+* [src/config/templates/config.ini](src/config/templates/config.ini),
 
+that will be tracked by the git version control system.
 
-### Local configuration 
+### Local configuration
 
-When using this software code for the first time, we would like to recommend to configure the code in the suggested way.
-
-* To create your local configuration, please copy at first the template configuration files.
-```bash
-cp src/config/templates/* src/config/
-```
+* Copy both template configuration files to your local file system, eg. to ```~/.uvconfig/```.
 * Now your **local configuration files** are available.
-  * ```src/config/uv_js_meta.json```
-  * ```src/config/config.ini```
+  * ```~/.uvconfig/uv_js_meta.json```
+  * ```~/.uvconfig/config.ini```
 * Please **customize** your local configuration files.
-  * ```src/config/uv_js_meta.json``` - Please edit your contact data and station specific information labeled with "???" at the JSON-file, that is used for writing UV measurement data and metadata to a netcdf file.
-  * ```src/config/config.ini``` - Please edit also the content of the INI-file. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
+  * ```~/.uvconfig/uv_js_meta.json``` - Please edit your contact data and station specific information labeled with "???" at the JSON-file, that is used for writing UV measurement data and metadata to a netcdf file.
+  * ```~/.uvconfig/config.ini``` - Please edit also the content of the INI-file. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
 
 Now the configuration is done.
 
+Alternative to find/get the config files
+```bash
+pip show tropos_uv | grep "Location: " | sed -e 's/^Location: //g' | xargs -n 1 bash -c 'less ${1}/tropos_uv/config/templates/config.ini' args |
+```
 
 ## Usage
 
