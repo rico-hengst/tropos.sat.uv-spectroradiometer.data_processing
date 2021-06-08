@@ -1,8 +1,20 @@
-attrdict==2.0.1
-Jinja2==2.11.2
-matplotlib==3.1.2
-netCDF4==1.5.3
-numpy==1.18.1
-pandas==1.0.3
+# please only list module, that are part of the default anaconda software channel
+# further pip only modiles are lited in setup.py
+####### via setup.py
+# argparse
+####### via setup.py
+# attrdict
+configparser
+#copy
+####### via setup.py
+# jstyleson
+matplotlib
+netCDF4
+numpy
+#os
+pandas
+#platform
+#sys
+####### via pip
 git+https://github.com/hdeneke/trosat-base
-xarray==0.16.1
+xarray

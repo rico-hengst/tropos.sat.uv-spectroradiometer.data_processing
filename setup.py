@@ -6,6 +6,7 @@ from setuptools import setup
 setup(
     name            = "tropos_uv", 
     version         = "1.1",
+    license         = "GNU GPL v3.0",
     author          = "Rico Hengst, Nicolas Bayer, Lionel Doppler",
     author_email    = "rico.hengst@tropos.de",
     description     = "The software package contains scripts to process UV radiation data, based on measurements with the spectroradiometer BTS2048. The Python software package is tailored to read the data in the manufacturer data format 'Solarscan'. The software package is able to export the data in the netcdf format and to generate plots of the measured and dervied variables.",
