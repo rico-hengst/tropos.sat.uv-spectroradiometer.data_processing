@@ -6,3 +6,4 @@ dist/
 tropos.solarscan_or0_import.egg-info/
 tropos_uv.egg-info/
 test/
+*.log
