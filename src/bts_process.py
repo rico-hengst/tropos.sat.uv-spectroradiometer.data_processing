@@ -74,12 +74,6 @@ def loop(args, config, logger):
     if not os.path.isdir( config.get('PATHFILE','netCDF_path') ):
         logger.error('Path netcdf_path not exists '+ config.get('PATHFILE','netCDF_path'))
         quit()
-        
-
-    json_file  = os.path.dirname(os.path.realpath(__file__))  + '/config/templates/uv_js_meta.json'
-    if not os.path.isfile( json_file ):
-        logger.error( 'File json not exists '+ json_file )
-        quit()
 
 
     
@@ -248,6 +242,7 @@ def adjust(argv):
     # define log_path_file + create dir
     #log_path_file = current_dirname + "/log/uv_processing.log"
     log_path_file = exec_dirname + "/uv_processing.log"
+    json_file  = os.path.dirname(os.path.realpath(__file__))  + '/config/templates/uv_js_meta.json'
     
     
         
@@ -256,21 +251,23 @@ def adjust(argv):
     """for calling the function from the terminal"""
     parser = argparse.ArgumentParser(description='Process UV radiometer measurements.') 
     parser.add_argument('-s', required=True, type=str, dest='id', # la variable se guarda en args.id como string
-                    help='Insert the initial date as 20190107(y:2019 m:01 d:07)')
+                    help='processing start date as 20190107 (y:2019 m:01 d:07)')
     parser.add_argument('-e', required=True, type=str, dest='fd',
-                    help='Insert the final date as 20190107(y:2019 m:01 d:07)')
+                    help='processing end date as 20190107 (y:2019 m:01 d:07)')
     parser.add_argument('--configfile', required=True, type=str, dest='your_config_file',
                     help='config  path and file name')
     parser.add_argument('-i', '--image', action='store_true', 
-                    help="create images files")
+                    help="switch to create images files")
     parser.add_argument('-n', '--netcdf', action='store_true', 
-                    help="create netCDF files")
+                    help="switch to create netCDF files")
     parser.add_argument('-st', '--statistics', action='store_true', 
-                    help="create statistics of missing files")
+                    help="switch to create statistics of missing files")
     parser.add_argument('--loglevel', default='INFO', dest='loglevel',
-                    help="define loglevel of screen INFO (default) | WARNING | ERROR ")
+                    help="define loglevel to output screen INFO (default) | WARNING | ERROR ")
     parser.add_argument('--logfile', default=log_path_file, dest='logfile',
-                    help="define logfile (default: directory where you execute the script) ")
+                    help="define logfile (default: " +  log_path_file + ") ")
+    parser.add_argument('--jsonfile', default=json_file, dest='jsonfile',
+                    help="define jsonfile (default: pathfile " + json_file + ") ")
     args = parser.parse_args()
     
     # create directory to store logfile if necessary
@@ -349,6 +346,13 @@ def adjust(argv):
     your_config_file    = args.your_config_file
     
     config = get_config.main(default_config_file, your_config_file)
+    
+    
+    
+    json_file = args.jsonfile
+    if not os.path.isfile( json_file ):
+        logger.error( 'File json not exists: '+ json_file )
+        quit()
     
     # call main function
     loop(args, config, logger)
