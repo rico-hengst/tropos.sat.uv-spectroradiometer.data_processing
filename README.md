@@ -26,18 +26,21 @@ The software package includes
 ### Scheme
 ![BTS scheme](doc/bts_scheme.png)
 
-## Requirements 1
+## Requirements
 
 * Python version 3.x
 * pip install git+https://github.com/hdeneke/trosat-base
+* required python packages, see file [requirements.txt](requirements.txt).
+* see code below to install required python packages
 
 ```bash
-# to install required packages via pip please execute following command
+## via conda
+conda install --file requirements.txt
+# via pip
 pip install -r requirements.txt
 ```
 
-
-
+<!--
 ## Requirements 2 (optional)
 To generate plots about the statistics of **missing data** in your archiv you have to implement a further python module [github.com/rico-hengst/tropos.heatmap_missing_files](https://github.com/rico-hengst/tropos.heatmap_missing_files) from as git submodule.
 ```
@@ -66,10 +69,11 @@ $ git submodule update --init
 * [vogella.com](https://www.vogella.com/tutorials/GitSubmodules/article.html)
 * [ralfebert.de](https://www.ralfebert.de/git/submodules/)
 
-
+-->
 ## Installation
 
-### Option 1 - manual download and install
+**Option 1 - manual download and install**
+
 You can get a local clone of the current software repository and install via:
 ```bash
 git clone https://TODO ~/tmp/uv/
@@ -78,12 +82,15 @@ cd ~/tmp/uv
 python setup.py install
 ```
 
-### Option 2 - install via pip
+**Option 2 - install via pip**
+
 You can install the software via:
 ```bash
 pip install git+https://github.com/ TODO
 ```
-### Uninstall
+
+**Uninstall**
+
 To uninstall the software, please use:
 ```bash
 pip uninstall TODO
@@ -93,51 +100,87 @@ pip uninstall TODO
 ## Configuration
 When using this software code for the first time, we would like to recommend to configure the code in the suggested way.
 
-### Template configuration files
+The software has two configuration files, which are available here as templates:  [config.ini](src/config/templates/config.ini) and [uv_js_meta.json](src/config/templates/uv_js_meta.json).
 
-The software has two configuration files. The template files are
+To execute the software faultless, a **local adaption of ```config.ini``` with your preferences is necessary**.
+A local adaption of ```uv_js_meta.json``` is optinal. Adjustments of this file can affect the funtionality of the script. In case of editing this file, be carefully.
 
-* [src/config/templates/uv_js_meta.json](src/config/templates/uv_js_meta.json) and
-* [src/config/templates/config.ini](src/config/templates/config.ini),
+**Local configuration**
 
-that will be tracked by the git version control system.
+1. create a local configuration directory
 
-### Local configuration
+```bash
+LOCAL_UV_CONFIG_DIR = ~/.uvconfig/
+mkdir $LOCAL_UV_CONFIG_DIR
+```
+2. find your installed configuration files, here only ```config.ini```
 
-* Copy both template configuration files to your local file system, eg. to ```~/.uvconfig/```.
-* Now your **local configuration files** are available.
-  * ```~/.uvconfig/uv_js_meta.json```
-  * ```~/.uvconfig/config.ini```
-* Please **customize** your local configuration files.
-  * ```~/.uvconfig/uv_js_meta.json``` - Please edit your contact data and station specific information labeled with "???" at the JSON-file, that is used for writing UV measurement data and metadata to a netcdf file.
-  * ```~/.uvconfig/config.ini``` - Please edit also the content of the INI-file. The INI-file contains the configuration about the directory paths of your UV measurements, the directory of the software output (netcdf, quicklooks) and so on.
+```bash
+pip show tropos_uv | grep "Location: " | sed -e 's/^Location: //g' | xargs -n 1 bash -c 'ls ${1}/tropos_uv/config/templates/config.ini' args
+
+# store template path to variable
+CONFIG_TEMPLATE=$(pip show tropos_uv | grep "Location: " | sed -e 's/^Location: //g' | xargs -n 1 bash -c 'ls ${1}/tropos_uv/config/templates/config.ini' args)
+```
+
+3. copy the template configuration file to your local configuration directory
+
+```bash
+cp $CONFIG_TEMPLATE $LOCAL_CONFIG_DIR
+```
+
+4. please edit and **customize** your local configuration file (ini-format) with your preferred editor
+
+```bash
+editor "${LOCAL_CONFIG_DIR}config.ini"
+```
+
+5. further remarks about the content of ```config.ini```
+  * section [PATHFILE] configures the data file structure of your local file system, about path of your UV data and path, where the processed should be stored
+  * section [STATION] provides metadata of the location, where the measurements were made (e.g: station_prefix is the used prefix in the filename exported by SolarScan)
+  * section [INSTRUMENT] provides metadata about the instrument
+  * section [TIMEZONE] provides information about timezones
 
 Now the configuration is done.
 
-Alternative to find/get the config files
-```bash
-pip show tropos_uv | grep "Location: " | sed -e 's/^Location: //g' | xargs -n 1 bash -c 'less ${1}/tropos_uv/config/templates/config.ini' args |
-```
 
 ## Usage
+This python software package provides a console script for easy and simple execution.
+If the installation of this package and if the configuration are finished, the execution of the console script can be tackled.
+
+A logging framework is implemented. So logging messages will be collected, appended and published via screen and via logfile.
+
+* required parameters
+  * ```-s``` and ```-e``` (start and end date of data processing)
+  * ```--configfile``` (path and filename of your local configuration)
+* recommended parameter
+  * ```--logfile``` (path and filename of a file, where the logging information will be appended)
+  * ```-n``` and/or ```-i``` (specify the aim of the script execution, process netCDF, process image)
+
+Show help of the console script:
+
 
 ```bash
-# example to create netCDF files and images
-cd src
+$ process_uv_bts -h
 
-./BTS_main_process.py -n -i -s 20190101 -e 20190102
-
-
-optional arguments:
-  -h, --help         show this help message and exit
-  -s ID              Insert the initial date as 20190107 (YYYYmmdd)
-  -e FD              Insert the final date as 20190107 (YYYmmdd)
-  -i, --image        create images files
-  -n, --netcdf       create netCDF files
-  -st, --statistics  create statistics of missing files !! Submodule required, see Requirements 2 !!
-  -l, --loglevel     define loglevel of screen INFO (default) | WARNING | ERROR
+  optional arguments:
+    -h, --help            show this help message and exit
+    -s ID                 processing start date as 20190107 (y:2019 m:01 d:07)
+    -e FD                 processing end date as 20190107 (y:2019 m:01 d:07)
+    --configfile YOUR_CONFIG_FILE
+                          config path and file name
+    -i, --image           switch to create images files
+    -n, --netcdf          switch to create netCDF files
+    --loglevel LOGLEVEL   define loglevel to output screen INFO (default) |
+                          WARNING | ERROR
+    --logfile LOGFILE     define logfile
+    --jsonfile JSONFILE   define jsonfile
 ```
 
+Execute the console script:
+```bash
+# example to create netCDF files and images
+process_uv_bts -n -i -s 20190101 -e 20190102 --configfile ~/uvconfig/config.ini --logfile ~/uvconfig/uv_processing.log
+```
 
 ## License
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
