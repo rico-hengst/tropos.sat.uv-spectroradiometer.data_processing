@@ -79,7 +79,7 @@ def loop(args, config, logger):
     
    
     """Load content of json_file to python variable cfjson"""
-    cfjson=cf.read_cfjson(arg.jsonfile)
+    cfjson=cf.read_cfjson(args.jsonfile)
     # {}
     # with open( json_file ) as f:
     #         cfjson= json.load(f)
