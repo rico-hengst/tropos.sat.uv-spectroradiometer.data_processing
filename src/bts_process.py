@@ -169,7 +169,7 @@ def loop(args, config, logger):
                         nc=xr.open_dataset( netcdf_path_file )
                     else:
                         d_bts1day=bts_read.read_oro_bts(path_file,methodbts,date.strftime('%Y%m%d')) 
-                        bts2netCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson)
+                        bts2netCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson,config)
                         nc=xr.open_dataset(netcdf_path_file)
                     
                     """Plotting data"""
