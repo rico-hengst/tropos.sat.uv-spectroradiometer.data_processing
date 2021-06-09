@@ -79,7 +79,7 @@ def loop(args, config, logger):
     
    
     """Load content of json_file to python variable cfjson"""
-    cfjson=cf.read_cfjson(json_file)
+    cfjson=cf.read_cfjson(arg.jsonfile)
     # {}
     # with open( json_file ) as f:
     #         cfjson= json.load(f)
@@ -356,10 +356,9 @@ def adjust(argv):
     config = get_config.main(default_config_file, your_config_file)
     
     
-    
-    json_file = args.jsonfile
-    if not os.path.isfile( json_file ):
-        logger.error( 'File json not exists: '+ json_file )
+
+    if not os.path.isfile( args.jsonfile ):
+        logger.error( 'File json not exists: '+ args.jsonfile )
         quit()
     
     # call main function
