@@ -77,12 +77,12 @@ def loop(args, config, logger):
 
 
     
-    if args.netcdf:
-        """Load content of json_file to python variable cfjson"""
-        cfjson=cf.read_cfjson(json_file)
-        # {}
-        # with open( json_file ) as f:
-        #         cfjson= json.load(f)
+   
+    """Load content of json_file to python variable cfjson"""
+    cfjson=cf.read_cfjson(json_file)
+    # {}
+    # with open( json_file ) as f:
+    #         cfjson= json.load(f)
     
     
     """ a lookup value dict for missing files"""
@@ -168,7 +168,7 @@ def loop(args, config, logger):
                     if os.path.isfile( netcdf_path_file ):
                         nc=xr.open_dataset( netcdf_path_file )
                     else:
-                        d_bts1day=bts.read_oro_bts(path_file,methodbts,date.strftime('%Y%m%d')) 
+                        d_bts1day=bts_read.read_oro_bts(path_file,methodbts,date.strftime('%Y%m%d')) 
                         bts2netCDF.netCDF_file(d_bts1day,netcdf_path_file,cfjson)
                         nc=xr.open_dataset(netcdf_path_file)
                     
