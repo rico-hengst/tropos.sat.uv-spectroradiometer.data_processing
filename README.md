@@ -110,7 +110,7 @@ A local adaption of ```uv_js_meta.json``` is optinal. Adjustments of this file c
 1. create a local configuration directory
 
 ```bash
-LOCAL_UV_CONFIG_DIR = ~/.uvconfig/
+LOCAL_UV_CONFIG_DIR=~/.uvconfig/
 mkdir $LOCAL_UV_CONFIG_DIR
 ```
 2. find your installed configuration files, here only ```config.ini```
@@ -125,13 +125,13 @@ CONFIG_TEMPLATE=$(pip show tropos_uv | grep "Location: " | sed -e 's/^Location: 
 3. copy the template configuration file to your local configuration directory
 
 ```bash
-cp $CONFIG_TEMPLATE $LOCAL_CONFIG_DIR
+cp $CONFIG_TEMPLATE $LOCAL_UV_CONFIG_DIR
 ```
 
 4. please edit and **customize** your local configuration file (ini-format) with your preferred editor
 
 ```bash
-editor "${LOCAL_CONFIG_DIR}config.ini"
+editor "${LOCAL_UV_CONFIG_DIR}config.ini"
 ```
 
 5. further remarks about the content of ```config.ini```
@@ -179,7 +179,7 @@ $ process_uv_bts -h
 Execute the console script:
 ```bash
 # example to create netCDF files and images
-process_uv_bts -n -i -s 20190101 -e 20190102 --configfile ~/uvconfig/config.ini --logfile ~/uvconfig/uv_processing.log
+process_uv_bts -n -i -s 20190101 -e 20190102 --configfile ~/.uvconfig/config.ini --logfile ~/.uvconfig/uv_processing.log
 ```
 
 ## License
