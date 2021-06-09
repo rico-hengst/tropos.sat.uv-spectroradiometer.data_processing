@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 from setuptools import setup
 
 #with open("README.md", "r", encoding="utf-8") as fh:
@@ -24,7 +27,7 @@ setup(
     ],
     entry_points    = { 
         'console_scripts': [ 
-            'troposuv = tropos_uv.bts_process:run' 
+            'process_uv_bts = tropos_uv.bts_process:run' 
         ] 
     },  
      classifiers    = [
