@@ -341,10 +341,18 @@ def adjust(argv):
             exit()
 
 
-    # get configs
+    # check if configs exists
     default_config_file = os.path.dirname(os.path.realpath(__file__))  + '/config/templates/config.ini'
     your_config_file    = args.your_config_file
     
+    if not os.path.isfile( default_config_file ):
+        logger.warn('default config file not exists: ' + default_config_file)
+        quit()
+    if not os.path.isfile( your_config_file ):
+        logger.warn('local config file not exists: ' + local_config_file)
+        quit()
+        
+    # get summarised config
     config = get_config.main(default_config_file, your_config_file)
     
     
