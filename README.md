@@ -28,7 +28,7 @@ The software package includes
 
 ## Requirements
 
-* Python version 3.x
+* Python version 3.7 >=
 * pip install git+https://github.com/hdeneke/trosat-base
 * required python packages, see file [requirements.txt](requirements.txt).
 * see code below to install required python packages

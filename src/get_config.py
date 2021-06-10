@@ -18,6 +18,7 @@ import configparser
 import os
 import logging
 import copy
+import datetime
 
 
 
@@ -38,7 +39,8 @@ def get_config_object(config_object ) -> configparser.ConfigParser:
         else:
             # parse file
             module_logger.info("Read config file '" + config_object + "'")
-            config = configparser.ConfigParser()
+            #config = configparser.ConfigParser(  ) # magic interpolation !
+            config = configparser.RawConfigParser()
             config.read(config_object)
             return config
             
@@ -62,7 +64,10 @@ def main(c1,c2):
             if key1 in config2[section]:
                 # update config_final
                 if config1[section][key1] != config2[section][key1]:
-                    config_final[section][key1] = config2[section][key1]
+                    #config_final[section][key1] = config2[section][key1]
+                    config_final.set(section, key1, config2[section][key1] )
+                    #config_final.set(section, key1, eval( config2[section][key1] )  )
+                    
                     module_logger.info("Update config section.key '" + section + "'.'" + key1 + "':  '" + config1[section][key1] + "' by '" + config2[section][key1] + "'")
             else:
                 module_logger.info("Section.key is missing in config2 '" + section + "'.'" + key1 +"', but is not required")
