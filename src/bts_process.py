@@ -349,7 +349,7 @@ def adjust(argv):
         logger.warn('default config file not exists: ' + default_config_file)
         quit()
     if not os.path.isfile( your_config_file ):
-        logger.warn('local config file not exists: ' + local_config_file)
+        logger.warn('local config file not exists: ' + your_config_file)
         quit()
         
     # get summarised config
