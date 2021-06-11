@@ -76,7 +76,17 @@ def loop(args, config, logger):
         quit()
 
 
+    """Check if directories are writable"""
+    if args.netcdf:
+        if not os.access(config.get('PATHFILE','netCDF_path'), os.W_OK):
+            logger.error('Path netCDF_path not writable '+ config.get('PATHFILE','netCDF_path'))
+            quit()
     
+    if args.netcdf or args.image:
+        if not os.access(config.get('PATHFILE','image_path'), os.W_OK):
+            logger.error('Path image_path not writable '+ config.get('PATHFILE','image_path'))
+            quit()    
+        
    
     """Load content of json_file to python variable cfjson"""
     cfjson=cf.read_cfjson(args.jsonfile)
