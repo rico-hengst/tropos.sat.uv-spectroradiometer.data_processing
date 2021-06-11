@@ -378,12 +378,12 @@ def adjust(argv):
 #####################################################################################                                                    
 if __name__ == "__main__":
     # execute only if run as a script
-    print("___ bts_process __main__")
+    # print("___ bts_process __main__")
     adjust(sys.argv[1:])
 
 #####################################################################################                                                    
 def run():
     # execute only if run as a setuptoolscript
-    print("___ bts_process run")
+    # print("___ bts_process run")
     adjust(sys.argv[1:])
 
