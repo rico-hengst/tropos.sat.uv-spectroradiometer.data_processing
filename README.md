@@ -76,7 +76,7 @@ $ git submodule update --init
 
 You can get a local clone of the current software repository and install via:
 ```bash
-git clone https://TODO ~/tmp/uv/
+git clone https://github.com/rico-hengst/tropos.sat.uv-spectroradiometer.data_processing.git ~/tmp/uv/
 
 cd ~/tmp/uv
 python setup.py install
@@ -86,7 +86,7 @@ python setup.py install
 
 You can install the software via:
 ```bash
-pip install git+https://github.com/ TODO
+pip install git+https://github.com/rico-hengst/tropos.sat.uv-spectroradiometer.data_processing.git
 ```
 
 **Uninstall**
